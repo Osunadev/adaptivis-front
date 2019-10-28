@@ -1,0 +1,15 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["prettier", "react", "jsx-a11y"],
+  "rules": {
+    "prettier/prettier": "error",
+    "react/jsx-filename-extension": "off",
+    "object-shorthand": "off",
+    "class-methods-use-this": "warn",
+    "import/no-unresolved": "warn"
+  }
+}
