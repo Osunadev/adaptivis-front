@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import ElementContainer from 'components/element-container/element-container.component';
 import {
@@ -11,7 +13,6 @@ import {
   Radio,
   Tooltip
 } from 'antd';
-import { Link } from 'react-router-dom';
 
 import {
   teacherMsgs,
@@ -21,6 +22,10 @@ import {
 } from './log-in.utils.js';
 
 class NormalLoginForm extends Component {
+  static propTypes = {
+    form: PropTypes.object.isRequired
+  };
+
   constructor() {
     super();
 
@@ -131,7 +136,7 @@ class NormalLoginForm extends Component {
           </Modal>
         )}
 
-        <ElementContainer title='Inicia Sesión'>
+        <ElementContainer title='Inicia Sesión' width='500px'>
           <Form onSubmit={this.handleSubmit} style={{ paddingTop: '2rem' }}>
             <Form.Item>
               {getFieldDecorator('userOption', {

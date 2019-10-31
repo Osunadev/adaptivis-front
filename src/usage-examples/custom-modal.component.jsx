@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 
 class CustomModal extends React.Component {
-  state = {
-    ModalText: 'Content of the modal',
-    visible: true,
-    confirmLoading: false
-  };
+  constructor() {
+    super();
+
+    this.state = {
+      ModalText: 'Content of the modal',
+      visible: true,
+      confirmLoading: false
+    };
+  }
 
   showModal = () => {
     this.setState({
