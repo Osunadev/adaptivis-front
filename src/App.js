@@ -9,6 +9,7 @@ import LandingMenu from 'components/landing-menu/landing-menu.component';
 import LandingHome from 'pages/landing-home/landing-home.page';
 import NotFound from 'pages/not-found/not-found.page';
 import SideBar from 'components/sidebar/sidebar.component';
+import Table from 'components/table/table.component';
 
 import BodyAttributes from 'components/body-attributes/body-attributes.component';
 
@@ -73,6 +74,7 @@ class App extends React.Component {
             )}
           />
           <Route exact path='/landing' component={SideBar} />
+          <Route exact path='/landing2' component={Table} />
           <Route
             path='*'
             render={({ history }) => <NotFound history={history} />}
