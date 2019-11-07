@@ -7,6 +7,7 @@ import RegisterUser from 'pages/register/register-user.page';
 import LogIn from 'pages/log-in/log-in.page';
 import LandingMenu from 'components/landing-menu/landing-menu.component';
 import LandingHome from 'pages/landing-home/landing-home.page';
+import LandingStudent from 'pages/landing-student/landing-student.page';
 import NotFound from 'pages/not-found/not-found.page';
 import SideBar from 'components/sidebar/sidebar.component';
 import Table from 'components/table/table.component';
@@ -73,8 +74,9 @@ class App extends React.Component {
               <ConfirmAccount {...routeProps} forgotPassword />
             )}
           />
-          <Route exact path='/landing' component={SideBar} />
-          <Route exact path='/landing2' component={Table} />
+          <Route exact path='/landing' component={LandingStudent} />
+          <Route exact path='/sidebar' component={SideBar} />
+          <Route exact path='/table' component={Table} />
           <Route
             path='*'
             render={({ history }) => <NotFound history={history} />}
