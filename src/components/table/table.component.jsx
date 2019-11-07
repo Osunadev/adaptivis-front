@@ -1,54 +1,52 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import { List, Typography } from 'antd';
+import BodyAttributes from 'components/body-attributes/body-attributes.component';
+import { List } from 'antd';
 
 const data = [
-  'Racing car sprays burning fuel into crowd.',
-  'Japanese princess to wed commoner.',
-  'Australian walks 100km after outback crash.',
-  'Man charged over missing wedding girl.',
-  'Los Angeles battles huge wildfires.',
+  {
+    assigment: 'Ingeniería de software',
+    professor: 'Nombre Apellidos Profesor',
+    type: 'Clase'
+  },
+  {
+    assigment: 'Ingeniería de software',
+    professor: 'Nombre Apellidos Profesor',
+    type: 'Taller'
+  },
+  {
+    assigment: 'Organización de computadoras y lenguaje ensamblador',
+    professor: 'Nombre Apellidos Profesor',
+    type: 'Clase'
+  },
+  {
+    assigment: 'Organización de computadoras y lenguaje ensamblador',
+    professor: 'Nombre Apellidos Profesor',
+    type: 'Taller'
+  }
 ];
 
-class Table extends Component {
-    
-    render(){
-        return (
-        <div>
-            <h3 style={{ marginBottom: 16 }}>Default Size</h3>
-            <List
-            header={<div>Header</div>}
-            footer={<div>Footer</div>}
-            bordered
-            dataSource={data}
-            renderItem={item => (
-                <List.Item>
-                <Typography.Text mark>[ITEM]</Typography.Text> {item}
-                </List.Item>
-            )}
-            />
-            <h3 style={{ margin: '16px 0' }}>Small Size</h3>
-            <List
-            size="small"
-            header={<div>Header</div>}
-            footer={<div>Footer</div>}
-            bordered
-            dataSource={data}
-            renderItem={item => <List.Item>{item}</List.Item>}
-            />
-            <h3 style={{ margin: '16px 0' }}>Large Size</h3>
-            <List
-            size="large"
-            header={<div>Header</div>}
-            footer={<div>Footer</div>}
-            bordered
-            dataSource={data}
-            renderItem={item => <List.Item>{item}</List.Item>}
-            />
-        </div>,
-        mountNode,
-        );
-    }
-}
+const Table = () => {
+  return (
+    <div>
+      <BodyAttributes background='white' noOverflow />
+      <div style={{ margin: '16px' }}>
+        <List
+          bordered
+          itemLayout='horizontal'
+          dataSource={data}
+          renderItem={item => (
+            <List.Item>
+              <List.Item.Meta
+                title={item.assigment}
+                description={`Docente: ${item.professor} Tipo: ${item.type}`}
+              />
+            </List.Item>
+          )}
+        />
+      </div>
+    </div>
+  );
+};
 
 export default Table;
