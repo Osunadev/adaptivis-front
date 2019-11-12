@@ -15,35 +15,35 @@ const data = [
   {
     titulo: 'Número de empleado:',
     descripcion: '12984'
-    },
-    {
-        titulo: 'Género:',
-        descripcion: 'Mujer'
-    },
-    {
+  },
+  {
+    titulo: 'Género:',
+    descripcion: 'Mujer'
+  },
+  {
     titulo: 'Correo electrónico UABC:',
     descripcion: 'nombre.apellido@uabc.edu.mx'
-    }
+  }
 ];
 
-const InfoRequest = () => {
+const InfoRequestTable = () => {
   return (
     <div>
       <BodyAttributes background='white' />
-      <div>
+      <div
+        style={{
+          backgroundColor: '#fff'
+        }}
+      >
         <List
           bordered
           itemLayout='horizontal'
           dataSource={data}
           renderItem={item => (
             <List.Item>
-              <List.Item.Meta
-                title={item.titulo}                
-              />
-              <List.Item.Meta
-                title={item.descripcion}                
-              />
-            </List.Item>            
+              <List.Item.Meta title={item.titulo} />
+              <List.Item.Meta title={item.descripcion} />
+            </List.Item>
           )}
         />
       </div>
@@ -51,4 +51,4 @@ const InfoRequest = () => {
   );
 };
 
-export default InfoRequest;
+export default InfoRequestTable;

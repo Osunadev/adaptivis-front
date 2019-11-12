@@ -5,16 +5,16 @@ import { Table, Button } from 'antd';
 const columns = [
   {
     title: 'Usuario',
-    dataIndex: 'name',
+    dataIndex: 'name'
   },
   {
     title: 'Docente',
-    dataIndex: 'age',
+    dataIndex: 'age'
   },
   {
     title: 'Fecha',
-    dataIndex: 'address',
-  },
+    dataIndex: 'address'
+  }
 ];
 
 const data = [];
@@ -23,14 +23,14 @@ for (let i = 0; i < 46; i++) {
     key: i,
     name: `nombre.usuario`,
     age: `Nombre Apellido Apellido`,
-    address: `11/12/19`,
+    address: `11/12/19`
   });
 }
 
-class Requests extends React.Component {
+class RequestsTable extends React.Component {
   state = {
     selectedRowKeys: [], // Check here to configure the default column
-    loading: false,
+    loading: false
   };
 
   start = () => {
@@ -39,7 +39,7 @@ class Requests extends React.Component {
     setTimeout(() => {
       this.setState({
         selectedRowKeys: [],
-        loading: false,
+        loading: false
       });
     }, 1000);
   };
@@ -53,23 +53,34 @@ class Requests extends React.Component {
     const { loading, selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectChange,
+      onChange: this.onSelectChange
     };
     const hasSelected = selectedRowKeys.length > 0;
     return (
       <div>
         <div style={{ marginBottom: 16 }}>
-          <Button type="primary" onClick={this.start} disabled={!hasSelected} loading={loading}>
+          <Button
+            type='primary'
+            onClick={this.start}
+            disabled={!hasSelected}
+            loading={loading}
+          >
             Borrar
           </Button>
           <span style={{ marginLeft: 8 }}>
-            {hasSelected ? `${selectedRowKeys.length} elementos seleccionados` : ''}
+            {hasSelected
+              ? `${selectedRowKeys.length} elementos seleccionados`
+              : ''}
           </span>
         </div>
-        <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+        <Table
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={data}
+        />
       </div>
     );
   }
 }
 
-export default Requests;
+export default RequestsTable;
