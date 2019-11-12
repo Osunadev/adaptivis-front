@@ -39,9 +39,10 @@ const Table = () => {
             <List.Item>
               <List.Item.Meta
                 title={item.assigment}
-                description={`Docente: ${item.professor} Tipo: ${item.type}`}
+                description={`Docente: ${item.professor}`}
               />
-            </List.Item>
+              <div>Tipo: {item.type}</div>
+            </List.Item>            
           )}
         />
       </div>

@@ -2,6 +2,7 @@
 import React from 'react';
 import { Layout, Menu, Icon, Avatar } from 'antd';
 import Requests from 'components/table/requests.component';
+import InfoRequest from 'components/table/info-request.component';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -67,8 +68,9 @@ const LandingAdmin = () => {
       <Layout style={{ marginLeft: 200,  marginTop: 64}}>
       <Content style={{  overflow: 'initial', }}>
         <div style={{ padding: 25, background: '#fff', }}>
-          <Requests/>
-          
+          {/*<Requests/>*/}
+          <p></p>
+          <InfoRequest/>          
         </div>
       </Content>
     </Layout>
