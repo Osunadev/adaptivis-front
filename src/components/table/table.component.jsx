@@ -30,7 +30,7 @@ const Table = () => {
   return (
     <div>
       <BodyAttributes background='white' noOverflow />
-      <div style={{ margin: '16px' }}>
+      <div>
         <List
           bordered
           itemLayout='horizontal'

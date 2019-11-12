@@ -8,6 +8,7 @@ import LogIn from 'pages/log-in/log-in.page';
 import LandingMenu from 'components/landing-menu/landing-menu.component';
 import LandingHome from 'pages/landing-home/landing-home.page';
 import LandingStudent from 'pages/landing-student/landing-student.page';
+import LandingAdmin from 'pages/landing-admin/landing-admin.page';
 import NotFound from 'pages/not-found/not-found.page';
 import SideBar from 'components/sidebar/sidebar.component';
 import Table from 'components/table/table.component';
@@ -75,6 +76,7 @@ class App extends React.Component {
             )}
           />
           <Route exact path='/landing' component={LandingStudent} />
+          <Route exact path='/landingAdm' component={LandingAdmin} />
           <Route exact path='/sidebar' component={SideBar} />
           <Route exact path='/table' component={Table} />
           <Route

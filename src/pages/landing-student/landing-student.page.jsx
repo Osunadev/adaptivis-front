@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Layout, Menu, Icon } from 'antd';
-import Table from 'components/table/table.component';
+import MisCursos from 'pages/landing-student/mis-cursos';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -52,20 +52,9 @@ const LandingStudent = () => {
       </Menu>
       </Sider>
       <Layout style={{ marginLeft: 200,  marginTop: 64}}>
-      <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-        <div style={{ padding: 24, background: '#fff', textAlign: 'center' }}>
-          ...
-          <br />
-          Really
-          <br />
-          ...
-          <br />
-          ...
-          <br />
-          ...
-          <br />
-          long
-          <br />
+      <Content style={{  overflow: 'initial', }}>
+        <div style={{ padding: 25, background: '#fff', }}>
+          <MisCursos/>
           ...
           <br />
           ...
