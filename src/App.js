@@ -23,7 +23,7 @@ class App extends React.Component {
   render() {
     return (
       <>
-        <BodyAttributes background='linear-gradient(to left bottom, #5428b0, #006feb, #009deb, #00c2be, #25e087)' />
+        <BodyAttributes background='linear-gradient(to right, #0083B0, #00B4DB)' />
         {/* We use a Route as / for LandingMenu because we want to selectively render our Menu depending on the route we're in */}
         <Route path='/' component={LandingMenu} />
         <Switch>
