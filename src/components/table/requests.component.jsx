@@ -59,14 +59,6 @@ class RequestsTable extends React.Component {
     return (
       <div>
         <div style={{ marginBottom: 16 }}>
-          <Button
-            type='primary'
-            onClick={this.start}
-            disabled={!hasSelected}
-            loading={loading}
-          >
-            Borrar
-          </Button>
           <span style={{ marginLeft: 8 }}>
             {hasSelected
               ? `${selectedRowKeys.length} elementos seleccionados`
@@ -78,6 +70,14 @@ class RequestsTable extends React.Component {
           columns={columns}
           dataSource={data}
         />
+        <Button
+            type='primary'
+            onClick={this.start}
+            disabled={!hasSelected}
+            loading={loading}
+          >
+            Borrar
+          </Button>
       </div>
     );
   }

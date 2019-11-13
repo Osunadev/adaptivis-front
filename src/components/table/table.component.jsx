@@ -29,7 +29,7 @@ const data = [
 const Table = () => {
   return (
     <div>
-      <BodyAttributes background='white' noOverflow />
+      <BodyAttributes background='white' />
       <div>
         <List
           bordered

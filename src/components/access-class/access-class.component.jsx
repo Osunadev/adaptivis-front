@@ -5,8 +5,12 @@ import { Button } from 'antd';
 const AccessClassBox = () => {
     return(
         <form>
-        <div>
-            <h3>Ingrese el código de acceso:</h3>
+        <div
+      style={{
+        backgroundColor: '#4BAF8B'
+      }}
+    >
+            <h3 style={{ color: '#fff' }}>Ingrese el código de acceso:</h3>
             <Input/>
             <p></p>
             <Button>Unirse</Button>      
