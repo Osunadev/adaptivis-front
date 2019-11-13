@@ -9,7 +9,7 @@ export const Title = styled.h1`
 
 export const Container = styled.div`
   width: 700px;
-  height: 250px;
+  height: 300px;
   background: white;
   padding: 24px;
   margin: 0px auto;
@@ -17,4 +17,5 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-radius: 10px;
 `;

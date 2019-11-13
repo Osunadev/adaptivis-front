@@ -1,7 +1,7 @@
 import React from 'react';
-import { ContainerHome } from './landing-home.style';
+import { ContainerHome } from './landing-home.styles';
 
-const LandingHome = () => {
+const LandingHomePage = () => {
   return (
     <>
       <ContainerHome>
@@ -11,4 +11,4 @@ const LandingHome = () => {
   );
 };
 
-export default LandingHome;
+export default LandingHomePage;

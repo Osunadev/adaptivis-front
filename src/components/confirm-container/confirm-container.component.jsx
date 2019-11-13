@@ -8,10 +8,7 @@ import { Title, Container } from './confirm-container.style';
 const ConfirmContainer = ({ title, children, loading }) => {
   return (
     <>
-      <BodyAttributes
-        background='linear-gradient(to left bottom, #5428b0, #006feb, #009deb, #00c2be, #25e087)'
-        noOverflow
-      />
+      <BodyAttributes noOverflow />
       <Title>{title}</Title>
       {loading ? (
         <Spin tip='Esperando confirmación...'>

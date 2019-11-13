@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import BodyAttributes from 'components/body-attributes/body-attributes.component';
 import { Result, Button } from 'antd';
 
-const NotFound = ({ history }) => {
+const NotFoundPage = ({ history }) => {
   return (
     <>
       <BodyAttributes
-        background='linear-gradient(to left bottom, #5428b0, #006feb, #009deb, #00c2be, #25e087)'
+        background='linear-gradient(to right, #0083B0, #00B4DB)'
         noOverflow
       />
       <Result
@@ -29,8 +29,8 @@ const NotFound = ({ history }) => {
   );
 };
 
-NotFound.propTypes = {
+NotFoundPage.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-export default NotFound;
+export default NotFoundPage;

@@ -1,17 +1,17 @@
 import styled from 'styled-components';
 
-export const ContainerTitle = styled.h1`
-  font-size: 32px;
-  color: white;
-`;
-
-export const ContainerImage = styled.img`
+export const LogoContainer = styled.img`
   height: 200px;
   width: auto;
   padding: 20px;
 `;
 
-export const Container = styled.div`
+export const TitleContainer = styled.h1`
+  font-size: 32px;
+  color: white;
+`;
+
+export const CardContainer = styled.div`
   background: #2a289a;
   width: 40%;
   height: 85%;
