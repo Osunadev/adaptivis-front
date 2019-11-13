@@ -2,8 +2,8 @@
 import React from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import MisCursos from 'pages/landing-student/mis-cursos';
+import ViewScores from './view-scores';
 
-const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 const LandingStudent = () => {
@@ -55,7 +55,7 @@ const LandingStudent = () => {
       <Content style={{  overflow: 'initial', }}>
         <div style={{ padding: 25, background: '#fff', }}>
           <MisCursos/>
-          ...
+          <ViewScores/>
           <br />
           ...
           <br />
