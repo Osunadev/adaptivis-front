@@ -9,11 +9,25 @@ const { Header, Content, Sider } = Layout;
 const LandingAdmin = () => {
   return (
     <Layout>
-      <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-        {/*<Avatar size="large" icon="user" />*/}
-        <h3 style={{ color: '#ffffff' }}>
-          1214901 Nombre Apellidos Paterno Materno
-        </h3>
+      <Header
+        style={{
+          position: 'fixed',
+          zIndex: 1,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'flex-end'
+        }}
+      >
+        <div style={{ display: 'flex', flexDisplay: 'row' }}>
+          <Avatar
+            size='large'
+            icon='user'
+            style={{ marginTop: '8px', marginRight: '16px' }}
+          />
+          <h3 style={{ color: '#ffffff' }}>
+            1214901 Nombre Apellidos Paterno Materno
+          </h3>
+        </div>
       </Header>
       <Layout>
         <Sider
