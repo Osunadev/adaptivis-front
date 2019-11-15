@@ -28,25 +28,22 @@ const data = [
 
 const InfoRequestTable = () => {
   return (
-    <div>
-      <BodyAttributes background='white' />
-      <div
-        style={{
-          backgroundColor: '#fff'
-        }}
-      >
-        <List
-          bordered
-          itemLayout='horizontal'
-          dataSource={data}
-          renderItem={item => (
-            <List.Item>
-              <List.Item.Meta title={item.titulo} />
-              <List.Item.Meta title={item.descripcion} />
-            </List.Item>
-          )}
-        />
-      </div>
+    <div
+      style={{
+        backgroundColor: '#fff'
+      }}
+    >
+      <List
+        bordered
+        itemLayout='horizontal'
+        dataSource={data}
+        renderItem={item => (
+          <List.Item>
+            <List.Item.Meta title={item.titulo} />
+            <List.Item.Meta title={item.descripcion} />
+          </List.Item>
+        )}
+      />
     </div>
   );
 };
