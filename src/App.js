@@ -9,6 +9,12 @@ import LandingHomePage from 'pages/landing-home/landing-home.page';
 import NotFoundPage from 'pages/not-found/not-found.page';
 
 import LandingMenu from 'components/landing-menu/landing-menu.component';
+import LandingHome from 'pages/landing-home/landing-home.page';
+import LandingStudent from 'pages/landing-student/landing-student.page';
+import LandingAdmin from 'pages/landing-admin/landing-admin.page';
+import SideBar from 'components/sidebar/sidebar.component';
+import Table from 'components/table/table.component';
+
 
 import BodyAttributes from 'components/body-attributes/body-attributes.component';
 
@@ -28,6 +34,11 @@ class App extends React.Component {
         {/* We use a Route as / for LandingMenu because we want to selectively render our Menu depending on the route we're in */}
         <Route path='/' component={LandingMenu} />
         <Switch>
+          <Route exact path='/landing' component={LandingStudent} />
+          <Route exact path='/landingAdm' component={LandingAdmin} />
+          <Route exact path='/sidebar' component={SideBar} />
+          <Route exact path='/table' component={Table} />
+
           <Route exact path='/' component={LandingHomePage} />
           <Route exact path='/login' component={LoginPage} />
           <Route path='/registro' component={RegisterPage} />
