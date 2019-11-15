@@ -19,7 +19,7 @@ import {
   studentMsgs,
   forgotPassMsgs,
   emailRegEx
-} from './log-in.utils.js';
+} from 'components/login-form/log-in.utils';
 
 class NormalLoginForm extends Component {
   static propTypes = {
@@ -178,7 +178,7 @@ class NormalLoginForm extends Component {
                   {
                     pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,50}$/,
                     message:
-                      '8 characteres mínimo, 1 mayúscula, 1 minúscula y 1 número'
+                      'Clave de 8 caracteres de mínimo, 1 número, 1 letra mayúscula y una minúscula'
                   },
                   {
                     required: true,
