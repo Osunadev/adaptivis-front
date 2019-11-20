@@ -14,6 +14,9 @@ const HeaderMenuAdm = ({ children, history }) => {
       case 'solicitudes':
         history.push('/loggedinAdm/solicitudes');
         break;
+      case 'materias-abiertas':
+          history.push('/loggedinAdm/materias-abiertas');
+          break;
       case 'cerrar-sesion':
             history.push('/loggedinAdm/info-solicitud');
             break;

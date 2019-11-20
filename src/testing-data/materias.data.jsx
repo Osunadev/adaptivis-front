@@ -1,5 +1,5 @@
 export const dataMaterias = [
-    {
+    {        
         clave: '12102',
         nombre: 'Organización de computadoras y lenguaje ensamblador',
         planEstudios: '20092',
@@ -48,12 +48,12 @@ export const dataMaterias = [
         caracter: 'Obligatoria',
     },
     {
-        clave: '12108',
-        nombre: 'Microprocesadores y microcontroladores',
+        clave: '12124',
+        nombre: 'Taller de sistema operativo unix',
         planEstudios: '20092',
-        etapa: 'Disciplinaria',
+        etapa: 'Básica',
         carrera: 'Ingeniería en computación',
-        caracter: 'Obligatoria',
+        caracter: 'Optativa',
     },
     {
         clave: '12107',
@@ -67,7 +67,7 @@ export const dataMaterias = [
         clave: '11253',
         nombre: 'Desarrollo de aplicaciones para iphone',
         planEstudios: '20092',
-        etapa: 'Disciplinaria',
+        etapa: 'Terminal',
         carrera: 'Ingeniería en computación',
         caracter: 'Obligatoria',
     },
