@@ -14,9 +14,12 @@ const HeaderMenu = ({ children, history }) => {
       case 'perfil':
         history.push('/loggedin/perfil');
         break;
-      case 'resultados':
-          history.push('/loggedin/resultados');
+      case 'consultar-resultados':
+          history.push('/loggedin/consultar-resultados');
           break;
+      case 'subir-resultados':
+        history.push('/loggedin/subir-resultados');
+        break;
     }
   };
 
@@ -69,7 +72,7 @@ const HeaderMenu = ({ children, history }) => {
               </Menu.Item>
             </Menu.ItemGroup>
             <Menu.ItemGroup key='g2' title='Encuestas'>
-              <Menu.Item key='resultados'>
+              <Menu.Item key='consultar-resultados'>
                 <Icon type='file-search' />
                 <span className='nav-text'>Consultar resultados</span>
               </Menu.Item>

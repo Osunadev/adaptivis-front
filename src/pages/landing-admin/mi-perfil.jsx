@@ -1,11 +1,12 @@
 import React from 'react';
-import InfoRequestTable from 'components/table/info-request.component';
+import PerfilProfesorTable from 'components/table/perfil-profesor.component';
+import { dataPerfilProfesor } from 'testing-data/users.data';
 
 const MiPerfil = () => {
     return (
         <div>
         <h2>Información básica</h2>
-        <InfoRequestTable />
+        <PerfilProfesorTable data={dataPerfilProfesor} />
         </div>
     );
 
