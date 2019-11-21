@@ -1,55 +1,39 @@
 
 import React from 'react';
 import { Collapse, List } from 'antd';
-import Table from 'components/table/table.component';
-
 const { Panel } = Collapse;
-const data = [
-    {
-      grupo: '611',
-      tipo: 'Taller',
-      clave: '611289',
-      materia: 'Programación orientada a objetos avanzada'
-    },
-    {
-      grupo: '214',
-      tipo: 'Laboratorio',
-      clave: '214359',
-      materia: 'Circuitos digitales'
-    },
-  ];
-  
+
 function callback(key) {
   console.log(key);
 }
 
-const groups = [
-    {
-        resultados: 'Resultados 2019-1'
-    }
-
-
+const data = [
+  {
+    grupo: '611',
+    tipo: 'Taller',
+    clave: '611289',
+    materia: 'Programación orientada a objetos avanzada'
+  },
+  {
+    grupo: '214',
+    tipo: 'Laboratorio',
+    clave: '214359',
+    materia: 'Circuitos digitales'
+  },
 ];
 
+const SurveyHistory = ({historial, lista}) => {
+  let paneles = [];
+  historial.map((titulo,i) => {
+    paneles.push(<Panel header={titulo.resultados} key={i}>          
+      {lista}              
+  </Panel>);
+  });
 
-const SurveyHistory = () => {
-    return(
+  return(
         <Collapse onChange={callback}>
-          <Panel header="Resultados 2019-1" key="1">          
-          <List
-          itemLayout='horizontal'
-          dataSource={data}
-          renderItem={item => (
-            <List.Item>
-              <List.Item.Meta title={`Grupo: ${item.grupo}`} />
-              <List.Item.Meta title={item.tipo} />
-              <List.Item.Meta title={item.clave} />
-              <List.Item.Meta title={item.materia} />              
-            </List.Item>
-          )}
-        />            
-          </Panel>
-          <Panel header="Resultados 2018-2" key="2" >
+          {paneles}
+         {/*} <Panel header="Resultados 2017-2" key="8" >
           <List
           itemLayout='horizontal'
           dataSource={data}
@@ -63,20 +47,7 @@ const SurveyHistory = () => {
           )}
         />  
           </Panel>
-          <Panel header="Resultados 2018-1" key="3">
-          <List
-          itemLayout='horizontal'
-          dataSource={data}
-          renderItem={item => (
-            <List.Item>
-              <List.Item.Meta title={`Grupo: ${item.grupo}`} />
-              <List.Item.Meta title={item.tipo} />
-              <List.Item.Meta title={item.clave} />
-              <List.Item.Meta title={item.materia} />              
-            </List.Item>
-          )}
-        />  
-          </Panel>
+          */}
         </Collapse>
       );
 };
