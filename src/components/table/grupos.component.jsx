@@ -1,55 +1,62 @@
 import React from 'react';
 import { Table, Button } from 'antd';
 
-
 const columns = [
     {
+      title: 'Grupo',
+      dataIndex: 'grupo',
+      key: 'grupo',
+    },
+    {
+      title: 'Tipo',
+      dataIndex: 'tipo',
+      key: 'tipo',
+    },
+    {
       title: 'Clave',
-      dataIndex: 'clave'
+      dataIndex: 'clave',
+      key: 'clave',
     },
     {
       title: 'Materia',
-      dataIndex: 'nombre',
-      render: text => <a>{text}</a>,
+      dataIndex: 'materia',
+      key: 'materia',
+      render: text => <a href='https://www.google.com'>{text}</a>,
     },
-    {
-      title: 'Plan de estudios',
-      dataIndex: 'planEstudios'
-    },
-    {
-        title: 'Etapa',
-        dataIndex: 'etapa'
-      }
   ];
 
 
 const data = [
-    {        
+    {
+        key: '1',
+        grupo: '123',
+        tipo: 'Taller',
         clave: '12102',
-        nombre: 'Organización de computadoras y lenguaje ensamblador',
-        planEstudios: '20092',
-        etapa: 'Disciplinaria',
-    },
-    {
-        clave: '12098',
-        nombre: 'Algoritmos y estructuras de datos',
-        planEstudios: '20092',
-        etapa: 'Disciplinaria',
-    },
-    {
-        clave: '12119',
-        nombre: 'Ingeniería de software',
-        planEstudios: '20092',
-        etapa: 'Terminal',
-    },
-    {
+        materia: 'Organización de computadoras y lenguaje ensamblador',
+      },
+      {
+        key: '2',
+        grupo: '611',
+        tipo: 'Laboratorio',
         clave: '12099',
-        nombre: 'Programación orientada a objetos',
-        planEstudios: '20092',
-        etapa: 'Disciplinaria',
-    },
-]
-class MateriasAbiertasTable extends React.Component {
+        materia: 'Programación orientada a objetos',
+      },
+      {
+        key: '3',
+        grupo: '214',
+        tipo: 'Clase',
+        clave: '12098',
+        materia: 'Algoritmos y estructuras de datos',
+      },
+      {
+        key: '4',
+        grupo: '120',
+        tipo: 'Taller',
+        clave: '12119',
+        materia: 'Ingeniería de software',
+      },
+    ];
+class GruposTable extends React.Component {
   state = {
     selectedRowKeys: [], // Check here to configure the default column
     loading: false
@@ -103,4 +110,4 @@ class MateriasAbiertasTable extends React.Component {
   }
 }
 
-export default MateriasAbiertasTable;
+export default GruposTable;

@@ -1,11 +1,12 @@
+
 export const dataPerfilAlumno = [
     {
       titulo: 'Fecha de nacimiento:',
-      descripcion: '9/11/2019'
+      descripcion: '5/07/2019'
     },
     {
       titulo: 'Género:',
-      descripcion: 'Mujer'
+      descripcion: 'Hombre'
     },
     {
       titulo: 'Correo electrónico UABC:',
@@ -32,7 +33,7 @@ export const dataPerfilAlumno = [
   export const dataPerfilProfesor = [
     {
       titulo: 'Género:',
-      descripcion: 'Mujer'
+      descripcion: 'Hombre'
     },
     {
       titulo: 'Correo electrónico UABC:',

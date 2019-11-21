@@ -11,9 +11,15 @@ const HeaderMenuAdm = ({ children, history }) => {
       case 'perfil':
         history.push('/loggedinAdm/perfil');
         break;
+      case 'mis-grupos':
+          history.push('/loggedinAdm/mis-grupos');
+          break;
       case 'solicitudes':
         history.push('/loggedinAdm/solicitudes');
         break;
+      case 'resultados':
+          history.push('/loggedinAdm/consulta-resultados');
+          break;
       case 'materias-abiertas':
           history.push('/loggedinAdm/materias-abiertas');
           break;
@@ -37,11 +43,11 @@ const HeaderMenuAdm = ({ children, history }) => {
         <div style={{ display: 'flex', flexDisplay: 'row' }}>
           <Avatar
             size='large'
-            icon='user'
+            src='https://www.petmd.com/sites/default/files/adult-homeless-cat-asking-for-food-picture-id847415388.jpg'
             style={{ marginTop: '8px', marginRight: '16px' }}
           />
           <h3 style={{ color: '#ffffff' }}>
-            1214901 Nombre Apellidos Paterno Materno
+            1234561 Omar Alonso Osuna Angulo
           </h3>
         </div>
       </Header>
@@ -66,7 +72,7 @@ const HeaderMenuAdm = ({ children, history }) => {
                 <Icon type='user' />
                 <span className='nav-text'>Mi perfil</span>
               </Menu.Item>
-              <Menu.Item key='grupos'>
+              <Menu.Item key='mis-grupos'>
                 <Icon type='team' />
                 <span className='nav-text'>Mis grupos</span>
               </Menu.Item>

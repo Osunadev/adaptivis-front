@@ -18,7 +18,7 @@ const columns = [
 ];
 
 const data = [];
-for (let i = 0; i < 46; i++) {
+for (let i = 0; i < 15; i++) {
   data.push({
     key: i,
     name: `nombre.usuario`,
@@ -58,13 +58,6 @@ class RequestsTable extends React.Component {
     const hasSelected = selectedRowKeys.length > 0;
     return (
       <div>
-        <div style={{ marginBottom: 16 }}>
-          <span style={{ marginLeft: 8 }}>
-            {hasSelected
-              ? `${selectedRowKeys.length} elementos seleccionados`
-              : ''}
-          </span>
-        </div>
         <Table
           rowSelection={rowSelection}
           columns={columns}
@@ -76,7 +69,16 @@ class RequestsTable extends React.Component {
             disabled={!hasSelected}
             loading={loading}
           >
-            Borrar
+            Eliminar
+          </Button>
+          <span style={{ marginLeft: 8 }}>
+            {hasSelected
+              ? `${selectedRowKeys.length} elementos seleccionados`
+              : ''}
+          </span>
+          <Button type='primary'
+          >
+            Ver informacion
           </Button>
       </div>
     );

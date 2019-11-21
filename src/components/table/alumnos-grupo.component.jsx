@@ -1,61 +1,39 @@
 import React from 'react';
+
 import { Table, Button } from 'antd';
 
-
 const columns = [
-    {
-      title: 'Clave',
-      dataIndex: 'clave'
-    },
-    {
-      title: 'Materia',
-      dataIndex: 'nombre',
-      render: text => <a>{text}</a>,
-    },
-    {
-      title: 'Plan de estudios',
-      dataIndex: 'planEstudios'
-    },
-    {
-        title: 'Etapa',
-        dataIndex: 'etapa'
-      }
-  ];
+  {
+    title: 'Matricula',
+    dataIndex: 'matricula'
+  },
+  {
+    title: 'Alumno',
+    dataIndex: 'alumno'
+  },
+  {
+    title: 'Correo',
+    dataIndex: 'correo'
+  }
+];
 
+const data = [];
+for (let i = 0; i < 46; i++) {
+  data.push({
+    key: i,
+    matricula: `1237954`,
+    alumno: `Nombre Apellido Apellido`,
+    correo: `nombre.apellido@uabc.edu.mx`
+  });
+}
 
-const data = [
-    {        
-        clave: '12102',
-        nombre: 'Organización de computadoras y lenguaje ensamblador',
-        planEstudios: '20092',
-        etapa: 'Disciplinaria',
-    },
-    {
-        clave: '12098',
-        nombre: 'Algoritmos y estructuras de datos',
-        planEstudios: '20092',
-        etapa: 'Disciplinaria',
-    },
-    {
-        clave: '12119',
-        nombre: 'Ingeniería de software',
-        planEstudios: '20092',
-        etapa: 'Terminal',
-    },
-    {
-        clave: '12099',
-        nombre: 'Programación orientada a objetos',
-        planEstudios: '20092',
-        etapa: 'Disciplinaria',
-    },
-]
-class MateriasAbiertasTable extends React.Component {
+class AlumnosGrupoTable extends React.Component {
   state = {
     selectedRowKeys: [], // Check here to configure the default column
     loading: false
   };
 
-  eliminar = () => {
+  start = () => {
     this.setState({ loading: true });
     // ajax request after empty completing
     setTimeout(() => {
@@ -84,10 +62,10 @@ class MateriasAbiertasTable extends React.Component {
           rowSelection={rowSelection}
           columns={columns}
           dataSource={data}
-        />        
-           <Button
+        />
+        <Button
             type='primary'
-            onClick={this.eliminar}
+            onClick={this.start}
             disabled={!hasSelected}
             loading={loading}
           >
@@ -103,4 +81,4 @@ class MateriasAbiertasTable extends React.Component {
   }
 }
 
-export default MateriasAbiertasTable;
+export default AlumnosGrupoTable;
