@@ -1,7 +1,7 @@
 import React from 'react';
 import RequestsTable from 'components/table/requests.component';
 
-const Requests = () => {
+const Solicitudes = () => {
   return (
     <div>
       <h2>Solicitudes de registro</h2>
@@ -10,4 +10,4 @@ const Requests = () => {
   );
 };
 
-export default Requests;
+export default Solicitudes;

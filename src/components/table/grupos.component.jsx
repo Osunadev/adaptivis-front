@@ -1,39 +1,68 @@
 import React from 'react';
-
 import { Table, Button } from 'antd';
 
 const columns = [
-  {
-    title: 'Usuario',
-    dataIndex: 'name'
-  },
-  {
-    title: 'Docente',
-    dataIndex: 'age'
-  },
-  {
-    title: 'Fecha',
-    dataIndex: 'address'
-  }
-];
+    {
+      title: 'Grupo',
+      dataIndex: 'grupo',
+      key: 'grupo',
+    },
+    {
+      title: 'Tipo',
+      dataIndex: 'tipo',
+      key: 'tipo',
+    },
+    {
+      title: 'Clave',
+      dataIndex: 'clave',
+      key: 'clave',
+    },
+    {
+      title: 'Materia',
+      dataIndex: 'materia',
+      key: 'materia',
+      render: text => <a href='https://www.google.com'>{text}</a>,
+    },
+  ];
 
-const data = [];
-for (let i = 0; i < 15; i++) {
-  data.push({
-    key: i,
-    name: `nombre.usuario`,
-    age: `Nombre Apellido Apellido`,
-    address: `11/12/19`
-  });
-}
 
-class RequestsTable extends React.Component {
+const data = [
+    {
+        key: '1',
+        grupo: '123',
+        tipo: 'Taller',
+        clave: '12102',
+        materia: 'Organización de computadoras y lenguaje ensamblador',
+      },
+      {
+        key: '2',
+        grupo: '611',
+        tipo: 'Laboratorio',
+        clave: '12099',
+        materia: 'Programación orientada a objetos',
+      },
+      {
+        key: '3',
+        grupo: '214',
+        tipo: 'Clase',
+        clave: '12098',
+        materia: 'Algoritmos y estructuras de datos',
+      },
+      {
+        key: '4',
+        grupo: '120',
+        tipo: 'Taller',
+        clave: '12119',
+        materia: 'Ingeniería de software',
+      },
+    ];
+class GruposTable extends React.Component {
   state = {
     selectedRowKeys: [], // Check here to configure the default column
     loading: false
   };
 
-  start = () => {
+  eliminar = () => {
     this.setState({ loading: true });
     // ajax request after empty completing
     setTimeout(() => {
@@ -62,10 +91,10 @@ class RequestsTable extends React.Component {
           rowSelection={rowSelection}
           columns={columns}
           dataSource={data}
-        />
-        <Button
+        />        
+           <Button
             type='primary'
-            onClick={this.start}
+            onClick={this.eliminar}
             disabled={!hasSelected}
             loading={loading}
           >
@@ -76,13 +105,9 @@ class RequestsTable extends React.Component {
               ? `${selectedRowKeys.length} elementos seleccionados`
               : ''}
           </span>
-          <Button type='primary'
-          >
-            Ver informacion
-          </Button>
       </div>
     );
   }
 }
 
-export default RequestsTable;
+export default GruposTable;

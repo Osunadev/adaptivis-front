@@ -1,21 +1,21 @@
 import React from 'react';
-
 import { List } from 'antd';
 
-const Table = ({data}) => {
+const PerfilAlumnoTable = ({data}) => {
   return (
-    <div>
+    <div
+      style={{
+        backgroundColor: '#fff'
+      }}
+    >
       <List
         bordered
         itemLayout='horizontal'
         dataSource={data}
         renderItem={item => (
           <List.Item>
-            <List.Item.Meta
-              title={item.assigment}
-              description={`Docente: ${item.professor}`}
-            />
-            <div>Tipo: {item.type}</div>
+            <List.Item.Meta title={item.titulo} />
+            <List.Item.Meta title={item.descripcion} />
           </List.Item>
         )}
       />
@@ -23,4 +23,4 @@ const Table = ({data}) => {
   );
 };
 
-export default Table;
+export default PerfilAlumnoTable;

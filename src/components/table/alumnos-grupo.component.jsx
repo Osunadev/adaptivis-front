@@ -4,30 +4,30 @@ import { Table, Button } from 'antd';
 
 const columns = [
   {
-    title: 'Usuario',
-    dataIndex: 'name'
+    title: 'Matricula',
+    dataIndex: 'matricula'
   },
   {
-    title: 'Docente',
-    dataIndex: 'age'
+    title: 'Alumno',
+    dataIndex: 'alumno'
   },
   {
-    title: 'Fecha',
-    dataIndex: 'address'
+    title: 'Correo',
+    dataIndex: 'correo'
   }
 ];
 
 const data = [];
-for (let i = 0; i < 15; i++) {
+for (let i = 0; i < 46; i++) {
   data.push({
     key: i,
-    name: `nombre.usuario`,
-    age: `Nombre Apellido Apellido`,
-    address: `11/12/19`
+    matricula: `1237954`,
+    alumno: `Nombre Apellido Apellido`,
+    correo: `nombre.apellido@uabc.edu.mx`
   });
 }
 
-class RequestsTable extends React.Component {
+class AlumnosGrupoTable extends React.Component {
   state = {
     selectedRowKeys: [], // Check here to configure the default column
     loading: false
@@ -76,13 +76,9 @@ class RequestsTable extends React.Component {
               ? `${selectedRowKeys.length} elementos seleccionados`
               : ''}
           </span>
-          <Button type='primary'
-          >
-            Ver informacion
-          </Button>
       </div>
     );
   }
 }
 
-export default RequestsTable;
+export default AlumnosGrupoTable;

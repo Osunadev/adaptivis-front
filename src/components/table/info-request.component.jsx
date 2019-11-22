@@ -1,6 +1,4 @@
 import React from 'react';
-
-import BodyAttributes from 'components/body-attributes/body-attributes.component';
 import { List } from 'antd';
 
 const data = [
