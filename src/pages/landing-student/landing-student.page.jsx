@@ -15,8 +15,16 @@ const LandingStudent = () => {
       <HeaderMenu>
         <Route exact path={`/loggedin/cursos`} component={MisCursos} />
         <Route exact path={`/loggedin/perfil`} component={MiPerfil} />
-        <Route exact path={`/loggedin/consultar-resultados`} component={ViewScores} />
-        <Route exact path={`/loggedin/subir-resultados`} component={UploadScores} />
+        <Route
+          exact
+          path={`/loggedin/consultar-resultados`}
+          component={ViewScores}
+        />
+        <Route
+          exact
+          path={`/loggedin/subir-resultados`}
+          component={UploadScores}
+        />
       </HeaderMenu>
     </div>
   );

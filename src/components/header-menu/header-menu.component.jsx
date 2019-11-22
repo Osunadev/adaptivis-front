@@ -15,8 +15,8 @@ const HeaderMenu = ({ children, history }) => {
         history.push('/loggedin/perfil');
         break;
       case 'consultar-resultados':
-          history.push('/loggedin/consultar-resultados');
-          break;
+        history.push('/loggedin/consultar-resultados');
+        break;
       case 'subir-resultados':
         history.push('/loggedin/subir-resultados');
         break;
@@ -31,7 +31,8 @@ const HeaderMenu = ({ children, history }) => {
           zIndex: 1,
           width: '100%',
           display: 'flex',
-          justifyContent: 'flex-end'
+          justifyContent: 'flex-end',
+          background: 'rgb(75, 175, 139)'
         }}
       >
         <div style={{ display: 'flex', flexDisplay: 'row' }}>

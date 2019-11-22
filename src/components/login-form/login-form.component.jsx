@@ -42,14 +42,52 @@ class NormalLoginForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
+    const { validateFields, resetFields } = this.props.form;
+
     // The 'values' object contains all the values of the validated fields in our form
-    this.props.form.validateFields((err, values) => {
+    validateFields((err, values) => {
       if (!err) {
-        if (values.userOption === 'alumno') {
-          studentMsgs.success();
+        const { email, password, rememberEmail, userOption } = values;
+
+        if (userOption === 'alumno') {
+          const urlTeacherEndpoint =
+            'http://localhost:5000/api/v1/login/student';
+
+          fetch(urlTeacherEndpoint, {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email,
+              password,
+              rememberEmail
+            })
+          })
+            .then(response => response.json())
+            .then(loginMsg => {
+              console.log(loginMsg);
+            })
+            .catch(error => console.log(error));
+          //  studentMsgs.success();
         } else {
-          // profesor
-          teacherMsgs.approvalPending();
+          // then user.Option === 'profesor'
+          const urlTeacherEndpoint =
+            'http://localhost:5000/api/v1/login/teacher';
+
+          fetch(urlTeacherEndpoint, {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email,
+              password,
+              rememberEmail
+            })
+          })
+            .then(response => response.json())
+            .then(loginMsg => {
+              console.log(loginMsg);
+            })
+            .catch(error => console.log(error));
+          // teacherMsgs.approvalPending();
         }
       }
     });
@@ -196,7 +234,7 @@ class NormalLoginForm extends Component {
               )}
             </Form.Item>
             <Form.Item>
-              {getFieldDecorator('remember', {
+              {getFieldDecorator('rememberEmail', {
                 valuePropName: 'checked',
                 initialValue: true
               })(<Checkbox>Recordarme</Checkbox>)}

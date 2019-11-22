@@ -12,20 +12,20 @@ const HeaderMenuAdm = ({ children, history }) => {
         history.push('/loggedinAdm/perfil');
         break;
       case 'mis-grupos':
-          history.push('/loggedinAdm/mis-grupos');
-          break;
+        history.push('/loggedinAdm/mis-grupos');
+        break;
       case 'solicitudes':
         history.push('/loggedinAdm/solicitudes');
         break;
       case 'resultados':
-          history.push('/loggedinAdm/consulta-resultados');
-          break;
+        history.push('/loggedinAdm/consulta-resultados');
+        break;
       case 'materias-abiertas':
-          history.push('/loggedinAdm/materias-abiertas');
-          break;
+        history.push('/loggedinAdm/materias-abiertas');
+        break;
       case 'cerrar-sesion':
-            history.push('/loggedinAdm/info-solicitud');
-            break;
+        history.push('/loggedinAdm/info-solicitud');
+        break;
     }
   };
 
@@ -37,7 +37,8 @@ const HeaderMenuAdm = ({ children, history }) => {
           zIndex: 1,
           width: '100%',
           display: 'flex',
-          justifyContent: 'flex-end'
+          justifyContent: 'flex-end',
+          background: 'rebeccapurple'
         }}
       >
         <div style={{ display: 'flex', flexDisplay: 'row' }}>
@@ -46,9 +47,7 @@ const HeaderMenuAdm = ({ children, history }) => {
             src='https://www.petmd.com/sites/default/files/adult-homeless-cat-asking-for-food-picture-id847415388.jpg'
             style={{ marginTop: '8px', marginRight: '16px' }}
           />
-          <h3 style={{ color: '#ffffff' }}>
-            1234561 Omar Alonso Osuna Angulo
-          </h3>
+          <h3 style={{ color: '#ffffff' }}>1234561 Omar Alonso Osuna Angulo</h3>
         </div>
       </Header>
       <Layout>

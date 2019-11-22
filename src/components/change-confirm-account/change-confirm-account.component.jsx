@@ -48,7 +48,7 @@ class ChangeConfirmAccount extends Component {
   };
 
   handleClickForm = (formEmail, formPassword) => {
-    const { componentType } = this.state;
+    const { componentType, email, password, id, isTeacher } = this.state;
 
     // Fake request to the backend
     if (componentType === 'change-password') {
@@ -68,18 +68,52 @@ class ChangeConfirmAccount extends Component {
         }
       );
     } else if (componentType === 'confirm-account') {
-      this.setState({ email: formEmail, isLoading: true }, () => {
-        setTimeout(() => {
-          this.setState({
-            isLoading: false,
-            hasServerResponded: true,
-            serverGoodResponse: false,
-            description: accountFailureInfo.description,
-            title: accountFailureInfo.title,
-            changeRouteBtnTitle: accountFailureInfo.btnTitle
-          });
-        }, 2000);
-      });
+      if (isTeacher) {
+        const confirmTeacherRoute = `http://localhost:5000/api/v1/confirm/teacher/${id}`;
+
+        fetch(confirmTeacherRoute, {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            password
+          })
+        })
+          .then(resp => resp.json())
+          .then(confirmationMsg => {
+            console.log(confirmationMsg);
+          })
+          .catch(error => console.log(error));
+      } else {
+        const confirmStudentRoute = `http://localhost:5000/api/v1/confirm/student/${id}`;
+
+        fetch(confirmStudentRoute, {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            password
+          })
+        })
+          .then(resp => resp.json())
+          .then(confirmationMsg => {
+            console.log(confirmationMsg);
+          })
+          .catch(error => console.log(error));
+      }
+
+      // this.setState({ email: formEmail, isLoading: true }, () => {
+      //   setTimeout(() => {
+      //     this.setState({
+      //       isLoading: false,
+      //       hasServerResponded: true,
+      //       serverGoodResponse: false,
+      //       description: accountFailureInfo.description,
+      //       title: accountFailureInfo.title,
+      //       changeRouteBtnTitle: accountFailureInfo.btnTitle
+      //     });
+      //   }, 2000);
+      // });
     }
   };
 
