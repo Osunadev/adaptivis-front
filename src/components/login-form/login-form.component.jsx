@@ -62,7 +62,7 @@ class NormalLoginForm extends Component {
               rememberEmail
             })
           })
-            .then(response => console.log(response.headers()))
+            .then(response => console.log(response.headers)
             .catch(error => console.log(error));
           //  studentMsgs.success();
         } else {
@@ -79,7 +79,7 @@ class NormalLoginForm extends Component {
               rememberEmail
             })
           })
-            .then(response => console.log(response.headers()))
+            .then(response => console.log(response.headers)
             .catch(error => console.log(error));
           // teacherMsgs.approvalPending();
         }
