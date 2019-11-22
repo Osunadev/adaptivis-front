@@ -20,8 +20,6 @@ class ChangeConfirmAccount extends Component {
     const { match, componentType } = props;
 
     this.state = {
-      email: '',
-      password: '',
       id: match.params.id,
       // If it isn't profesor, it's alumno
       isTeacher: match.path.includes('/profesor'),
@@ -48,25 +46,22 @@ class ChangeConfirmAccount extends Component {
   };
 
   handleClickForm = (formEmail, formPassword) => {
-    const { componentType, email, password, id, isTeacher } = this.state;
+    const { componentType, id, isTeacher } = this.state;
 
     // Fake request to the backend
     if (componentType === 'change-password') {
-      this.setState(
-        { email: formEmail, password: formPassword, isLoading: true },
-        () => {
-          setTimeout(() => {
-            this.setState({
-              isLoading: false,
-              hasServerResponded: true,
-              serverGoodResponse: true,
-              description: passwordSuccessInfo.description,
-              title: passwordSuccessInfo.title,
-              changeRouteBtnTitle: passwordSuccessInfo.btnTitle
-            });
-          }, 2000);
-        }
-      );
+      this.setState({ isLoading: true }, () => {
+        setTimeout(() => {
+          this.setState({
+            isLoading: false,
+            hasServerResponded: true,
+            serverGoodResponse: true,
+            description: passwordSuccessInfo.description,
+            title: passwordSuccessInfo.title,
+            changeRouteBtnTitle: passwordSuccessInfo.btnTitle
+          });
+        }, 2000);
+      });
     } else if (componentType === 'confirm-account') {
       if (isTeacher) {
         const confirmTeacherRoute = `http://localhost:5000/api/v1/confirm/teacher/${id}`;
@@ -75,8 +70,7 @@ class ChangeConfirmAccount extends Component {
           method: 'post',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            email,
-            password
+            email: formEmail
           })
         })
           .then(resp => resp.json())
@@ -91,8 +85,7 @@ class ChangeConfirmAccount extends Component {
           method: 'post',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            email,
-            password
+            email: formEmail
           })
         })
           .then(resp => resp.json())
