@@ -36,7 +36,7 @@ class NormalRegisterForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    const { validateFields } = this.props.form;
+    const { validateFields, resetFields } = this.props.form;
     const { isTeacher } = this.state;
 
     // The 'values' object contains all the values of the validated fields in our form
@@ -78,6 +78,7 @@ class NormalRegisterForm extends Component {
             .then(response => response.json())
             .then(registerMsg => {
               console.log(registerMsg);
+              resetFields();
             })
             .catch(error => console.log(error));
         } else {
@@ -104,6 +105,7 @@ class NormalRegisterForm extends Component {
             .then(response => response.json())
             .then(registerMsg => {
               console.log(registerMsg);
+              resetFields();
             })
             .catch(error => console.log(error));
         }
