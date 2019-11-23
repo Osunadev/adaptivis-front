@@ -42,9 +42,72 @@ class NormalRegisterForm extends Component {
     // The 'values' object contains all the values of the validated fields in our form
     validateFields((err, values) => {
       if (!err) {
-        // In this section we'll be making our fetch call to the server, whether we register
-        // a student or a teacher
-        console.log(isTeacher ? 'Profesor' : 'Alumno', values);
+        // If every field passes the validtions
+        const {
+          userName,
+          firstName,
+          secondName,
+          middleName,
+          lastName,
+          gender,
+          email,
+          password
+        } = values;
+
+        if (isTeacher) {
+          const urlTeacherEndpoint =
+            'http://localhost:5000/api/v1/register/teacher';
+          const { employeeId, birthDay } = values;
+
+          fetch(urlTeacherEndpoint, {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userName,
+              firstName,
+              secondName,
+              middleName,
+              lastName,
+              gender,
+              email,
+              password,
+              employeeId,
+              birthDay
+            })
+          })
+            .then(response => response.json())
+            .then(registerMsg => {
+              console.log(registerMsg);
+            })
+            .catch(error => console.log(error));
+        } else {
+          // If isStudent
+          const { studentId } = values;
+          const urlStudentEndpoint =
+            'http://localhost:5000/api/v1/register/student';
+
+          fetch(urlStudentEndpoint, {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userName,
+              firstName,
+              secondName,
+              middleName,
+              lastName,
+              gender,
+              email,
+              password,
+              studentId
+            })
+          })
+            .then(response => response.json())
+            .then(registerMsg => {
+              console.log(registerMsg);
+            })
+            .catch(error => console.log(error));
+        }
+        // console.log(isTeacher ? 'Profesor' : 'Alumno', values);
       }
     });
   };
@@ -74,6 +137,19 @@ class NormalRegisterForm extends Component {
           layout='horizontal'
         >
           <Form.Item>
+            {getFieldDecorator('userName', {
+              rules: basicRules('nombre de usuario')
+            })(
+              <Input
+                prefix={
+                  <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
+                placeholder='Nombre de usuario'
+                size='large'
+              />
+            )}
+          </Form.Item>
+          <Form.Item>
             {getFieldDecorator('firstName', {
               rules: basicRules('nombre')
             })(
@@ -81,14 +157,27 @@ class NormalRegisterForm extends Component {
                 prefix={
                   <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
                 }
-                placeholder='Nombre(s)'
+                placeholder='Primer Nombre'
+                size='large'
+              />
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator('secondName', {
+              rules: basicRules('nombre')
+            })(
+              <Input
+                prefix={
+                  <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
+                placeholder='Segundo Nombre'
                 size='large'
               />
             )}
           </Form.Item>
 
           <Form.Item>
-            {getFieldDecorator('firstLastName', {
+            {getFieldDecorator('middleName', {
               rules: basicRules('apellido paterno')
             })(
               <Input
@@ -102,7 +191,7 @@ class NormalRegisterForm extends Component {
           </Form.Item>
 
           <Form.Item>
-            {getFieldDecorator('secondLastName', {
+            {getFieldDecorator('lastName', {
               rules: basicRules('apellido materno')
             })(
               <Input
@@ -116,7 +205,7 @@ class NormalRegisterForm extends Component {
           </Form.Item>
 
           <Form.Item>
-            {getFieldDecorator('userOption', {
+            {getFieldDecorator('gender', {
               rules: [
                 {
                   required: true,
@@ -125,9 +214,9 @@ class NormalRegisterForm extends Component {
               ]
             })(
               <Radio.Group size='large'>
-                <Radio value='woman'>Mujer</Radio>
-                <Radio value='man'>Hombre</Radio>
-                <Radio value='none'>Prefiero no responder</Radio>
+                <Radio value='M'>Mujer</Radio>
+                <Radio value='F'>Hombre</Radio>
+                <Radio value='null'>Prefiero no responder</Radio>
               </Radio.Group>
             )}
           </Form.Item>
