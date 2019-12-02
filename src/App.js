@@ -1,21 +1,19 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import RegisterPage from 'pages/register/register.page';
-import LoginPage from 'pages/login/login.page';
-import ConfirmEmailPage from 'pages/confirm-email/confirm-email.page';
-import ChangePasswordPage from 'pages/change-password/change-password.page';
-import LandingHomePage from 'pages/landing-home/landing-home.page';
-import NotFoundPage from 'pages/not-found/not-found.page';
+// All of pages we used before user logs in
+import RegisterPage from 'pages/before-login-pages/register/register.page';
+import LoginPage from 'pages/before-login-pages/login/login.page';
+import ConfirmEmailPage from 'pages/before-login-pages/confirm-email/confirm-email.page';
+import ChangePasswordPage from 'pages/before-login-pages/change-password/change-password.page';
+import LandingHomePage from 'pages/before-login-pages/landing-home/landing-home.page';
+import NotFoundPage from 'pages/before-login-pages/not-found/not-found.page';
+import LandingMenu from 'components/before-login-components/landing-menu/landing-menu.component';
 
-import LandingMenu from 'components/landing-menu/landing-menu.component';
-// import LandingHome from 'pages/landing-home/landing-home.page';
-import LandingStudent from 'pages/landing-student/landing-student.page';
-import LandingAdmin from 'pages/landing-admin/landing-admin.page';
-// import SideBar from 'components/sidebar/sidebar.component';
-// import Table from 'components/table/table.component';
+import StudentLanding from 'pages/after-login-pages/student/student-landing/student-landing.page';
+import LandingAdmin from 'pages/after-login-pages/landing-admin/landing-admin.page';
 
-import BodyAttributes from 'components/body-attributes/body-attributes.component';
+import BodyAttributes from 'components/before-login-components/body-attributes/body-attributes.component';
 
 class App extends React.Component {
   constructor() {
@@ -37,15 +35,10 @@ class App extends React.Component {
           <Route exact path='/login' component={LoginPage} />
           <Route path='/registro' component={RegisterPage} />
           <Route path='/confirmacion' component={ConfirmEmailPage} />
-          <Route path='/reestablecer' component={ChangePasswordPage} />
+          <Route path='/restablecer' component={ChangePasswordPage} />
 
-          {/* Landing y paginas del menu estudiante */}
-          <Route path='/loggedin' component={LandingStudent} />
+          <Route path='/alumno' component={StudentLanding} />
           <Route path='/loggedinAdm' component={LandingAdmin} />
-          {/* Jessica */}
-          {/* <Route exact path='/landingAdm' component={LandingAdmin} />
-          <Route exact path='/sidebar' component={SideBar} />
-          <Route exact path='/table' component={Table} /> */}
 
           <Route
             path='*'
