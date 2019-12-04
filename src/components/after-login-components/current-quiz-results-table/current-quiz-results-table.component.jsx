@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
 
+import TitledWrapper from 'components/after-login-components/titled-wrapper/titled-wrapper.component';
 import { TextLink } from './current-quiz-results-table.styles';
 
 const columnsTitleFormat = [
@@ -32,7 +33,9 @@ const columnsTitleFormat = [
 ];
 
 const CurrentResults = ({ subjectsData }) => (
-  <Table columns={columnsTitleFormat} dataSource={subjectsData} />
+  <TitledWrapper title='Resultado de materias actuales'>
+    <Table columns={columnsTitleFormat} dataSource={subjectsData} />
+  </TitledWrapper>
 );
 
 export default CurrentResults;

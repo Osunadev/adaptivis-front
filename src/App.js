@@ -14,6 +14,7 @@ import StudentLanding from 'pages/after-login-pages/student/student-landing/stud
 import LandingAdmin from 'pages/after-login-pages/landing-admin/landing-admin.page';
 
 import BodyAttributes from 'components/before-login-components/body-attributes/body-attributes.component';
+import DemographicPreLandingPage from 'pages/after-login-pages/demographic-pre-landing/demographic-pre-landing.page';
 
 class App extends React.Component {
   constructor() {
@@ -38,6 +39,8 @@ class App extends React.Component {
           <Route path='/restablecer' component={ChangePasswordPage} />
 
           <Route path='/alumno' component={StudentLanding} />
+          <Route path='/demo' component={DemographicPreLandingPage} />
+
           <Route path='/loggedinAdm' component={LandingAdmin} />
 
           <Route

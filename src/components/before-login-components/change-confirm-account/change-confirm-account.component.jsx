@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
+import SpinnerWrapper from 'components/before-login-components/spinner-wrapper/spinner-wrapper.component';
 import ConfirmContainer from 'components/before-login-components/confirm-container/confirm-container.component';
 import ChangeConfirmForm from 'components/before-login-components/change-confirm-form/change-confirm-form.component';
 
 import { Button } from 'antd';
+import { Title } from './change-confirm-account.styles';
 
 import {
   accountSuccessInfo,
@@ -123,34 +125,37 @@ class ChangeConfirmAccount extends Component {
 
     return (
       <>
-        <ConfirmContainer
-          title={`${title} (${isTeacher ? 'Profesor' : 'Alumno'})`}
-          loading={isLoading}
-        >
-          {!hasServerResponded && (
-            <ChangeConfirmForm
-              formType={componentType}
-              onClickForm={this.handleClickForm}
-            />
-          )}
+        <Title>{`${title} (${isTeacher ? 'Profesor' : 'Alumno'})`}</Title>
 
-          {hasServerResponded && (
-            <>
-              <h2>{description}</h2>
-              <Button
-                type='primary'
-                style={{
-                  width: '25%',
-                  textAlign: 'center',
-                  margin: '16px'
-                }}
-                onClick={this.handleClickRoute}
-              >
-                {changeRouteBtnTitle}
-              </Button>
-            </>
-          )}
-        </ConfirmContainer>
+        <SpinnerWrapper
+          isLoading={isLoading}
+          title='Cargando resultados...'
+          large
+        >
+          <ConfirmContainer loading={isLoading}>
+            {hasServerResponded ? (
+              <>
+                <h2>{description}</h2>
+                <Button
+                  type='primary'
+                  style={{
+                    width: '25%',
+                    textAlign: 'center',
+                    margin: '16px'
+                  }}
+                  onClick={this.handleClickRoute}
+                >
+                  {changeRouteBtnTitle}
+                </Button>
+              </>
+            ) : (
+              <ChangeConfirmForm
+                formType={componentType}
+                onClickForm={this.handleClickForm}
+              />
+            )}
+          </ConfirmContainer>
+        </SpinnerWrapper>
       </>
     );
   }

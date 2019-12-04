@@ -1,4 +1,7 @@
 import React from 'react';
+
+import TitledWrapper from 'components/after-login-components/titled-wrapper/titled-wrapper.component';
+
 import { Upload, Icon, message } from 'antd';
 
 const { Dragger } = Upload;
@@ -24,18 +27,20 @@ const props = {
 
 const QuizUploader = () => {
   return (
-    <Dragger {...props} style={{ padding: '48px' }}>
-      <p className='ant-upload-drag-icon'>
-        <Icon type='file-text' theme='twoTone' />
-      </p>
-      <p className='ant-upload-text'>
-        Haga click o arrastre un archivo a ésta área para subirlo
-      </p>
-      <p className='ant-upload-hint'>
-        Sólo se permite subir un solo archivo. No subas ningún archivo que no
-        sea HTML y que contenga los resultados de tu quiz.
-      </p>
-    </Dragger>
+    <TitledWrapper title='Adjuntar archivo'>
+      <Dragger {...props} style={{ padding: '48px' }}>
+        <p className='ant-upload-drag-icon'>
+          <Icon type='file-text' theme='twoTone' />
+        </p>
+        <p className='ant-upload-text'>
+          Haga click o arrastre un archivo a ésta área para subirlo
+        </p>
+        <p className='ant-upload-hint'>
+          Sólo se permite subir un solo archivo. No subas ningún archivo que no
+          sea HTML y que contenga los resultados de tu quiz.
+        </p>
+      </Dragger>
+    </TitledWrapper>
   );
 };
 

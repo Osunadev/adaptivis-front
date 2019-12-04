@@ -4,7 +4,7 @@ import { Typography } from 'antd';
 
 const { Title } = Typography;
 
-const TitleWrapper = ({ title, children }) => {
+const TitledWrapper = ({ title, children }) => {
   return (
     <div style={{ marginBottom: '1rem' }}>
       <Title level={3} style={{ fontWeight: 'normal' }}>
@@ -15,4 +15,4 @@ const TitleWrapper = ({ title, children }) => {
   );
 };
 
-export default TitleWrapper;
+export default TitledWrapper;

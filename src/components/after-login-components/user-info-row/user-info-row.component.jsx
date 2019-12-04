@@ -7,7 +7,7 @@ import {
   UserInfoRowContainer
 } from './user-info-row.styles';
 
-const UserInfoRow = ({ nickname, userName, userId, imgSrc }) => (
+const UserInfoRow = ({ userName, userId, imgSrc }) => (
   <UserInfoRowContainer>
     {imgSrc ? (
       <Avatar size={100} src={imgSrc} />
@@ -15,7 +15,6 @@ const UserInfoRow = ({ nickname, userName, userId, imgSrc }) => (
       <Avatar size={100} icon='user' />
     )}
     <UserInfoContainer>
-      <span>{nickname}</span>
       <span>{userName}</span>
       <span>{userId}</span>
     </UserInfoContainer>

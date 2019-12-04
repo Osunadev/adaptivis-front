@@ -1,4 +1,7 @@
 import React from 'react';
+
+import TitledWrapper from 'components/after-login-components/titled-wrapper/titled-wrapper.component';
+
 import { Cascader } from 'antd';
 
 const options = [
@@ -51,12 +54,14 @@ function onChange(value) {
 
 const QuizTypeSelector = () => {
   return (
-    <Cascader
-      options={options}
-      onChange={onChange}
-      placeholder={`Selecciona el tipo de encuesta a entregar`}
-      style={{ width: '50%' }}
-    />
+    <TitledWrapper title='Encuestas disponibles'>
+      <Cascader
+        options={options}
+        onChange={onChange}
+        placeholder={`Selecciona el tipo de encuesta a entregar`}
+        style={{ width: '50%' }}
+      />
+    </TitledWrapper>
   );
 };
 

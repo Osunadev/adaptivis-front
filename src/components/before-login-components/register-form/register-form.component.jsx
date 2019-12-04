@@ -42,9 +42,8 @@ class NormalRegisterForm extends Component {
     // The 'values' object contains all the values of the validated fields in our form
     validateFields((err, values) => {
       if (!err) {
-        // If every field passes the validtions
+        // If every field passes the validations
         const {
-          userName,
           firstName,
           secondName,
           middleName,
@@ -57,13 +56,12 @@ class NormalRegisterForm extends Component {
         if (isTeacher) {
           const urlTeacherEndpoint =
             'http://localhost:5000/api/v1/register/teacher';
-          const { employeeId, birthDay } = values;
+          const { employeeId } = values;
 
           fetch(urlTeacherEndpoint, {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              userName,
               firstName,
               secondName,
               middleName,
@@ -71,8 +69,7 @@ class NormalRegisterForm extends Component {
               gender,
               email,
               password,
-              employeeId,
-              birthDay
+              employeeId
             })
           })
             .then(response => response.json())
@@ -83,7 +80,7 @@ class NormalRegisterForm extends Component {
             .catch(error => console.log(error));
         } else {
           // If isStudent
-          const { studentId } = values;
+          const { studentId, birthDay } = values;
           const urlStudentEndpoint =
             'http://localhost:5000/api/v1/register/student';
 
@@ -91,11 +88,11 @@ class NormalRegisterForm extends Component {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              userName,
               firstName,
               secondName,
               middleName,
               lastName,
+              birthDay,
               gender,
               email,
               password,
@@ -139,19 +136,6 @@ class NormalRegisterForm extends Component {
           layout='horizontal'
         >
           <Form.Item>
-            {getFieldDecorator('userName', {
-              rules: basicRules('nombre de usuario')
-            })(
-              <Input
-                prefix={
-                  <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                placeholder='Nombre de usuario'
-                size='large'
-              />
-            )}
-          </Form.Item>
-          <Form.Item>
             {getFieldDecorator('firstName', {
               rules: basicRules('nombre')
             })(
@@ -165,9 +149,7 @@ class NormalRegisterForm extends Component {
             )}
           </Form.Item>
           <Form.Item>
-            {getFieldDecorator('secondName', {
-              rules: basicRules('nombre')
-            })(
+            {getFieldDecorator('secondName')(
               <Input
                 prefix={
                   <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
