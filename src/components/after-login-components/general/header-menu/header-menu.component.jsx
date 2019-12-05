@@ -82,7 +82,7 @@ const HeaderMenu = ({ children, history, match }) => {
         </Sider>
         <Layout style={{ marginLeft: 235, marginTop: 64 }}>
           <Content style={{ overflow: 'initial' }}>
-            <div style={{ padding: '2rem' }}>{children}</div>
+            <div style={{ padding: '1rem 2rem' }}>{children}</div>
           </Content>
         </Layout>
       </Layout>

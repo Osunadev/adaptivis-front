@@ -149,7 +149,14 @@ class NormalRegisterForm extends Component {
             )}
           </Form.Item>
           <Form.Item>
-            {getFieldDecorator('secondName')(
+            {getFieldDecorator('secondName', {
+              rules: [
+                {
+                  whitespace: true,
+                  message: 'Campo vacío, no introduzca espacios en blanco.'
+                }
+              ]
+            })(
               <Input
                 prefix={
                   <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
