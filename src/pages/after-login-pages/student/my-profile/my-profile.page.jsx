@@ -1,10 +1,10 @@
 import React from 'react';
 
-import UserInfoRow from 'components/after-login-components/user-info-row/user-info-row.component';
-import UserInfoTable from 'components/after-login-components/user-info-table/user-info-table.component';
+import UserInfoRow from 'components/after-login-components/my-profile/user-info-row/user-info-row.component';
+import UserInfoTable from 'components/after-login-components/my-profile/user-info-table/user-info-table.component';
 
 import { Typography } from 'antd';
-import { USER_DATA } from 'components/after-login-components/user-info-table/user-info-table.data';
+import { USER_DATA } from 'components/after-login-components/my-profile/user-info-table/user-info-table.data';
 
 import { UserInfoTableHeader, TableHeaderText } from './my-profile.styles';
 

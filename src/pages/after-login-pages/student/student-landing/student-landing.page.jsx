@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import BodyAttributes from 'components/before-login-components/body-attributes/body-attributes.component';
 
-import HeaderMenuPage from 'components/after-login-components/header-menu/header-menu.component';
+import HeaderMenuPage from 'components/after-login-components/general/header-menu/header-menu.component';
 import MySubjectsPage from 'pages/after-login-pages/student/my-subjects/my-subjects.page';
 import MyProfileLandingPage from 'pages/after-login-pages/student/my-profile/my-profile-landing.page';
 import MyResultsPage from 'pages/after-login-pages/student/my-results/my-results.page';

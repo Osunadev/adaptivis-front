@@ -4,7 +4,7 @@ export const FormTitle = styled.h1`
   text-align: center;
   color: white;
   font-size: 38px;
-  margin-top: 50px;
+  padding-top: 50px;
 `;
 
 export const Container = styled.div`

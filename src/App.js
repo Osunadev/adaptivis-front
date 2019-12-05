@@ -11,10 +11,9 @@ import NotFoundPage from 'pages/before-login-pages/not-found/not-found.page';
 import LandingMenu from 'components/before-login-components/landing-menu/landing-menu.component';
 
 import StudentLanding from 'pages/after-login-pages/student/student-landing/student-landing.page';
-import LandingAdmin from 'pages/after-login-pages/landing-admin/landing-admin.page';
 
 import BodyAttributes from 'components/before-login-components/body-attributes/body-attributes.component';
-import DemographicPreLandingPage from 'pages/after-login-pages/demographic-pre-landing/demographic-pre-landing.page';
+import DemographicPreLandingPage from 'pages/after-login-pages/student/demographic-pre-landing/demographic-pre-landing.page';
 
 class App extends React.Component {
   constructor() {
@@ -40,8 +39,6 @@ class App extends React.Component {
 
           <Route path='/alumno' component={StudentLanding} />
           <Route path='/demo' component={DemographicPreLandingPage} />
-
-          <Route path='/loggedinAdm' component={LandingAdmin} />
 
           <Route
             path='*'
