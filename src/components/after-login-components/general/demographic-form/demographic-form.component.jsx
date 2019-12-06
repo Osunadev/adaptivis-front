@@ -147,7 +147,7 @@ class DemographicQuestionsForm extends Component {
                       'Por favor seleccione la unversidad y campus al que pertenece.'
                   }
                 ]
-              })(<Cascader options={universities} />)}
+              })(<Cascader options={universities} size='large' />)}
             </Form.Item>
 
             <Form.Item
@@ -172,7 +172,7 @@ class DemographicQuestionsForm extends Component {
                       'Por favor seleccione la carrera que esté estudiando.'
                   }
                 ]
-              })(<Cascader options={studies} />)}
+              })(<Cascader options={studies} size='large' />)}
             </Form.Item>
 
             <div

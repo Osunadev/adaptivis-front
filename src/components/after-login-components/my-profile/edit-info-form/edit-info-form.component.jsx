@@ -50,13 +50,27 @@ const spaceRules = [
   }
 ];
 
+const mapTypeUser = user => {
+  switch (user) {
+    case 'alumno':
+    case 'profesor':
+    case 'administrador':
+      return user;
+    default:
+      return 'alumno';
+  }
+};
+
 class EditInfoForm extends Component {
   constructor(props) {
     super(props);
 
-    const typeUser = (this.state = {
-      isFetching: false
-    });
+    const { user } = props;
+
+    this.state = {
+      isFetching: false,
+      typeUser: mapTypeUser(user)
+    };
   }
 
   handleSubmit = e => {
@@ -64,12 +78,17 @@ class EditInfoForm extends Component {
   };
 
   render() {
+    const { isFetching, typeUser } = this.state;
     const { getFieldDecorator } = this.props.form;
 
     return (
-      <TitledWrapper title='Editar mi Información' big>
-        <FormContainer>
-          <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+      <FormContainer>
+        <TitledWrapper title='Editar mi Información' big>
+          <Form
+            {...formItemLayout}
+            style={{ marginTop: '32px' }}
+            onSubmit={this.handleSubmit}
+          >
             {/* Personal Information Form Items */}
             <DisplayInOneRow>
               <Form.Item label='Primer Nombre' {...customItemLayout(9, 13)}>
@@ -128,133 +147,152 @@ class EditInfoForm extends Component {
               })(<Input size='large' />)}
             </Form.Item>
 
-            <p
-              style={{
-                fontSize: '16px',
-                textDecoration: 'underline',
-                marginBottom: '32px'
-              }}
-            >
-              Información adicional para contestar cuestionarios
-            </p>
-
-            {/* Demographic Information Form Items */}
-            <Form.Item label='Nivel de inglés' labelAlign='left'>
-              {getFieldDecorator('englishLevel', {
-                rules: basicRules('nivel de ingles')
-              })(
-                <Select
-                  placeholder='Selecciona tu nivel de inglés'
-                  size='large'
+            {typeUser === 'alumno' && (
+              <>
+                <p
+                  style={{
+                    fontSize: '16px',
+                    textDecoration: 'underline',
+                    marginBottom: '32px'
+                  }}
                 >
-                  <Option value='C2'>Muy Competente (C2)</Option>
-                  <Option value='C1'>Avanzado (C1)</Option>
-                  <Option value='B2'>Intermedio Superior (B2)</Option>
-                  <Option value='B1'>Intermedio (B1)</Option>
-                  <Option value='A2'>Elemental (A2)</Option>
-                  <Option value='A1'>Principiante (A1)</Option>
-                  <Option value='N/A'>Nada</Option>
-                </Select>
-              )}
-            </Form.Item>
+                  Información adicional para contestar cuestionarios
+                </p>
 
-            <Form.Item label='Background étnico' labelAlign='left'>
-              {getFieldDecorator('ethnicGroup', {
-                rules: basicRules('origen étnico')
-              })(
-                <Select
-                  placeholder='Selecciona al grupo étnico al que perteneces'
-                  size='large'
+                {/* Demographic Information Form Items */}
+                <Form.Item label='Nivel de inglés' labelAlign='left'>
+                  {getFieldDecorator('englishLevel', {
+                    rules: basicRules('nivel de ingles')
+                  })(
+                    <Select
+                      placeholder='Selecciona tu nivel de inglés'
+                      size='large'
+                    >
+                      <Option value='C2'>Muy Competente (C2)</Option>
+                      <Option value='C1'>Avanzado (C1)</Option>
+                      <Option value='B2'>Intermedio Superior (B2)</Option>
+                      <Option value='B1'>Intermedio (B1)</Option>
+                      <Option value='A2'>Elemental (A2)</Option>
+                      <Option value='A1'>Principiante (A1)</Option>
+                      <Option value='N/A'>Nada</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+
+                <Form.Item label='Background étnico' labelAlign='left'>
+                  {getFieldDecorator('ethnicGroup', {
+                    rules: basicRules('origen étnico')
+                  })(
+                    <Select
+                      placeholder='Selecciona al grupo étnico al que perteneces'
+                      size='large'
+                    >
+                      <Option value='E.U.A.'>E.U.A.</Option>
+                      <Option value='Hispano'>Hispano</Option>
+                      <Option value='Afroamericano'>Afroamericano</Option>
+                      <Option value='Otro'>Otro</Option>
+                    </Select>
+                  )}
+                </Form.Item>
+
+                <Form.Item
+                  label='Graducación de preparatoria'
+                  labelAlign='left'
                 >
-                  <Option value='E.U.A.'>E.U.A.</Option>
-                  <Option value='Hispano'>Hispano</Option>
-                  <Option value='Afroamericano'>Afroamericano</Option>
-                  <Option value='Otro'>Otro</Option>
-                </Select>
-              )}
-            </Form.Item>
+                  {getFieldDecorator('highSchoolGradYear', {
+                    rules: [
+                      {
+                        required: true,
+                        message:
+                          'Por favor introduzca su año de graduación de la preparatoria.'
+                      }
+                    ]
+                  })(<InputNumber min={2000} max={2025} size='large' />)}
+                </Form.Item>
 
-            <Form.Item label='Graducación de preparatoria' labelAlign='left'>
-              {getFieldDecorator('highSchoolGradYear', {
-                rules: [
-                  {
-                    required: true,
-                    message:
-                      'Por favor introduzca su año de graduación de la preparatoria.'
-                  }
-                ]
-              })(<InputNumber min={2000} max={2025} size='large' />)}
-            </Form.Item>
+                <Form.Item label='Universidad/Campus' labelAlign='left'>
+                  {getFieldDecorator('univCampus', {
+                    // initialValue: ['UABC', 'OTAY'],
+                    rules: [
+                      {
+                        type: 'array',
+                        required: true,
+                        message: 'Please select your habitual residence!'
+                      },
+                      {
+                        required: true,
+                        message:
+                          'Por favor seleccione la unversidad y campus al que pertenece.'
+                      }
+                    ]
+                  })(
+                    <Cascader
+                      options={universities}
+                      placeholder='Selecciona tu Universidad y Campus'
+                      size='large'
+                    />
+                  )}
+                </Form.Item>
 
-            <Form.Item label='Universidad/Campus' labelAlign='left'>
-              {getFieldDecorator('univCampus', {
-                // initialValue: ['UABC', 'OTAY'],
-                rules: [
-                  {
-                    type: 'array',
-                    required: true,
-                    message: 'Please select your habitual residence!'
-                  },
-                  {
-                    required: true,
-                    message:
-                      'Por favor seleccione la unversidad y campus al que pertenece.'
-                  }
-                ]
-              })(<Cascader options={universities} />)}
-            </Form.Item>
+                <Form.Item label='Carrera actual' labelAlign='left'>
+                  {getFieldDecorator('univStudies', {
+                    // initialValue: ['INGENIERÍA', 'COMPUTACIÓN'],
+                    rules: [
+                      {
+                        type: 'array',
+                        required: true,
+                        message: 'Please select your habitual residence!'
+                      },
+                      {
+                        required: true,
+                        message:
+                          'Por favor seleccione la carrera que esté estudiando.'
+                      }
+                    ]
+                  })(
+                    <Cascader
+                      placeholder='Selecciona tu carrera actual'
+                      options={studies}
+                      size='large'
+                    />
+                  )}
+                </Form.Item>
 
-            <Form.Item label='Carrera actual' labelAlign='left'>
-              {getFieldDecorator('univStudies', {
-                // initialValue: ['INGENIERÍA', 'COMPUTACIÓN'],
-                rules: [
-                  {
-                    type: 'array',
-                    required: true,
-                    message: 'Please select your habitual residence!'
-                  },
-                  {
-                    required: true,
-                    message:
-                      'Por favor seleccione la carrera que esté estudiando.'
-                  }
-                ]
-              })(<Cascader options={studies} />)}
-            </Form.Item>
+                <DisplayInOneRow>
+                  <Form.Item
+                    label='Año de ingreso universidad'
+                    {...customItemLayout(16, 8)}
+                  >
+                    {getFieldDecorator('univJoinYear', {
+                      rules: [
+                        {
+                          required: true,
+                          message:
+                            'Por favor introduzca su año ingreso a la universidad.'
+                        }
+                      ]
+                    })(<InputNumber min={2000} max={2025} size='large' />)}
+                  </Form.Item>
 
-            <DisplayInOneRow>
-              <Form.Item
-                label='Año de ingreso universidad'
-                {...customItemLayout(16, 8)}
-              >
-                {getFieldDecorator('univJoinYear', {
-                  rules: [
-                    {
-                      required: true,
-                      message:
-                        'Por favor introduzca su año ingreso a la universidad.'
-                    }
-                  ]
-                })(<InputNumber min={2000} max={2025} size='large' />)}
-              </Form.Item>
-
-              <Form.Item label='Periodo' {...customItemLayout(12, 12)}>
-                {getFieldDecorator('univJoinPeriod', {
-                  rules: [
-                    {
-                      required: true,
-                      message:
-                        'Por favor seleccione el periodo en el que entró a la universidad.'
-                    }
-                  ]
-                })(
-                  <Radio.Group>
-                    <Radio value='1'>1</Radio>
-                    <Radio value='2'>2</Radio>
-                  </Radio.Group>
-                )}
-              </Form.Item>
-            </DisplayInOneRow>
+                  <Form.Item label='Periodo' {...customItemLayout(12, 12)}>
+                    {getFieldDecorator('univJoinPeriod', {
+                      rules: [
+                        {
+                          required: true,
+                          message:
+                            'Por favor seleccione el periodo en el que entró a la universidad.'
+                        }
+                      ]
+                    })(
+                      <Radio.Group>
+                        <Radio value='1'>1</Radio>
+                        <Radio value='2'>2</Radio>
+                      </Radio.Group>
+                    )}
+                  </Form.Item>
+                </DisplayInOneRow>
+              </>
+            )}
 
             <DisplayInOneRow style={{ justifyContent: 'flex-end' }}>
               <Link to='/alumno/perfil'>
@@ -274,8 +312,8 @@ class EditInfoForm extends Component {
               </Button>
             </DisplayInOneRow>
           </Form>
-        </FormContainer>
-      </TitledWrapper>
+        </TitledWrapper>
+      </FormContainer>
     );
   }
 }

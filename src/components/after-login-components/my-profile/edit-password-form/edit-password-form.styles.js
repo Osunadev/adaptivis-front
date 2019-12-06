@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 export const FormContainer = styled.div`
-  width: 800px;
+  width: 400px;
 `;
 
-export const DisplayInOneRow = styled.div`
+export const DisplayRightContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  justify-content: flex-end;
 `;
