@@ -1,6 +1,9 @@
 import React from 'react';
 
 import TitledWrapper from 'components/after-login-components/general/titled-wrapper/titled-wrapper.component';
+import CurrentQuizResultsTable from 'components/after-login-components/my-results/current-quiz-results-table/current-quiz-results-table.component';
+
+import { SUBJECTS_DATA } from 'components/after-login-components/my-results/current-quiz-results-table/current-quiz-results-table.data';
 
 import { Collapse, List } from 'antd';
 
@@ -28,6 +31,9 @@ const HistoryQuizResultsTable = ({ subjectsHistory }) => {
             />
           </Panel>
         ))}
+        <Panel header='Resultados 2017-2'>
+          <CurrentQuizResultsTable subjectsData={SUBJECTS_DATA} />
+        </Panel>
       </Collapse>
     </TitledWrapper>
   );

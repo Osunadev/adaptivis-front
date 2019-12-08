@@ -15,6 +15,9 @@ import StudentLanding from 'pages/after-login-pages/student/student-landing/stud
 import BodyAttributes from 'components/before-login-components/body-attributes/body-attributes.component';
 import DemographicPreLandingPage from 'pages/after-login-pages/student/demographic-pre-landing/demographic-pre-landing.page';
 
+// Testing this component
+import QuizSectionMaker from 'components/after-login-components/quiz-maker/quiz-section-maker/quiz-section-maker.component';
+
 class App extends React.Component {
   constructor() {
     super();
@@ -38,7 +41,9 @@ class App extends React.Component {
           <Route path='/restablecer' component={ChangePasswordPage} />
 
           <Route path='/alumno' component={StudentLanding} />
+          {/* Testing these components */}
           <Route path='/demo' component={DemographicPreLandingPage} />
+          <Route path='/quiz' component={QuizSectionMaker} />
 
           <Route
             path='*'
