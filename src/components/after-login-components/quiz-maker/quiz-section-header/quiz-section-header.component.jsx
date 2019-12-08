@@ -1,16 +1,32 @@
 import React from 'react';
 
+import { Icon } from 'antd';
+
 import {
   ContainerSectionHeader,
   DescriptionTextInput,
   TitleTextInput,
-  SectionTitle
+  SectionTitle,
+  SectionTitleContainer
 } from './quiz-section-header.styles';
 
-const QuizSectionHeader = ({ titleValue, descrValue, handleChange }) => {
+const QuizSectionHeader = ({
+  previewTitle,
+  titleValue,
+  descrValue,
+  handleChange,
+  deleteSection
+}) => {
   return (
     <div>
-      <SectionTitle>Sección</SectionTitle>
+      <SectionTitleContainer>
+        <SectionTitle>{previewTitle}</SectionTitle>
+        <Icon
+          onClick={deleteSection}
+          type='close-circle'
+          style={{ color: 'white', fontSize: '36px' }}
+        />
+      </SectionTitleContainer>
       <ContainerSectionHeader>
         <TitleTextInput
           type='text'

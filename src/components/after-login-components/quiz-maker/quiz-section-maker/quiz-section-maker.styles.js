@@ -4,7 +4,7 @@ export const SectionContainer = styled.div`
   width: 1100px;
   background: #4baf8b;
   margin: 32px auto;
-  padding: 32px;
+  padding: 16px 32px 32px;
   border: 2px solid white;
 `;
 

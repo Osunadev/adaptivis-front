@@ -35,8 +35,15 @@ export const DescriptionTextInput = styled.input`
 `;
 
 export const SectionTitle = styled.h1`
-  width: 1000px;
   color: white;
   font-size: 48px;
+  margin: 0;
+`;
+
+export const SectionTitleContainer = styled.div`
+  width: 1000px;
   margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;

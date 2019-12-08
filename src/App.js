@@ -16,7 +16,7 @@ import BodyAttributes from 'components/before-login-components/body-attributes/b
 import DemographicPreLandingPage from 'pages/after-login-pages/student/demographic-pre-landing/demographic-pre-landing.page';
 
 // Testing this component
-import QuizSectionMaker from 'components/after-login-components/quiz-maker/quiz-section-maker/quiz-section-maker.component';
+import CompleteQuizMaker from 'components/after-login-components/quiz-maker/complete-quiz-maker/complete-quiz-maker.component';
 
 class App extends React.Component {
   constructor() {
@@ -43,7 +43,7 @@ class App extends React.Component {
           <Route path='/alumno' component={StudentLanding} />
           {/* Testing these components */}
           <Route path='/demo' component={DemographicPreLandingPage} />
-          <Route path='/quiz' component={QuizSectionMaker} />
+          <Route path='/quiz' component={CompleteQuizMaker} />
 
           <Route
             path='*'

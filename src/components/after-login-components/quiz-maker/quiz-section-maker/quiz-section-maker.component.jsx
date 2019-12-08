@@ -4,259 +4,168 @@ import QuizSectionHeader from 'components/after-login-components/quiz-maker/quiz
 import QuizSectionDescription from 'components/after-login-components/quiz-maker/quiz-section-description/quiz-section-description.component';
 import QuizSectionQuestion from 'components/after-login-components/quiz-maker/quiz-section-question/quiz-section-question.component';
 
-// These are just Object Templates that serve as a boilerplate
-import {
-  Description,
-  LikertQuestion,
-  MultipleQuestion
-} from './quiz-section-maker.data';
-
 import {
   SectionContainer,
   AddButtonsContainer,
   AddButton
 } from './quiz-section-maker.styles';
 
-class QuizSectionMaker extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      sectionTitle: '',
-      sectionDescription: '',
-      items: []
-    };
-  }
-
-  handleAddItem = itemType => {
-    let item;
-
-    // By default we create a Linker Type Question
-    if (itemType === 'question') item = { ...LikertQuestion };
-    else if (itemType === 'description') item = { ...Description };
-
-    this.setState(prevState => {
-      const newItems = [...prevState.items];
-      newItems.push(item);
-
-      return {
-        items: newItems
-      };
-    });
-  };
-
-  handleOnChange = e => {
+const QuizSectionMaker = ({ section, sectionId, ...sectionHandlers }) => {
+  const handleOnChange = e => {
     const key = e.target.name;
+    const { value } = e.target;
 
-    this.setState({ [key]: e.target.value });
+    const { changeSectionField } = sectionHandlers;
+
+    changeSectionField(key, value, sectionId);
   };
 
-  handleOnChangeItem = e => {
+  const handleOnChangeItem = e => {
     const itemKey = e.target.name;
     const itemValue = e.target.value;
     const itemId = e.target.id;
 
-    this.setState(prevState => {
-      const itemsCopy = [...prevState.items];
-      itemsCopy[itemId][itemKey] = itemValue;
-
-      return {
-        items: itemsCopy
-      };
-    });
+    const { changeSectionItemValue } = sectionHandlers;
+    changeSectionItemValue(itemKey, itemValue, itemId, sectionId);
   };
 
-  handleOnDeleteItem = e => {
+  const handleOnDeleteItem = e => {
     const itemId = e.target.id;
 
-    this.setState(prevState => {
-      const itemsCopy = [...prevState.items];
+    const { deleteSectionItem } = sectionHandlers;
 
-      // Deleting that item from the items array;
-      itemsCopy.splice(itemId, 1);
-
-      return {
-        items: itemsCopy
-      };
-    });
+    deleteSectionItem(itemId, sectionId);
   };
 
-  changeQuestionType = (questionType, questionId) => {
-    this.setState(prevState => {
-      const itemsCopy = [...prevState.items];
-      let newQuestionType;
+  const changeQuestionType = (questionType, questionId) => {
+    const { changeSectionQuestionType } = sectionHandlers;
 
-      // We're keeping the same question title because both types of questions have a title
-      if (questionType === 'likert') {
-        newQuestionType = { ...LikertQuestion };
-      } else if (questionType === 'multiple') {
-        // We neeed to make a deep copy because of our answers array
-        newQuestionType = JSON.parse(JSON.stringify(MultipleQuestion));
-      }
-
-      itemsCopy[questionId] = {
-        ...newQuestionType,
-        title: itemsCopy[questionId].title
-      };
-
-      return { items: itemsCopy };
-    });
+    changeSectionQuestionType(questionType, questionId, sectionId);
   };
 
-  // Handlers for the Likert Scale Questions
-  changeLikertTopScale = (questionId, value) => {
-    this.setState(prevState => {
-      const itemsCopy = [...prevState.items];
+  const changeLikertTopScale = (questionId, value) => {
+    const { changeSectionLikertScale } = sectionHandlers;
 
-      itemsCopy[questionId].topScale = value;
-
-      return {
-        items: itemsCopy
-      };
-    });
+    changeSectionLikertScale(questionId, value, sectionId);
   };
 
-  // Handlers for the Multiple Answer Questions
-  addQuestionAnswer = questionId => {
-    this.setState(prevState => {
-      const itemsCopy = [...prevState.items];
+  const addQuestionAnswer = questionId => {
+    const { addSectionQuestionAnswer } = sectionHandlers;
 
-      itemsCopy[questionId].answers.push('');
-
-      return {
-        items: itemsCopy
-      };
-    });
+    addSectionQuestionAnswer(questionId, sectionId);
   };
 
-  deleteQuestionAnswer = (questionId, answerId) => {
-    this.setState(prevState => {
-      const itemsCopy = [...prevState.items];
-      const answersCopy = [...prevState.items[questionId].answers];
+  const deleteQuestionAnswer = (questionId, answerId) => {
+    const { deleteSectionQuestionAnswer } = sectionHandlers;
 
-      answersCopy.splice(answerId, 1);
-
-      itemsCopy[questionId].answers = answersCopy;
-
-      return {
-        items: itemsCopy
-      };
-    });
+    deleteSectionQuestionAnswer(questionId, answerId, sectionId);
   };
 
-  handleQuestionAnswerChange = e => {
+  const handleQuestionAnswerChange = e => {
     const questionId = e.target.id;
     const answerId = e.target.name;
     const answerValue = e.target.value;
 
-    console.log(questionId, answerId, answerValue);
+    const { changeQuestionAnswerValue } = sectionHandlers;
 
-    this.setState(prevState => {
-      const itemsCopy = [...prevState.items];
-
-      itemsCopy[questionId].answers[answerId] = answerValue;
-
-      return {
-        items: itemsCopy
-      };
-    });
+    changeQuestionAnswerValue(questionId, answerId, answerValue, sectionId);
   };
 
-  render() {
-    const { sectionTitle, sectionDescription, items } = this.state;
-    return (
-      <SectionContainer>
-        <QuizSectionHeader
-          titleValue={sectionTitle}
-          descrValue={sectionDescription}
-          handleChange={this.handleOnChange}
-        />
+  const { sectionTitle, sectionDescription, items } = section;
+  const { addSectionItem, handleDeleteSection } = sectionHandlers;
 
-        {items.map((item, itemIdx) => {
-          const { itemType, title } = item;
+  return (
+    <SectionContainer>
+      <QuizSectionHeader
+        previewTitle={`Sección #${sectionId + 1}`}
+        titleValue={sectionTitle}
+        descrValue={sectionDescription}
+        handleChange={handleOnChange}
+        deleteSection={() => handleDeleteSection(sectionId)}
+      />
 
-          if (itemType === 'description') {
-            const { text } = item;
+      {items.map((item, itemIdx) => {
+        const { itemType, title } = item;
 
-            return (
-              <QuizSectionDescription
-                key={itemIdx}
-                title={title}
-                text={text}
-                itemId={itemIdx}
-                handleChange={this.handleOnChangeItem}
-                handleDelete={this.handleOnDeleteItem}
-              />
-            );
-          }
+        if (itemType === 'description') {
+          const { text } = item;
 
-          if (itemType === 'question') {
-            const { questionType } = item;
+          return (
+            <QuizSectionDescription
+              key={itemIdx}
+              title={title}
+              text={text}
+              itemId={itemIdx}
+              handleChange={handleOnChangeItem}
+              handleDelete={handleOnDeleteItem}
+            />
+          );
+        }
 
-            // General props for our question component
-            const questionProps = {
-              key: itemIdx,
-              title: title,
-              questionId: itemIdx,
-              questionType: questionType,
-              handleChange: this.handleOnChangeItem,
-              handleDelete: this.handleOnDeleteItem,
-              changeQuestionType: this.changeQuestionType
+        if (itemType === 'question') {
+          const { questionType } = item;
+
+          // General props for our question component
+          const questionProps = {
+            key: itemIdx,
+            title: title,
+            questionId: itemIdx,
+            questionType: questionType,
+            handleChange: handleOnChangeItem,
+            handleDelete: handleOnDeleteItem,
+            changeQuestionType: changeQuestionType
+          };
+
+          if (questionType === 'likert') {
+            const { topScale, leftText, rightText } = item;
+
+            const likertProps = {
+              changeTopScale: changeLikertTopScale,
+              topScale,
+              leftText,
+              rightText
             };
 
-            if (questionType === 'likert') {
-              const { topScale, leftText, rightText } = item;
-
-              const likertProps = {
-                changeTopScale: this.changeLikertTopScale,
-                topScale,
-                leftText,
-                rightText
-              };
-
-              return (
-                <QuizSectionQuestion {...questionProps} {...likertProps} />
-              );
-            }
-
-            if (questionType === 'multiple') {
-              const { answers } = item;
-
-              const multipleProps = {
-                handleAnswerChange: this.handleQuestionAnswerChange,
-                handleAddAnswer: this.addQuestionAnswer,
-                handleDeleteAnswer: this.deleteQuestionAnswer,
-                answers
-              };
-
-              return (
-                <QuizSectionQuestion {...questionProps} {...multipleProps} />
-              );
-            }
+            return <QuizSectionQuestion {...questionProps} {...likertProps} />;
           }
-        })}
 
-        <AddButtonsContainer>
-          <AddButton
-            type='button'
-            onClick={() => {
-              this.handleAddItem('description');
-            }}
-          >
-            Descripción +
-          </AddButton>
-          <AddButton
-            type='button'
-            onClick={() => {
-              this.handleAddItem('question');
-            }}
-          >
-            Pregunta +
-          </AddButton>
-        </AddButtonsContainer>
-      </SectionContainer>
-    );
-  }
-}
+          if (questionType === 'multiple') {
+            const { answers } = item;
+
+            const multipleProps = {
+              handleAnswerChange: handleQuestionAnswerChange,
+              handleAddAnswer: addQuestionAnswer,
+              handleDeleteAnswer: deleteQuestionAnswer,
+              answers
+            };
+
+            return (
+              <QuizSectionQuestion {...questionProps} {...multipleProps} />
+            );
+          }
+        }
+      })}
+
+      <AddButtonsContainer>
+        <AddButton
+          type='button'
+          onClick={() => {
+            addSectionItem('description', sectionId);
+          }}
+        >
+          Descripción +
+        </AddButton>
+        <AddButton
+          type='button'
+          onClick={() => {
+            addSectionItem('question', sectionId);
+          }}
+        >
+          Pregunta +
+        </AddButton>
+      </AddButtonsContainer>
+    </SectionContainer>
+  );
+};
 
 export default QuizSectionMaker;
