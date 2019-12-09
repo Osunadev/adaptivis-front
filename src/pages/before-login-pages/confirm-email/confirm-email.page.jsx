@@ -13,17 +13,7 @@ const ConfirmEmailPage = ({ match }) => {
       <Switch>
         <Route
           exact
-          path={`${match.path}/profesor/:id`}
-          render={routeProps => (
-            <ChangeConfirmAccount
-              componentType='confirm-account'
-              {...routeProps}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={`${match.path}/alumno/:id`}
+          path={`${match.path}/:id`}
           render={routeProps => (
             <ChangeConfirmAccount
               componentType='confirm-account'

@@ -1,3 +1,5 @@
+// Different types of items
+// itemType could be 'description' or 'question'
 export const Description = {
   itemType: 'description',
   title: '',
@@ -18,10 +20,12 @@ export const MultipleQuestion = {
   itemType: 'question',
   questionType: 'multiple',
   title: '',
+  // answers array is an array of strings
   answers: [],
   selAnwser: -1
 };
 
+// A section could have multiple items, that could be 'description' or 'question'
 export const Section = {
   sectionTitle: '',
   sectionDescription: '',

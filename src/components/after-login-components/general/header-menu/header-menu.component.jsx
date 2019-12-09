@@ -1,21 +1,53 @@
 import React from 'react';
+
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+
 import { withRouter } from 'react-router-dom';
-import { Layout, Menu, Icon } from 'antd';
+
+import {
+  selectCurrentUserImage,
+  selectCurrentUserName,
+  selectCurrentUserType,
+  selectCurrentUserIde
+} from 'redux/user/user.selectors';
+
+import { removeCurrentUser } from 'redux/user/user.actions';
+
+import { createStructuredSelector } from 'reselect';
+
+import { deleteToken } from 'utils/token-helper';
+
+import { Layout } from 'antd';
 
 import UserHeaderInfo from 'components/after-login-components/general/user-header-info/user-header-info.component';
 
+import StudentMenuGroup from './student-menu-group.component';
+import TeacherMenuGroup from './teacher-menu-group.component';
+import AdminMenuGroup from './admin-menu-group.component';
+
 const { Header, Content, Sider } = Layout;
 
-const HeaderMenu = ({ children, history, match }) => {
+const HeaderMenu = ({
+  children,
+  userType,
+  userName,
+  userImgSrc,
+  userIde,
+  removeUser,
+  history
+}) => {
   const handleClick = e => {
     const keyPath = e.key;
 
-    let routeTo;
+    let routeTo = '/';
 
     if (keyPath === 'cerrar-sesion') {
-      routeTo = '/';
+      // Deleting token from Local Storage
+      deleteToken();
+      removeUser();
     } else {
-      routeTo = `${match.path}/${keyPath}`;
+      routeTo = `/${userType}/${keyPath}`;
     }
 
     history.push(routeTo);
@@ -33,7 +65,11 @@ const HeaderMenu = ({ children, history, match }) => {
           background: '#2D2D2D'
         }}
       >
-        <UserHeaderInfo userName='Omar Alonso Osuna Angulo' userId='1246437' />
+        <UserHeaderInfo
+          userName={userName}
+          userId={userIde}
+          imgSrc={userImgSrc}
+        />
       </Header>
       <Layout>
         <Sider
@@ -46,41 +82,20 @@ const HeaderMenu = ({ children, history, match }) => {
             paddingTop: '1rem'
           }}
         >
-          <Menu
-            theme='dark'
-            mode='inline'
-            defaultSelectedKeys={['cursos']}
-            onClick={handleClick}
-          >
-            <Menu.ItemGroup key='incio' title='Inicio'>
-              <Menu.Item key='cursos'>
-                <Icon type='schedule' />
-                <span className='nav-text'>Mis cursos</span>
-              </Menu.Item>
-              <Menu.Item key='perfil'>
-                <Icon type='user' />
-                <span className='nav-text'>Mi perfil</span>
-              </Menu.Item>
-            </Menu.ItemGroup>
-            <Menu.ItemGroup key='encuestas' title='Encuestas'>
-              <Menu.Item key='consultar-resultados'>
-                <Icon type='file-search' />
-                <span className='nav-text'>Consultar resultados</span>
-              </Menu.Item>
-              <Menu.Item key='subir-resultados'>
-                <Icon type='upload' />
-                <span className='nav-text'>Subir resultados</span>
-              </Menu.Item>
-            </Menu.ItemGroup>
-            <Menu.ItemGroup key='mi-sesion' title='Mi sesión'>
-              <Menu.Item key='cerrar-sesion'>
-                <Icon type='poweroff' />
-                <span className='nav-text'>Cerrar sesión</span>
-              </Menu.Item>
-            </Menu.ItemGroup>
-          </Menu>
+          {
+            {
+              alumno: <StudentMenuGroup onMenuItemClick={handleClick} />,
+              profesor: <TeacherMenuGroup onMenuItemClick={handleClick} />,
+              admin: <AdminMenuGroup onMenuItemClick={handleClick} />
+            }[userType]
+          }
         </Sider>
-        <Layout style={{ marginLeft: 235, marginTop: 64 }}>
+        <Layout
+          style={{
+            marginLeft: 235,
+            marginTop: 48
+          }}
+        >
           <Content style={{ overflow: 'initial' }}>
             <div style={{ padding: '1rem 2rem' }}>{children}</div>
           </Content>
@@ -90,4 +105,21 @@ const HeaderMenu = ({ children, history, match }) => {
   );
 };
 
-export default withRouter(HeaderMenu);
+const mapStateToProps = createStructuredSelector({
+  userImgSrc: selectCurrentUserImage,
+  userName: selectCurrentUserName,
+  userType: selectCurrentUserType,
+  userIde: selectCurrentUserIde
+});
+
+const mapDispatchToProps = dispatch => ({
+  removeUser: () => dispatch(removeCurrentUser())
+});
+
+export default compose(
+  withRouter,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(HeaderMenu);

@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { store } from 'redux/store';
+
+import { setToken } from 'utils/token-helper';
 
 import { Form, Icon, Input, Button, Checkbox, Radio } from 'antd';
 import ElementContainer from 'components/before-login-components/element-container/element-container.component';
 import ForgotPassModal from 'components/before-login-components/forgot-pass-modal/forgot-pass-modal.component';
+
+import { setCurrentUserFromToken } from 'redux/user/user.actions';
 
 class NormalLoginForm extends Component {
   static propTypes = {
@@ -15,8 +20,8 @@ class NormalLoginForm extends Component {
     super();
 
     this.state = {
-      isLoading: false,
-      isModalVisible: false
+      isModalVisible: false,
+      isFetching: false
     };
   }
 
@@ -29,42 +34,47 @@ class NormalLoginForm extends Component {
     // The 'values' object contains all the values of the validated fields in our form
     validateFields((err, values) => {
       if (!err) {
-        const { email, password, rememberEmail, userOption } = values;
+        const { email, password, userOption } = values;
 
+        let logInEndpoint;
         if (userOption === 'alumno') {
-          const urlTeacherEndpoint =
-            'http://localhost:5000/api/v1/login/student';
-
-          fetch(urlTeacherEndpoint, {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email,
-              password,
-              rememberEmail
-            })
-          })
-            .then(response => console.log(response.headers))
-            .catch(error => console.log(error));
-          //  studentMsgs.success();
-        } else {
-          // then user.Option === 'profesor'
-          const urlTeacherEndpoint =
-            'http://localhost:5000/api/v1/login/teacher';
-
-          fetch(urlTeacherEndpoint, {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email,
-              password,
-              rememberEmail
-            })
-          })
-            .then(response => console.log(response.headers))
-            .catch(error => console.log(error));
-          // teacherMsgs.approvalPending();
+          logInEndpoint =
+            'http://ec2-18-234-39-40.compute-1.amazonaws.com/api/v1/login/student';
+        } else if (userOption === 'profesor') {
+          logInEndpoint =
+            'http://ec2-18-234-39-40.compute-1.amazonaws.com/api/v1/login/professor';
         }
+
+        this.setState({ isFetching: true });
+
+        fetch(logInEndpoint, {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            password
+          })
+        })
+          .then(res => res.json())
+          .then(({ message, token }) => {
+            // If there's a message about a wrong login
+            resetFields();
+
+            if (message) {
+              this.setState({ isFetching: false });
+              alert(message);
+            } else {
+              // Saving token in Local Storage
+              setToken(token);
+
+              this.setState({ isFetching: false });
+              store.dispatch(setCurrentUserFromToken());
+            }
+          })
+          .catch(error => {
+            this.setState({ isFetching: false });
+            console.log(error);
+          });
       }
     });
   };
@@ -79,7 +89,7 @@ class NormalLoginForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { isLoading, isModalVisible } = this.state;
+    const { isFetching, isModalVisible } = this.state;
 
     return (
       <>
@@ -158,7 +168,7 @@ class NormalLoginForm extends Component {
               <Button
                 type='primary'
                 htmlType='submit'
-                loading={isLoading}
+                loading={isFetching}
                 style={{ width: '100%', height: '34px' }}
               >
                 Ingresar

@@ -32,19 +32,13 @@ class ChangeConfirmAccount extends Component {
       changeRouteBtnTitle: 'Regresar al inicio',
       isLoading: false,
       description: '',
-      hasServerResponded: false,
-      serverGoodResponse: null,
       componentType
     };
   }
 
   handleClickRoute = () => {
     // No importa si es 'change-password' o si es 'confirm-account', siempre llevaran a las mismas rutas
-    const route = this.state.serverGoodResponse
-      ? accountSuccessInfo.btnClickRoute
-      : accountFailureInfo.btnClickRoute;
-
-    this.props.history.push(route);
+    this.props.history.push('/');
   };
 
   handleClickForm = (formEmail, formPassword) => {
@@ -57,7 +51,6 @@ class ChangeConfirmAccount extends Component {
           this.setState({
             isLoading: false,
             hasServerResponded: true,
-            serverGoodResponse: true,
             description: passwordSuccessInfo.description,
             title: passwordSuccessInfo.title,
             changeRouteBtnTitle: passwordSuccessInfo.btnTitle
@@ -65,56 +58,33 @@ class ChangeConfirmAccount extends Component {
         }, 2000);
       });
     } else if (componentType === 'confirm-account') {
-      if (isTeacher) {
-        const confirmTeacherRoute = `http://localhost:5000/api/v1/confirm/teacher/${id}`;
+      // No matter if it's a student or a teacher
 
-        fetch(confirmTeacherRoute, {
-          method: 'post',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: formEmail
-          })
+      const confirmEndpoint = `http://ec2-18-234-39-40.compute-1.amazonaws.com/api/v1/confirm/email/${id}`;
+
+      this.setState({ isLoading: true });
+
+      fetch(confirmEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formEmail
         })
-          .then(resp => resp.json())
-          .then(confirmationMsg => {
-            console.log(confirmationMsg);
-          })
-          .catch(error => console.log(error));
-      } else {
-        const confirmStudentRoute = `http://localhost:5000/api/v1/confirm/student/${id}`;
-
-        fetch(confirmStudentRoute, {
-          method: 'post',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: formEmail
-          })
+      })
+        .then(resp => resp.json())
+        .then(({ message }) => {
+          this.setState({
+            isLoading: false,
+            hasServerResponded: true,
+            description: message
+          });
         })
-          .then(resp => resp.json())
-          .then(confirmationMsg => {
-            console.log(confirmationMsg);
-          })
-          .catch(error => console.log(error));
-      }
-
-      // this.setState({ email: formEmail, isLoading: true }, () => {
-      //   setTimeout(() => {
-      //     this.setState({
-      //       isLoading: false,
-      //       hasServerResponded: true,
-      //       serverGoodResponse: false,
-      //       description: accountFailureInfo.description,
-      //       title: accountFailureInfo.title,
-      //       changeRouteBtnTitle: accountFailureInfo.btnTitle
-      //     });
-      //   }, 2000);
-      // });
+        .catch(error => console.log(error));
     }
   };
 
   render() {
     const {
-      isTeacher,
       title,
       changeRouteBtnTitle,
       isLoading,
@@ -125,7 +95,7 @@ class ChangeConfirmAccount extends Component {
 
     return (
       <>
-        <Title>{`${title} (${isTeacher ? 'Profesor' : 'Alumno'})`}</Title>
+        <Title>{title}</Title>
 
         <SpinnerWrapper
           isLoading={isLoading}

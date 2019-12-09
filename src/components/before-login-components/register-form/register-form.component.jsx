@@ -55,8 +55,10 @@ class NormalRegisterForm extends Component {
 
         if (isTeacher) {
           const urlTeacherEndpoint =
-            'http://localhost:5000/api/v1/register/teacher';
-          const { employeeId } = values;
+            'http://ec2-18-234-39-40.compute-1.amazonaws.com/api/v1/register/professor';
+          const { professorId } = values;
+
+          this.setState({ isLoading: false });
 
           fetch(urlTeacherEndpoint, {
             method: 'post',
@@ -69,20 +71,26 @@ class NormalRegisterForm extends Component {
               gender,
               email,
               password,
-              employeeId
+              professorId
             })
           })
             .then(response => response.json())
             .then(registerMsg => {
               console.log(registerMsg);
+              this.setState({ isLoading: false });
+              alert(registerMsg);
               resetFields();
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+              this.setState({ isLoading: false });
+              console.log(error);
+            });
         } else {
-          // If isStudent
-          const { studentId, birthDay } = values;
+          const { studentId } = values;
+          const birthDay = values.birthDay.format('YYYY-MM-DD');
+
           const urlStudentEndpoint =
-            'http://localhost:5000/api/v1/register/student';
+            'http://ec2-18-234-39-40.compute-1.amazonaws.com/api/v1/register/student';
 
           fetch(urlStudentEndpoint, {
             method: 'post',
@@ -106,7 +114,6 @@ class NormalRegisterForm extends Component {
             })
             .catch(error => console.log(error));
         }
-        // console.log(isTeacher ? 'Profesor' : 'Alumno', values);
       }
     });
   };
@@ -235,7 +242,7 @@ class NormalRegisterForm extends Component {
           )}
 
           <Form.Item>
-            {getFieldDecorator(isTeacher ? 'employeeId' : 'studentId', {
+            {getFieldDecorator(isTeacher ? 'professorId' : 'studentId', {
               rules: [
                 ...basicRules(
                   `${

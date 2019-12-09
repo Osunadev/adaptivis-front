@@ -14,7 +14,7 @@ module.exports = override(
       '@menu-dark-color': 'white',
       '@layout-sider-background': '#2A289A',
       '@layout-header-background': '#2A289A',
-      '@layout-body-background': 'white',
+      '@layout-body-background': 'transparent',
       '@menu-dark-item-active-bg': '#255C99',
       '@layout-header-height': '48px'
     }

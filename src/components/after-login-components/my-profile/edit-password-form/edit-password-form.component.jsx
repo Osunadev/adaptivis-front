@@ -26,7 +26,6 @@ class EditPasswordForm extends Component {
       if (!err) {
         // Here we make our fetch call
         const { password, confirmPassword } = values;
-        console.log(password, confirmPassword);
       }
     });
   };

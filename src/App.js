@@ -1,58 +1,38 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { Component } from 'react';
 
-// All of pages we used before user logs in
-import RegisterPage from 'pages/before-login-pages/register/register.page';
-import LoginPage from 'pages/before-login-pages/login/login.page';
-import ConfirmEmailPage from 'pages/before-login-pages/confirm-email/confirm-email.page';
-import ChangePasswordPage from 'pages/before-login-pages/change-password/change-password.page';
-import LandingHomePage from 'pages/before-login-pages/landing-home/landing-home.page';
-import NotFoundPage from 'pages/before-login-pages/not-found/not-found.page';
-import LandingMenu from 'components/before-login-components/landing-menu/landing-menu.component';
+import { connect } from 'react-redux';
 
-import StudentLanding from 'pages/after-login-pages/student/student-landing/student-landing.page';
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from 'redux/user/user.selectors';
 
-import BodyAttributes from 'components/before-login-components/body-attributes/body-attributes.component';
-import DemographicPreLandingPage from 'pages/after-login-pages/student/demographic-pre-landing/demographic-pre-landing.page';
+import { setCurrentUserFromToken } from 'redux/user/user.actions';
 
-// Testing this component
-import CompleteQuizMaker from 'components/after-login-components/quiz-maker/complete-quiz-maker/complete-quiz-maker.component';
+import AuthenticatedApp from './AuthenticatedApp';
+import UnauthenticatedApp from './UnauthenticatedApp';
 
-class App extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      loggedIn: false
-    };
+class App extends Component {
+  componentDidMount() {
+    // Updating current user from jwt payload
+    const { updateCurrentUser } = this.props;
+    updateCurrentUser();
   }
 
   render() {
-    return (
-      <>
-        <BodyAttributes background='linear-gradient(to right, #0083B0, #00B4DB)' />
-        {/* We use a Route as / for LandingMenu because we want to selectively render our Menu depending on the route we're in */}
-        <Route path='/' component={LandingMenu} />
-        <Switch>
-          <Route exact path='/' component={LandingHomePage} />
-          <Route exact path='/login' component={LoginPage} />
-          <Route path='/registro' component={RegisterPage} />
-          <Route path='/confirmacion' component={ConfirmEmailPage} />
-          <Route path='/restablecer' component={ChangePasswordPage} />
+    const { currentUser } = this.props;
 
-          <Route path='/alumno' component={StudentLanding} />
-          {/* Testing these components */}
-          <Route path='/demo' component={DemographicPreLandingPage} />
-          <Route path='/quiz' component={CompleteQuizMaker} />
-
-          <Route
-            path='*'
-            render={({ history }) => <NotFoundPage history={history} />}
-          />
-        </Switch>
-      </>
-    );
+    return currentUser ? <AuthenticatedApp /> : <UnauthenticatedApp />;
   }
 }
 
-export default App;
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
+});
+
+const mapDispatchToProps = dispatch => ({
+  updateCurrentUser: () => dispatch(setCurrentUserFromToken())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

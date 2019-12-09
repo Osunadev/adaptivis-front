@@ -1,0 +1,6 @@
+const UserActionTypes = {
+  SET_CURRENT_USER_FROM_TOKEN: 'SET_CURRENT_USER_FROM_TOKEN',
+  REMOVE_CURRENT_USER: 'REMOVE_CURRENT_USER'
+};
+
+export default UserActionTypes;

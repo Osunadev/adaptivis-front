@@ -217,7 +217,7 @@ class EditInfoForm extends Component {
                       {
                         type: 'array',
                         required: true,
-                        message: 'Please select your habitual residence!'
+                        message: 'Por favor selecciona una universidad y campus'
                       },
                       {
                         required: true,

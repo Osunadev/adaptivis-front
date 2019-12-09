@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
-import QuizSectionMaker from '../quiz-section-maker/quiz-section-maker.component';
-
 import { Icon } from 'antd';
+
+import BodyAttributes from 'components/before-login-components/body-attributes/body-attributes.component';
+import QuizSectionMaker from '../quiz-section-maker/quiz-section-maker.component';
 
 import {
   AddSectionSpan,
@@ -208,6 +209,8 @@ class CompleteQuizMaker extends Component {
 
     return (
       <div>
+        <BodyAttributes background='lightblue' />
+
         {sections.map((section, id) => {
           return (
             <QuizSectionMaker
@@ -221,14 +224,14 @@ class CompleteQuizMaker extends Component {
         <AddSectionContainer onClick={this.handleAddNewSection}>
           <AddSectionSpan>AÑADIR SECCIÓN</AddSectionSpan>
           <Icon
-            style={{ fontSize: '40px', color: 'white' }}
+            style={{ fontSize: '34px', color: 'black', cursor: 'pointer' }}
             type='plus-circle'
           />
         </AddSectionContainer>
 
         <CreateQuizButtonContainer>
           <CreateQuizButton type='button' onClick={this.handleCreateQuiz}>
-            TERMINAR CUESTIONARIO
+            Terminar Cuestionario
           </CreateQuizButton>
         </CreateQuizButtonContainer>
       </div>

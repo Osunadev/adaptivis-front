@@ -17,7 +17,7 @@ export const AddButtonsContainer = styled.div`
 export const AddButton = styled.button`
   padding: 8px 16px;
   background: white;
-  border: 1.5px solid gray;
+  border: 1.5px solid #a5b9b2;
   font-size: 20px;
   border-radius: 5px;
   font-weight: bold;
