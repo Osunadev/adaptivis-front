@@ -5,15 +5,22 @@ export const getJwt = () => {
 };
 
 export const getUserFromJwt = () => {
-  const jwt = localStorage.getItem('jwt');
+  // const jwt = localStorage.getItem('jwt');
 
-  if (!jwt) return null;
+  // if (!jwt) return null;
 
-  const payload = jwt_decode(jwt);
+  // const payload = jwt_decode(jwt);
 
-  const { user_claims } = payload;
+  // const { user_claims } = payload;
 
-  return user_claims;
+  // return user_claims;
+  return {
+    type: 'admin',
+    name: 'Omar Osuna',
+    imgUrl: '',
+    user_ide: 1246437,
+    isFirstTimeAcces: false
+  };
 };
 
 export const setToken = token => {
