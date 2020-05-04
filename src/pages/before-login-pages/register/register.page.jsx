@@ -4,8 +4,8 @@ import { Route, Switch } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import NotFoundPage from 'pages/before-login-pages/not-found/not-found.page';
-import SelectUser from 'components/before-login-components/select-user/select-user.component';
-import RegisterForm from 'components/before-login-components/register-form/register-form.component';
+import SelectUser from 'components/before-login-components/register/select-user/select-user.component';
+import RegisterForm from 'components/before-login-components/register/register-form/register-form.component';
 
 import USER_DATA from './register.data';
 

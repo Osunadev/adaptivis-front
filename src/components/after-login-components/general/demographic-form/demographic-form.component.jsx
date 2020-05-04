@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Form, Button, Select, InputNumber, Cascader, Radio } from 'antd';
 
-import ElementContainer from 'components/before-login-components/element-container/element-container.component';
+import GeneralContainer from 'components/general-use-components/general-container/general-container.component';
 
 import { basicRules, universities, studies } from './demographic-form.data';
 
@@ -49,7 +49,7 @@ class DemographicQuestionsForm extends Component {
     const { getFieldDecorator } = this.props.form;
 
     return (
-      <ElementContainer
+      <GeneralContainer
         title='Información adicional para los cuestionarios'
         width='800px'
       >
@@ -237,7 +237,7 @@ class DemographicQuestionsForm extends Component {
             </Button>
           </Form>
         </div>
-      </ElementContainer>
+      </GeneralContainer>
     );
   }
 }

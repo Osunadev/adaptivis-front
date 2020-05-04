@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import { getJwt } from 'utils/token-helper';
-
 import TitledWrapper from 'components/after-login-components/general/titled-wrapper/titled-wrapper.component';
 
 import { Table, Button } from 'antd';
@@ -52,28 +50,28 @@ class TeacherRequests extends Component {
     const updateRequestsEndpoint =
       'http://ec2-18-234-39-40.compute-1.amazonaws.com/api/v1/update/request';
 
-    fetch(updateRequestsEndpoint, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getJwt()}`
-      },
-      body: JSON.stringify({ emails: selectedEmailRequests, status })
-    })
-      .then(res => res.json())
-      .then(msg => {
-        console.log(msg);
+    // fetch(updateRequestsEndpoint, {
+    //   method: 'post',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: `Bearer ${getJwt()}`
+    //   },
+    //   body: JSON.stringify({ emails: selectedEmailRequests, status })
+    // })
+    //   .then(res => res.json())
+    //   .then(msg => {
+    //     console.log(msg);
 
-        this.setState({
-          isUpdatingRequests: false,
-          selectedRowKeys: [],
-          teacherRequests: nonSelectedRequests
-        });
-      })
-      .catch(error => {
-        console.log(error.message);
-        this.setState({ isUpdatingRequests: false });
-      });
+    //     this.setState({
+    //       isUpdatingRequests: false,
+    //       selectedRowKeys: [],
+    //       teacherRequests: nonSelectedRequests
+    //     });
+    //   })
+    //   .catch(error => {
+    //     console.log(error.message);
+    //     this.setState({ isUpdatingRequests: false });
+    //   });
   };
 
   onSelectChange = selectedRowKeys => {

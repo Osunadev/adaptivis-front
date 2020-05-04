@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import { Icon } from 'antd';
 
-import BodyAttributes from 'components/before-login-components/body-attributes/body-attributes.component';
 import QuizSectionMaker from '../quiz-section-maker/quiz-section-maker.component';
 
 import {
@@ -209,8 +208,6 @@ class CompleteQuizMaker extends Component {
 
     return (
       <div>
-        <BodyAttributes background='lightblue' />
-
         {sections.map((section, id) => {
           return (
             <QuizSectionMaker

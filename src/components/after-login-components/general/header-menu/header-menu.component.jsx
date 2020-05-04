@@ -1,23 +1,5 @@
 import React from 'react';
 
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-
-import { withRouter } from 'react-router-dom';
-
-import {
-  selectCurrentUserImage,
-  selectCurrentUserName,
-  selectCurrentUserType,
-  selectCurrentUserIde
-} from 'redux/user/user.selectors';
-
-import { removeCurrentUser } from 'redux/user/user.actions';
-
-import { createStructuredSelector } from 'reselect';
-
-import { deleteToken } from 'utils/token-helper';
-
 import { Layout } from 'antd';
 
 import UserHeaderInfo from 'components/after-login-components/general/user-header-info/user-header-info.component';
@@ -34,7 +16,6 @@ const HeaderMenu = ({
   userName,
   userImgSrc,
   userIde,
-  removeUser,
   history
 }) => {
   const handleClick = e => {
@@ -44,8 +25,6 @@ const HeaderMenu = ({
 
     if (keyPath === 'cerrar-sesion') {
       // Deleting token from Local Storage
-      deleteToken();
-      removeUser();
     } else {
       routeTo = `/${userType}/${keyPath}`;
     }
@@ -105,21 +84,4 @@ const HeaderMenu = ({
   );
 };
 
-const mapStateToProps = createStructuredSelector({
-  userImgSrc: selectCurrentUserImage,
-  userName: selectCurrentUserName,
-  userType: selectCurrentUserType,
-  userIde: selectCurrentUserIde
-});
-
-const mapDispatchToProps = dispatch => ({
-  removeUser: () => dispatch(removeCurrentUser())
-});
-
-export default compose(
-  withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(HeaderMenu);
+export default HeaderMenu;

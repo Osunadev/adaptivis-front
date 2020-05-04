@@ -1,4 +1,12 @@
-// Different types of items
+/* DIFFERENT ITEM TYPES DATA STRUCTURES */
+
+// A section could have multiple items, that could be 'description' or 'question'
+export const Section = {
+  sectionTitle: '',
+  sectionDescription: '',
+  items: []
+};
+
 // itemType could be 'description' or 'question'
 export const Description = {
   itemType: 'description',
@@ -13,7 +21,7 @@ export const LikertQuestion = {
   topScale: 7,
   leftText: '',
   rightText: '',
-  selAnwser: -1
+  selAnwser: -1 // Means that there's no selected anwser
 };
 
 export const MultipleQuestion = {
@@ -23,11 +31,4 @@ export const MultipleQuestion = {
   // answers array is an array of strings
   answers: [],
   selAnwser: -1
-};
-
-// A section could have multiple items, that could be 'description' or 'question'
-export const Section = {
-  sectionTitle: '',
-  sectionDescription: '',
-  items: []
 };

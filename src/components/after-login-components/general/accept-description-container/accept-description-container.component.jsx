@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from 'antd';
 
-import ElementContainer from 'components/before-login-components/element-container/element-container.component';
+import GeneralContainer from 'components/general-use-components/general-container/general-container.component';
 
 import {
   DescriptionText,
@@ -16,7 +16,7 @@ const AcceptDescriptionContainer = ({
   width,
   onClickHandler
 }) => (
-  <ElementContainer title={title} width={width}>
+  <GeneralContainer title={title} width={width}>
     <BodyContainer>
       <DescriptionText>{description}</DescriptionText>
       <Button
@@ -28,7 +28,7 @@ const AcceptDescriptionContainer = ({
         {btnTitle}
       </Button>
     </BodyContainer>
-  </ElementContainer>
+  </GeneralContainer>
 );
 
 export default AcceptDescriptionContainer;

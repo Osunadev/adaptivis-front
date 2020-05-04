@@ -4,23 +4,14 @@ import { Route, Switch } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
-import ChangeConfirmAccount from 'components/before-login-components/change-confirm-account/change-confirm-account.component';
+import ConfirmEmail from 'components/before-login-components/confirm-email/confirm-email.component';
 import NotFoundPage from 'pages/before-login-pages/not-found/not-found.page';
 
 const ConfirmEmailPage = ({ match }) => {
   return (
     <>
       <Switch>
-        <Route
-          exact
-          path={`${match.path}/:id`}
-          render={routeProps => (
-            <ChangeConfirmAccount
-              componentType='confirm-account'
-              {...routeProps}
-            />
-          )}
-        />
+        <Route exact path={`${match.path}/:id`} component={ConfirmEmail} />
         <Route
           path='*'
           render={({ history }) => <NotFoundPage history={history} />}

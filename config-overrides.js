@@ -6,6 +6,8 @@ module.exports = override(
     libraryDirectory: 'es',
     style: true
   }),
+  // These are less variables that antd provides to us to modify the
+  // look of the built-in components, so we can customize it to our own needs
   addLessLoader({
     javascriptEnabled: true,
     modifyVars: {

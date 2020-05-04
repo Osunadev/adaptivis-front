@@ -8,14 +8,11 @@ import ConfirmEmailPage from 'pages/before-login-pages/confirm-email/confirm-ema
 import ChangePasswordPage from 'pages/before-login-pages/change-password/change-password.page';
 import LandingHomePage from 'pages/before-login-pages/landing-home/landing-home.page';
 import NotFoundPage from 'pages/before-login-pages/not-found/not-found.page';
-import LandingMenu from 'components/before-login-components/landing-menu/landing-menu.component';
-
-import BodyAttributes from 'components/before-login-components/body-attributes/body-attributes.component';
+import LandingMenu from 'components/before-login-components/landing-menu-bar/landing-menu-bar.component';
 
 const UnauthenticatedApp = () => {
   return (
     <>
-      <BodyAttributes background='linear-gradient(to right, #0083B0, #00B4DB)' />
       {/* We use a Route as / for LandingMenu because we want to selectively render our Menu depending on the route we're in */}
       <Route path='/' component={LandingMenu} />
       <Switch>

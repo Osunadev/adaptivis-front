@@ -14,15 +14,15 @@
     "react/static-property-placement": "off",
     "react/jsx-props-no-spreading": "off",
     "react/destructuring-assignment": "warn",
-    "react/jsx-wrap-multilines": "warn",
+    "react/jsx-wrap-multilines": "off",
     "react/jsx-one-expression-per-line": "off",
     "jsx-a11y/click-events-have-key-events": "warn",
     "jsx-a11y/no-static-element-interactions": "off",
     "object-shorthand": "off",
     "no-useless-escape": "off",
     "class-methods-use-this": "warn",
+    "import/prefer-default-export": "off",
     "import/no-unresolved": "warn",
-    "import/prefer-default-export": "warn",
     "no-plusplus": "off"
   }
 }

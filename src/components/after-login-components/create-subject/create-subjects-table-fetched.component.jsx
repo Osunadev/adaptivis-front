@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import SpinnerHOC from 'components/after-login-components/general/spinner-hoc/spinner-hoc.component';
 import CreateSubjectsTable from './create-subjects-table.component';
 
-import { getJwt } from 'utils/token-helper';
-
 const fakeData = [
   {
     key: '0',

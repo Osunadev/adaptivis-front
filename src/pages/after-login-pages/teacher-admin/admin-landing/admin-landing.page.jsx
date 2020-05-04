@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import BodyAttributes from 'components/before-login-components/body-attributes/body-attributes.component';
 
 import PathNotFound from 'components/after-login-components/general/path-not-found/path-not-found.component';
 
@@ -12,7 +11,6 @@ import SubjectsLandingPage from 'pages/after-login-pages/teacher-admin/subjects/
 const AdminLanding = () => {
   return (
     <div>
-      <BodyAttributes background='white' />
 
       <HeaderMenuPage>
         <Switch>
