@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TitledWrapper from 'components/after-login-components/general/titled-wrapper/titled-wrapper.component';
+import TitledWrapper from 'components/after-login-components/general-purpose/titled-wrapper/titled-wrapper.component';
 import CurrentQuizResultsTable from 'components/after-login-components/my-results/current-quiz-results-table/current-quiz-results-table.component';
 
 import { SUBJECTS_DATA } from 'components/after-login-components/my-results/current-quiz-results-table/current-quiz-results-table.data';

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
 import { emailRegEx, passwordRegEx } from 'utils/account-regex';
-import { VERIFICATION_TYPES } from 'components/general-use-components/withVerification/withVerification.data';
+import { VERIFICATION_TYPES } from 'components/before-login-components/general-purpose/with-verification/with-verification.data';
 
 import { Button, Input, Tooltip, Icon } from 'antd';
-import GeneralContainer from 'components/general-use-components/general-container/general-container.component';
-import withVerification from 'components/general-use-components/withVerification/withVerification.component';
+import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
+import withVerification from 'components/before-login-components/general-purpose/with-verification/with-verification.component';
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class ChangePassword extends Component {
       password: '',
       isValidPassword: false,
       confirmPassword: '',
-      arePasswordsCorrect: false,
+      isValidConfirmPassword: false,
       isBtnEnabled: false,
       formTitle: 'Cambiar Contraseña',
       btnTitle: 'Enviar'
@@ -25,7 +25,14 @@ class ChangePassword extends Component {
   }
 
   shouldBtnBeEnabled = () => {
-    const { isValidEmail, arePasswordsCorrect } = this.state;
+    const {
+      isValidEmail,
+      isValidPassword,
+      password,
+      confirmPassword
+    } = this.state;
+
+    const arePasswordsCorrect = isValidPassword && password === confirmPassword;
 
     const enableBtn = isValidEmail && arePasswordsCorrect;
 
@@ -45,37 +52,23 @@ class ChangePassword extends Component {
     );
   };
 
-  handlePasswordInput = e => {
-    const { confirmPassword } = this.state;
+  handlePassword = e => {
+    const input = e.target.value;
+    const inputName = e.target.name;
 
-    const passwordInput = e.target.value;
-    const validPassword = passwordRegEx.test(passwordInput);
+    const validPassword = passwordRegEx.test(input);
 
-    this.setState(
-      {
-        password: passwordInput,
-        isValidPassword: validPassword,
-        arePasswordsCorrect: validPassword && passwordInput === confirmPassword
-      },
-      () => this.shouldBtnBeEnabled()
-    );
-  };
+    // Making the inputName Capitalized only the first letter, to match the state key name
+    const isValid = `isValid${inputName
+      .charAt(0)
+      .toUpperCase()}${inputName.slice(1)}`;
 
-  handleConfirmPassword = e => {
-    const { isValidPassword, inputPassword } = this.state;
+    const statePortion = {
+      [inputName]: input,
+      [isValid]: validPassword
+    };
 
-    const passwordConfirmInput = e.target.value;
-
-    // If isValidPassword=true we know that if passwordConfirmInput matches this.state.inputPassword
-    // then, passwordConfirmInput follows the validation rule too
-    this.setState(
-      {
-        confirmPassword: passwordConfirmInput,
-        arePasswordsCorrect:
-          isValidPassword && passwordConfirmInput === inputPassword
-      },
-      () => this.shouldBtnBeEnabled()
-    );
+    this.setState(statePortion, () => this.shouldBtnBeEnabled());
   };
 
   render() {
@@ -87,7 +80,7 @@ class ChangePassword extends Component {
       password,
       isValidPassword,
       confirmPassword,
-      arePasswordsCorrect,
+      isValidConfirmPassword,
       isBtnEnabled
     } = this.state;
     const { handleFormSend } = this.props;
@@ -135,8 +128,9 @@ class ChangePassword extends Component {
             </Tooltip>
           }
           size='large'
-          onChange={this.handlePasswordInput}
+          onChange={this.handlePassword}
           value={password}
+          name='password'
           style={{ margin: '8px' }}
         />
         <Input.Password
@@ -150,13 +144,14 @@ class ChangePassword extends Component {
               <Icon
                 type='check-circle'
                 theme='twoTone'
-                twoToneColor={`${arePasswordsCorrect ? '#52c41a' : 'red'}`}
+                twoToneColor={`${isValidConfirmPassword ? '#52c41a' : 'red'}`}
               />
             </Tooltip>
           }
           size='large'
-          onChange={this.handleConfirmPassword}
+          onChange={this.handlePassword}
           value={confirmPassword}
+          name='confirmPassword'
           style={{ margin: '8px' }}
         />
         <Button

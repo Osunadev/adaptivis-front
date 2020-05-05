@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
-import GeneralContainer from 'components/general-use-components/general-container/general-container.component';
+import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
 import { Form, Icon, Input, Button, Radio, DatePicker } from 'antd';
 
 const basicRules = requiredMsg => [

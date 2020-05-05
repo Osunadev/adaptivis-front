@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { Form, Icon, Input, Button, Checkbox, Radio } from 'antd';
-import GeneralContainer from 'components/general-use-components/general-container/general-container.component';
+import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
 import ForgotPassModal from 'components/before-login-components/login/forgot-pass-modal/forgot-pass-modal.component';
 
 class NormalLoginForm extends Component {

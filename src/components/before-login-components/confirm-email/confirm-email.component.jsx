@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
 import { emailRegEx } from 'utils/account-regex';
-import { VERIFICATION_TYPES } from 'components/general-use-components/withVerification/withVerification.data';
+import { VERIFICATION_TYPES } from 'components/before-login-components/general-purpose/with-verification/with-verification.data';
 
 import { Button, Input, Tooltip, Icon } from 'antd';
-import GeneralContainer from 'components/general-use-components/general-container/general-container.component';
-import withVerification from 'components/general-use-components/withVerification/withVerification.component';
+import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
+import withVerification from 'components/before-login-components/general-purpose/with-verification/with-verification.component';
 
 class ConfirmEmail extends Component {
   constructor(props) {

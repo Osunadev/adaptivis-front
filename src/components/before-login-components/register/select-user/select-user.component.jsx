@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { withRouter } from 'react-router-dom';
 
-import GeneralContainer from 'components/general-use-components/general-container/general-container.component';
+import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
 import CardUserLogo from 'components/before-login-components/register/card-user-logo/card-user-logo.component';
 
 const SelectUser = ({ userCardData, history }) => (

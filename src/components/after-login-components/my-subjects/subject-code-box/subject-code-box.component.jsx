@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input, Button } from 'antd';
 
-import TitledWrapper from 'components/after-login-components/general/titled-wrapper/titled-wrapper.component';
+import TitledWrapper from 'components/after-login-components/general-purpose/titled-wrapper/titled-wrapper.component';
 import { BoxContainer, ButtonContainer } from './subject-code-box.styles';
 
 const AccessClassBox = () => {

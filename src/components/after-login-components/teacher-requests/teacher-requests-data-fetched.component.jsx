@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import SpinnerHOC from 'components/after-login-components/general/spinner-hoc/spinner-hoc.component';
+import withSpinner from 'components/general-use-components/with-spinner/with-spinner.component';
 import TeacherRequests from './teacher-requests.component';
 
 import { fakeData } from './teacher-requests.data';
 
-const TeacherRequestsWithSpinner = SpinnerHOC(TeacherRequests);
+const TeacherRequestsWithSpinner = withSpinner(TeacherRequests);
 
 class CompleteTeacherRequests extends Component {
   constructor() {

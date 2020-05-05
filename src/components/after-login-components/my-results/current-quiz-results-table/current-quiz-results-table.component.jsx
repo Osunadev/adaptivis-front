@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
 
-import TitledWrapper from 'components/after-login-components/general/titled-wrapper/titled-wrapper.component';
+import TitledWrapper from 'components/after-login-components/general-purpose/titled-wrapper/titled-wrapper.component';
 import { TextLink } from './current-quiz-results-table.styles';
 
 const columnsTitleFormat = [
