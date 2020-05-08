@@ -49,6 +49,8 @@ class NormalLoginForm extends Component {
           case 'studentfirsttime@uabc.edu.mx':
             user = { ...student, isFirstTimeAccess: true };
             break;
+          default:
+            user = 'null';
         }
 
         this.setState({ isFetching: true });
