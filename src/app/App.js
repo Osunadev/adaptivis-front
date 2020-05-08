@@ -20,13 +20,17 @@ class App extends Component {
     this.setState({ currentUser: user });
   }
 
+  setUser = user => {
+    this.setState({ currentUser: user });
+  };
+
   render() {
     const { currentUser } = this.state;
 
     return currentUser ? (
       <AuthenticatedApp user={currentUser} />
     ) : (
-      <UnauthenticatedApp />
+      <UnauthenticatedApp setUser={this.setUser} />
     );
   }
 }

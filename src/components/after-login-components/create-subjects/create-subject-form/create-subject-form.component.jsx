@@ -69,7 +69,7 @@ class CreateSubjectForm extends Component {
 
     return (
       <FormContainer>
-        <TitledWrapper title='Editar mi Información' big>
+        <TitledWrapper title='Crear Grupo' big>
           <Form
             {...formItemLayout}
             style={{ marginTop: '32px' }}

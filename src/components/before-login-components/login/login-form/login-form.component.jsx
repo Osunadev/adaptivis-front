@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { Form, Icon, Input, Button, Checkbox, Radio } from 'antd';
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
 import ForgotPassModal from 'components/before-login-components/login/forgot-pass-modal/forgot-pass-modal.component';
+
+import { admin, teacher, student } from 'utils/user-examples';
 
 class NormalLoginForm extends Component {
   static propTypes = {
@@ -29,44 +31,33 @@ class NormalLoginForm extends Component {
     // The 'values' object contains all the values of the validated fields in our form
     validateFields((err, values) => {
       if (!err) {
-        const { email, password, userOption } = values;
+        const { email, password } = values;
+        const { setUser } = this.props;
 
-        let logInEndpoint;
-        if (userOption === 'alumno') {
-          logInEndpoint =
-            'http://ec2-18-234-39-40.compute-1.amazonaws.com/api/v1/login/student';
-        } else if (userOption === 'profesor') {
-          logInEndpoint =
-            'http://ec2-18-234-39-40.compute-1.amazonaws.com/api/v1/login/professor';
+        let user = null;
+
+        switch (email) {
+          case 'admin@uabc.edu.mx':
+            user = admin;
+            break;
+          case 'student@uabc.edu.mx':
+            user = student;
+            break;
+          case 'teacher@uabc.edu.mx':
+            user = teacher;
+            break;
+          case 'studentfirsttime@uabc.edu.mx':
+            user = { ...student, isFirstTimeAccess: true };
+            break;
         }
 
         this.setState({ isFetching: true });
 
-        fetch(logInEndpoint, {
-          method: 'post',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email,
-            password
-          })
-        })
-          .then(res => res.json())
-          .then(({ message }) => {
-            // If there's a message about a wrong login
-            resetFields();
+        setTimeout(() => {
+          setUser(user);
 
-            if (message) {
-              this.setState({ isFetching: false });
-            } else {
-              // Saving token in Local Storage
-
-              this.setState({ isFetching: false });
-            }
-          })
-          .catch(error => {
-            this.setState({ isFetching: false });
-            console.log(error);
-          });
+          this.setState({ isFetching: false });
+        }, 1000);
       }
     });
   };
@@ -82,24 +73,12 @@ class NormalLoginForm extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { isFetching, isModalVisible } = this.state;
-
     return (
       <>
         {isModalVisible && <ForgotPassModal hideModal={this.hideModal} />}
 
         <GeneralContainer title='Inicia Sesión' width='500px'>
           <Form onSubmit={this.handleSubmit} style={{ paddingTop: '2rem' }}>
-            <Form.Item>
-              {getFieldDecorator('userOption', {
-                initialValue: 'alumno'
-              })(
-                <Radio.Group size='large'>
-                  <Radio value='alumno'>Alumno</Radio>
-                  <Radio value='profesor'>Profesor</Radio>
-                </Radio.Group>
-              )}
-            </Form.Item>
-
             <Form.Item>
               {getFieldDecorator('email', {
                 rules: [

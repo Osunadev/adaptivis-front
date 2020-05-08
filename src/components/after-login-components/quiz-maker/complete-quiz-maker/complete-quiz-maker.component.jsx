@@ -18,6 +18,7 @@ import {
   MultipleQuestion,
   Section
 } from './complete-quiz-maker.data';
+import GlobalStyle from 'components/general-use-components/global-style/global-style.component';
 
 class CompleteQuizMaker extends Component {
   state = {
@@ -208,6 +209,7 @@ class CompleteQuizMaker extends Component {
 
     return (
       <div>
+        <GlobalStyle bgColor='linear-gradient(to right, #0083b0, #00b4db)' />
         {sections.map((section, id) => {
           return (
             <QuizSectionMaker

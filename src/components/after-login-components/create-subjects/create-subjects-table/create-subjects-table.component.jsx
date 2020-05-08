@@ -59,30 +59,13 @@ class CreateSubjectsTable extends Component {
     const { createdSubjects } = this.state;
 
     return (
-      <TitledWrapper title='Materias abiertas'>
+      <TitledWrapper title='Grupos abiertos'>
         <Table
           columns={this.columns}
           dataSource={createdSubjects}
           size='medium'
           style={{ margin: '32px 16px 0px' }}
         />
-        <div
-          style={{
-            margin: '16px 16px 0px',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center'
-          }}
-        >
-          <Button
-            type='primary'
-            size='large'
-            style={{ margin: '0 8px' }}
-            onClick={this.createSubject}
-          >
-            Crear Materia
-          </Button>
-        </div>
       </TitledWrapper>
     );
   }

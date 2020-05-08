@@ -12,12 +12,10 @@ import UploadResultsPage from 'pages/after-login-pages/upload-results/upload-res
 
 import DemographicPreLandingPage from 'pages/after-login-pages/demographic-pre-landing/demographic-pre-landing.page';
 
-const StudentLanding = ({ user, isFirstTimeAccess = false, history }) => {
+const StudentLanding = ({ user, history }) => {
   // If it's whether or not his/her first time accessing
-  return isFirstTimeAccess ? (
-    <>
-      <DemographicPreLandingPage />
-    </>
+  return user.isFirstTimeAccess ? (
+    <DemographicPreLandingPage />
   ) : (
     <div>
       <StudentWithHeaderAndMenu user={user} history={history}>
