@@ -53,8 +53,8 @@ const WithHeaderAndMenu = (MenuGroup, userType) => ({
             marginTop: 48
           }}
         >
-          <Content style={{ overflow: 'initial' }}>
-            <div style={{ padding: '1rem 2rem' }}>{children}</div>
+          <Content style={{ overflow: 'initial', padding: '32px 32px 0 32px' }}>
+            <div>{children}</div>
           </Content>
         </Layout>
       </Layout>

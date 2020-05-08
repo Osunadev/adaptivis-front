@@ -9,24 +9,49 @@ import { ChangeImageContainer } from './edit-change-image.styles';
 class EditChangeImage extends Component {
   state = {
     fileList: [],
-    imgBase64: null,
     uploading: false
   };
 
-  handleUpload = () => {
-    // const { imgBase64 } = this.state;
+  handleUpload = async () => {
+    const { fileList } = this.state;
 
-    // Making our request
+    const formData = new FormData();
+
+    formData.append('profile-image', fileList[0]);
+
     this.setState({ uploading: true });
-    setTimeout(() => {
-      this.setState({ uploading: false, fileList: [] }, () => {
-        message.success('Imagen de perfil actualizada correctamente.');
+
+    try {
+      const response = await fetch(
+        'http://localhost:5000/api/edit-profile/image',
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Accept: 'application/json'
+          }
+        }
+      );
+
+      // We receive the updated image url
+      const { statusMsg, imgUrl } = await response.json();
+
+      if (!response.ok) message.error(statusMsg);
+      else message.success(statusMsg);
+
+      this.setState({
+        uploading: false,
+        fileList: [],
+        imgBase64: null
       });
-    }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   handleOnRemove = file => {
-    this.setState({ fileList: [], imgBase64: null });
+    // We only want to stick with one photo
+    this.setState({ fileList: [], imgBase64: null, uploading: false });
   };
 
   handleBeforeUpload = file => {
@@ -64,6 +89,7 @@ class EditChangeImage extends Component {
 
   render() {
     const { uploading, fileList, imgBase64 } = this.state;
+
     const avatarProps = imgBase64 ? { src: imgBase64 } : { icon: 'user' };
 
     return (

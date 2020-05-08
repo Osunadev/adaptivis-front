@@ -11,7 +11,7 @@ const StudentMenuGroup = ({ onMenuItemClick }) => {
     <Menu
       theme='dark'
       mode='inline'
-      defaultSelectedKeys={['cursos']}
+      // defaultSelectedKeys={['cursos']}
       onClick={onMenuItemClick}
     >
       <Menu.ItemGroup key='incio' title='Inicio'>
