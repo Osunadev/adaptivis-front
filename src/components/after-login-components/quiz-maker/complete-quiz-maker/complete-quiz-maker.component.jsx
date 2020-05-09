@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 
 import { Icon } from 'antd';
 
+import GlobalStyle from 'components/general-use-components/global-style/global-style.component';
 import QuizSectionMaker from '../quiz-section-maker/quiz-section-maker.component';
+import { QuizTitle } from './complete-quiz-maker.styles';
 
 import {
   AddSectionSpan,
@@ -18,12 +20,12 @@ import {
   MultipleQuestion,
   Section
 } from './complete-quiz-maker.data';
-import GlobalStyle from 'components/general-use-components/global-style/global-style.component';
 
 class CompleteQuizMaker extends Component {
   state = {
     // We start this component always with 1 section
-    sections: [{ sectionTitle: '', sectionDescription: '', items: [] }]
+    sections: [{ sectionTitle: '', sectionDescription: '', items: [] }],
+    quizTitle: ''
   };
 
   handleAddNewSection = () => {
@@ -187,12 +189,16 @@ class CompleteQuizMaker extends Component {
     });
   };
 
+  handleTitleChange = ({ target }) => {
+    this.setState({ quizTitle: target.value });
+  };
+
   handleCreateQuiz = () => {
-    console.log(this.state.sections);
+    console.log(this.state);
   };
 
   render() {
-    const { sections } = this.state;
+    const { quizTitle, sections } = this.state;
 
     const sectionHandlers = {
       handleDeleteSection: this.handleDeleteSection,
@@ -210,6 +216,11 @@ class CompleteQuizMaker extends Component {
     return (
       <div>
         <GlobalStyle bgColor='linear-gradient(to right, #0083b0, #00b4db)' />
+        <QuizTitle
+          placeholder='Título de la Encuesta'
+          value={quizTitle}
+          onChange={this.handleTitleChange}
+        />
         {sections.map((section, id) => {
           return (
             <QuizSectionMaker
@@ -220,17 +231,19 @@ class CompleteQuizMaker extends Component {
             />
           );
         })}
-        <AddSectionContainer onClick={this.handleAddNewSection}>
-          <AddSectionSpan>AÑADIR SECCIÓN</AddSectionSpan>
-          <Icon
-            style={{ fontSize: '34px', color: 'black', cursor: 'pointer' }}
-            type='plus-circle'
-          />
+        <AddSectionContainer>
+          <div style={{ cursor: 'pointer' }} onClick={this.handleAddNewSection}>
+            <AddSectionSpan>AÑADIR SECCIÓN</AddSectionSpan>
+            <Icon
+              style={{ fontSize: '34px', color: 'white', cursor: 'pointer' }}
+              type='plus-circle'
+            />
+          </div>
         </AddSectionContainer>
 
         <CreateQuizButtonContainer>
           <CreateQuizButton type='button' onClick={this.handleCreateQuiz}>
-            Terminar Cuestionario
+            Crear Encuesta
           </CreateQuizButton>
         </CreateQuizButtonContainer>
       </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
 import PathNotFound from 'components/after-login-components/general-purpose/path-not-found/path-not-found.component';
+import GlobalStyle from 'components/general-use-components/global-style/global-style.component';
 
 import AdminWithHeaderAndMenu from 'components/after-login-components/admin-with-header-and-menu/admin-with-header-and-menu.component';
 
@@ -13,6 +14,7 @@ const AdminLanding = ({ user, history }) => {
   return (
     <div>
       <AdminWithHeaderAndMenu user={user} history={history}>
+        <GlobalStyle bgColor='white' />
         <Switch>
           <Route
             exact
