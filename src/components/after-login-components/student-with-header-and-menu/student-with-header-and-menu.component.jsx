@@ -34,6 +34,10 @@ const StudentMenuGroup = ({ onMenuItemClick }) => {
           <Icon style={{ fontSize: '18px' }} type='solution' />
           <span className='nav-text'>Contestar Encuestas</span>
         </Menu.Item>
+        <Menu.Item key='visualizar-encuesta'>
+          <Icon style={{ fontSize: '18px' }} type='solution' />
+          <span className='nav-text'>Visualizar Encuesta</span>
+        </Menu.Item>
       </Menu.ItemGroup>
 
       <Menu.ItemGroup key='mi-sesion' title='Mi sesión'>

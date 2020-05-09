@@ -9,6 +9,7 @@ import MySubjectsPage from 'pages/after-login-pages/my-subjects/my-subjects.page
 import MyProfileLandingPage from 'pages/after-login-pages/my-profile/my-profile-landing.page';
 import MyResultsPage from 'pages/after-login-pages/my-results/my-results.page';
 import UploadResultsPage from 'pages/after-login-pages/upload-results/upload-results.page';
+import StudentQuizVisualizer from 'components/after-login-components/student-quiz-visualizer/student-quiz-visualizer.component';
 
 import DemographicPreLandingPage from 'pages/after-login-pages/demographic-pre-landing/demographic-pre-landing.page';
 
@@ -41,6 +42,11 @@ const StudentLanding = ({ user, history }) => {
             exact
             path='/student/contestar-encuestas'
             component={UploadResultsPage}
+          />
+          <Route
+            exact
+            path='/student/visualizar-encuesta'
+            component={StudentQuizVisualizer}
           />
           <Route
             path='*'
