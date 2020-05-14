@@ -1,21 +1,30 @@
-.quiz-header{
-
+.section {
     border-color: rgb(165, 165, 165);
     border-width: 1px;
     border-style: solid;
     border-radius: 6px;
     background-color: rgb(227, 248, 255);
 
-    min-height: 50px;
+    min-height: 150px;
     width: 800px;
     margin-left: 200px;
     margin-bottom: 10px;
 
     padding: 10px;
+
+    color: black;
+
 }
 
-.quiz-header h1 {
-    font-size: 25px;
+.section .titulo {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.section .cuerpo {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 14px;
     font-weight: 500;
 }

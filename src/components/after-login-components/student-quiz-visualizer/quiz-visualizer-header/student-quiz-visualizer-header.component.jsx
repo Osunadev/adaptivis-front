@@ -5,7 +5,7 @@ import './quiz-header-styles.css';
 const StudentQuizVisualizerHeader = () => {
     return (
         <div className = "quiz-header">
-            <h1>Cabecera del formulario</h1>
+            <h1>Cabecera del formulario (título)</h1>
         </div>
     );
 };
