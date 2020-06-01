@@ -17,7 +17,7 @@ export const LikertQuestionContainer = styled.div`
 const textInputSyles = css`
   display: block;
   border: none;
-  border-bottom: 1.5px solid #a5b9b2;
+  border-bottom: 1px solid #a5b9b2;
   color: black;
   background: none;
   outline: none;

@@ -24,5 +24,5 @@ export const student = {
 };
 
 export const getCurrentUser = () => {
-  return student;
+  return admin;
 };

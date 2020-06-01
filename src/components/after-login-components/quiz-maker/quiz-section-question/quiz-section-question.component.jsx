@@ -4,6 +4,7 @@ import { Select } from 'antd';
 
 import QuizSectionQuestionMultiple from '../quiz-section-question-multiple/quiz-section-question-multiple.component';
 import QuizSectionQuestionLikert from '../quiz-section-question-likert/quiz-section-question-likert.component';
+import QuizSectionQuestionCheckboxGrid from '../quiz-section-question-checkbox-grid/quiz-section-question-section-checkbox-grid.component';
 
 import QuizDeleteItem from '../quiz-delete-item/quiz-delete-item.component';
 
@@ -22,21 +23,11 @@ const QuizSectionQuestion = ({
   handleChange,
   handleDelete,
   changeQuestionType,
-  changeTopScale = null,
-  topScale = null,
-  leftText = null,
-  rightText = null,
-  answers = null,
-  handleAnswerChange = null,
-  handleAddAnswer = null,
-  handleDeleteAnswer = null
+  ...otherProps
 }) => {
   const selectOnChange = value => {
-    if (value === 'likert') {
-      changeQuestionType('likert', questionId);
-    } else if (value === 'multiple') {
-      changeQuestionType('multiple', questionId);
-    }
+    // Could be 'likert', 'multiple', 'checkboxgrid'
+    changeQuestionType(value, questionId);
   };
 
   return (
@@ -68,6 +59,15 @@ const QuizSectionQuestion = ({
           <Option style={{ fontSize: '20px', padding: '8px' }} value='multiple'>
             Opción Múltiple
           </Option>
+          <Option
+            style={{ fontSize: '20px', padding: '8px' }}
+            value='checkboxgrid'
+          >
+            Grid de Casillas de Verificación
+          </Option>
+          <Option style={{ fontSize: '20px', padding: '8px' }} value='open'>
+            Abierta
+          </Option>
         </Select>
       </ContainerQuestionHeader>
       {
@@ -76,19 +76,31 @@ const QuizSectionQuestion = ({
             <QuizSectionQuestionLikert
               questionId={questionId}
               handleChange={handleChange}
-              changeTopScale={changeTopScale}
-              topScale={topScale}
-              leftText={leftText}
-              rightText={rightText}
+              changeTopScale={otherProps.changeTopScale}
+              topScale={otherProps.topScale}
+              leftText={otherProps.leftText}
+              rightText={otherProps.rightText}
             />
           ),
           multiple: (
             <QuizSectionQuestionMultiple
-              answers={answers}
+              options={otherProps.options}
               questionId={questionId}
-              handleAnswerChange={handleAnswerChange}
-              handleAddAnswer={handleAddAnswer}
-              handleDeleteAnswer={handleDeleteAnswer}
+              handleOptionChange={otherProps.handleOptionChange}
+              handleAddOption={otherProps.handleAddOption}
+              handleDeleteOption={otherProps.handleDeleteOption}
+            />
+          ),
+          checkboxgrid: (
+            <QuizSectionQuestionCheckboxGrid
+              options={otherProps.options}
+              handleChange={handleChange}
+              leftColumnText={otherProps.leftColumnText}
+              rightColumnText={otherProps.rightColumnText}
+              questionId={questionId}
+              handleOptionChange={otherProps.handleOptionChange}
+              handleAddOption={otherProps.handleAddOption}
+              handleDeleteOption={otherProps.handleDeleteOption}
             />
           )
         }[questionType]

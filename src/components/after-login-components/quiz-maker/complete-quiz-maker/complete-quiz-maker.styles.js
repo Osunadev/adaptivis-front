@@ -1,54 +1,65 @@
-import styled, { css } from 'styled-components';
-
-const centeredContainerStyles = css`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 32px;
-`;
+import styled from 'styled-components';
 
 export const QuizTitle = styled.input`
   width: 1100px;
-  background: white;
-  margin: 32px auto;
+  border: none;
+  background: transparent;
+  margin: 24px auto;
   display: block;
-  padding: 16px;
-  font-size: 42px;
+  font-size: 48px;
   text-transform: uppercase;
   text-align: center;
   color: black;
-  font-family: 'Francois One', sans-serif;
+  font-weight: bold;
+  outline: none;
+
+  &::placeholder {
+    color: black;
+  }
 `;
 
 export const AddSectionSpan = styled.span`
-  font-size: 30px;
-  margin-right: 16px;
-  color: white;
+  font-size: 20px;
+  color: black;
   font-weight: bold;
 `;
 
+export const CenteredContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+  /* margin: 0 auto 32px auto; */
+`;
+
 export const AddSectionContainer = styled.div`
-  align-items: center;
-  ${() => centeredContainerStyles}
+  cursor: pointer;
+  padding: 16px;
+  border: 2px solid black;
+  border-radius: 20px;
+  background: white;
 `;
 
 export const CreateQuizButton = styled.button`
-  padding: 16px 32px;
   font-size: 24px;
-  background: rgba(42, 40, 154, 0.8);
-  color: white;
+  type: button;
+  background: white;
   border: none;
-  margin-top: 16px;
-  border: 1.5px solid white;
-  border-radius: 24px;
+  color: black;
   cursor: pointer;
-  transition: all 0.2s linear;
+  padding: 16px 32px;
+  font-weight: bold;
+  transition: all 0.1s linear;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s linear;
+  outline: none;
 
   &:hover {
-    cursor: pointer;
-    border: 1.5px solid transparent;
+    border-bottom: 3px solid black;
   }
 `;
 
 export const CreateQuizButtonContainer = styled.div`
-  ${() => centeredContainerStyles}
+  width: 1100px;
+  margin: 32px auto;
+  text-align: right;
 `;

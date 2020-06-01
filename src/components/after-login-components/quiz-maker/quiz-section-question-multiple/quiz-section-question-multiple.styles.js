@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
+import { Icon } from 'antd';
 
-export const AnswerCircle = styled.div`
+export const OptionCircle = styled.div`
   height: 20px;
   width: 20px;
   background: white;
@@ -12,20 +13,20 @@ export const AnswerCircle = styled.div`
 const textInputSyles = css`
   display: block;
   border: none;
-  border-bottom: 1.5px solid #a5b9b2;
+  border-bottom: 1px solid #a5b9b2;
   color: black;
   background: none;
   outline: none;
 `;
 
-export const AnswerContainer = styled.div`
+export const OptionContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   margin: 16px 0 16px;
 `;
 
-export const AnswerText = styled.input`
+export const OptionText = styled.input`
   font-size: 20px;
   height: 35px;
   width: 95%;
@@ -33,12 +34,19 @@ export const AnswerText = styled.input`
   ${() => textInputSyles}
 `;
 
+export const RemoveText = styled(Icon)`
+  margin-left: 16px;
+  font-size: 20px;
+  color: #a5b9b2;
+`;
+
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-export const AddAnswerButton = styled.button`
+export const AddOptionButton = styled.button`
+  type: 'button';
   padding: 8px 16px;
   background: white;
   margin-top: 8px;

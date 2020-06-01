@@ -1,61 +1,56 @@
 import React from 'react';
 
-import { Icon } from 'antd';
-
 import {
-  AnswerCircle,
-  AnswerText,
-  AnswerContainer,
-  AddAnswerButton,
+  OptionCircle,
+  OptionText,
+  RemoveText,
+  OptionContainer,
+  AddOptionButton,
   ButtonContainer
 } from './quiz-section-question-multiple.styles';
 
 const QuizSectionQuestionMultiple = ({
-  answers,
+  options,
   questionId,
-  handleAnswerChange,
-  handleAddAnswer,
-  handleDeleteAnswer
+  handleOptionChange,
+  handleAddOption,
+  handleDeleteOption
 }) => {
-  const addAnswer = () => {
-    handleAddAnswer(questionId);
+  const addOption = () => {
+    handleAddOption(questionId);
   };
 
-  const deleteAnswer = answerId => {
-    handleDeleteAnswer(questionId, answerId);
+  const deleteOption = optionId => {
+    handleDeleteOption(questionId, optionId);
   };
 
   const handleKeyDown = e => {
     if (e.keyCode === 13) {
       // Enter was pressed
-      addAnswer();
+      addOption();
     }
   };
 
   return (
     <>
-      {answers.map((ans, ansIdx) => (
-        <AnswerContainer key={ansIdx}>
-          <AnswerCircle />
-          <AnswerText
+      {options.map((opt, optIdx) => (
+        <OptionContainer key={optIdx}>
+          <OptionCircle />
+          <OptionText
             id={questionId}
-            onChange={handleAnswerChange}
+            onChange={handleOptionChange}
             onKeyDown={handleKeyDown}
-            value={ans}
-            name={ansIdx}
+            value={opt}
+            name={optIdx}
             placeholder='Añadir opción'
           />
-          <Icon
-            style={{ marginLeft: '16px', fontSize: '20px', color: '#a5b9b2' }}
-            onClick={() => deleteAnswer(ansIdx)}
-            type='close'
-          />
-        </AnswerContainer>
+          <RemoveText type='close' onClick={() => deleteOption(optIdx)} />
+        </OptionContainer>
       ))}
       <ButtonContainer>
-        <AddAnswerButton type='button' onClick={addAnswer}>
+        <AddOptionButton onClick={addOption}>
           Agregar respuesta +
-        </AddAnswerButton>
+        </AddOptionButton>
       </ButtonContainer>
     </>
   );

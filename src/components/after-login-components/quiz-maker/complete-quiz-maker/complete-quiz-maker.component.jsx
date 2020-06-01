@@ -9,6 +9,7 @@ import { QuizTitle } from './complete-quiz-maker.styles';
 import {
   AddSectionSpan,
   AddSectionContainer,
+  CenteredContainer,
   CreateQuizButton,
   CreateQuizButtonContainer
 } from './complete-quiz-maker.styles';
@@ -18,6 +19,7 @@ import {
   Description,
   LikertQuestion,
   MultipleQuestion,
+  CheckboxGridQuestion,
   Section
 } from './complete-quiz-maker.data';
 
@@ -28,12 +30,34 @@ class CompleteQuizMaker extends Component {
     quizTitle: ''
   };
 
+  /* GENERAL QUIZ HANDLERS */
+  handleQuizTitleChange = ({ target }) => {
+    this.setState({ quizTitle: target.value });
+  };
+
+  handleCreateQuiz = () => {
+    console.log(JSON.stringify(this.state));
+  };
+
+  /* SECTION HANDLERS */
   handleAddNewSection = () => {
     this.setState(prevState => {
       const sectionsCopy = [...prevState.sections];
       sectionsCopy.push({ ...Section });
 
       return { sections: sectionsCopy };
+    });
+  };
+
+  changeSectionHeaderInput = (fieldKey, fieldValue, sectionId) => {
+    this.setState(prevState => {
+      const sectionsShallowCopy = [...prevState.sections];
+
+      sectionsShallowCopy[sectionId][fieldKey] = fieldValue;
+
+      return {
+        sections: sectionsShallowCopy
+      };
     });
   };
 
@@ -49,11 +73,11 @@ class CompleteQuizMaker extends Component {
     });
   };
 
-  // Handlers for the sections
+  /* SECTION ITEMS HANDLERS */
   addSectionItem = (itemType, sectionId) => {
     let item;
 
-    // By default we create a Linker Type Question
+    // By default we create a Liktert Type Question
     if (itemType === 'question') item = { ...LikertQuestion };
     else if (itemType === 'description') item = { ...Description };
 
@@ -64,30 +88,6 @@ class CompleteQuizMaker extends Component {
       newItems.push(item);
 
       sectionsShallowCopy[sectionId].items = newItems;
-
-      return {
-        sections: sectionsShallowCopy
-      };
-    });
-  };
-
-  changeSectionField = (fieldKey, fieldValue, sectionId) => {
-    this.setState(prevState => {
-      const sectionsShallowCopy = [...prevState.sections];
-
-      sectionsShallowCopy[sectionId][fieldKey] = fieldValue;
-
-      return {
-        sections: sectionsShallowCopy
-      };
-    });
-  };
-
-  changeSectionItemValue = (itemKey, itemValue, itemId, sectionId) => {
-    this.setState(prevState => {
-      const sectionsShallowCopy = [...prevState.sections];
-
-      sectionsShallowCopy[sectionId].items[itemId][itemKey] = itemValue;
 
       return {
         sections: sectionsShallowCopy
@@ -108,18 +108,38 @@ class CompleteQuizMaker extends Component {
     });
   };
 
+  changeSectionItemValue = (itemKey, itemValue, itemId, sectionId) => {
+    this.setState(prevState => {
+      const sectionsShallowCopy = [...prevState.sections];
+
+      sectionsShallowCopy[sectionId].items[itemId][itemKey] = itemValue;
+
+      return {
+        sections: sectionsShallowCopy
+      };
+    });
+  };
+
+  /* SECTION QUESTIONS HANDLERS */
   changeSectionQuestionType = (questionType, questionId, sectionId) => {
     this.setState(prevState => {
       const sectionsShallowCopy = [...prevState.sections];
 
       let newQuestionType;
 
-      // We're keeping the same question title because both types of questions have a title
-      if (questionType === 'likert') {
-        newQuestionType = { ...LikertQuestion };
-      } else if (questionType === 'multiple') {
-        // We neeed to make a deep copy because of our answers array
-        newQuestionType = JSON.parse(JSON.stringify(MultipleQuestion));
+      // We're keeping the same question title because all questions have a title
+      switch (questionType) {
+        case 'likert':
+          newQuestionType = { ...LikertQuestion };
+          break;
+        case 'multiple':
+          // We neeed to make a deep copy because of our options array
+          newQuestionType = JSON.parse(JSON.stringify(MultipleQuestion));
+          break;
+        case 'checkboxgrid':
+          // We neeed to make a deep copy because of our options array
+          newQuestionType = JSON.parse(JSON.stringify(CheckboxGridQuestion));
+          break;
       }
 
       sectionsShallowCopy[sectionId].items[questionId] = {
@@ -146,13 +166,12 @@ class CompleteQuizMaker extends Component {
     });
   };
 
-  // Handlers for the Multiple Answer Questions
-
-  addSectionQuestionAnswer = (questionId, sectionId) => {
+  // Handlers for the Multiple Questions and for Checkbox Grid Questions
+  addSectionQuestionOption = (questionId, sectionId) => {
     this.setState(prevState => {
       const sectionsShallowCopy = [...prevState.sections];
 
-      sectionsShallowCopy[sectionId].items[questionId].answers.push('');
+      sectionsShallowCopy[sectionId].items[questionId].options.push('');
 
       return {
         sections: sectionsShallowCopy
@@ -160,11 +179,11 @@ class CompleteQuizMaker extends Component {
     });
   };
 
-  deleteSectionQuestionAnswer = (questionId, answerId, sectionId) => {
+  deleteSectionQuestionOption = (questionId, answerId, sectionId) => {
     this.setState(prevState => {
       const sectionsShallowCopy = [...prevState.sections];
 
-      sectionsShallowCopy[sectionId].items[questionId].answers.splice(
+      sectionsShallowCopy[sectionId].items[questionId].options.splice(
         answerId,
         1
       );
@@ -175,11 +194,11 @@ class CompleteQuizMaker extends Component {
     });
   };
 
-  changeQuestionAnswerValue = (questionId, answerId, value, sectionId) => {
+  changeQuestionOptionValue = (questionId, answerId, value, sectionId) => {
     this.setState(prevState => {
       const sectionsShallowCopy = [...prevState.sections];
 
-      sectionsShallowCopy[sectionId].items[questionId].answers[
+      sectionsShallowCopy[sectionId].items[questionId].options[
         answerId
       ] = value;
 
@@ -189,37 +208,29 @@ class CompleteQuizMaker extends Component {
     });
   };
 
-  handleTitleChange = ({ target }) => {
-    this.setState({ quizTitle: target.value });
-  };
-
-  handleCreateQuiz = () => {
-    console.log(this.state);
-  };
-
   render() {
     const { quizTitle, sections } = this.state;
 
     const sectionHandlers = {
       handleDeleteSection: this.handleDeleteSection,
       addSectionItem: this.addSectionItem,
-      changeSectionField: this.changeSectionField,
+      changeSectionHeaderInput: this.changeSectionHeaderInput,
       changeSectionItemValue: this.changeSectionItemValue,
       deleteSectionItem: this.deleteSectionItem,
       changeSectionQuestionType: this.changeSectionQuestionType,
       changeSectionLikertScale: this.changeSectionLikertScale,
-      addSectionQuestionAnswer: this.addSectionQuestionAnswer,
-      deleteSectionQuestionAnswer: this.deleteSectionQuestionAnswer,
-      changeQuestionAnswerValue: this.changeQuestionAnswerValue
+      addSectionQuestionOption: this.addSectionQuestionOption,
+      deleteSectionQuestionOption: this.deleteSectionQuestionOption,
+      changeQuestionOptionValue: this.changeQuestionOptionValue
     };
 
     return (
       <div>
-        <GlobalStyle bgColor='linear-gradient(to right, #0083b0, #00b4db)' />
+        <GlobalStyle bgColor='#E8E8E8' />
         <QuizTitle
           placeholder='Título de la Encuesta'
           value={quizTitle}
-          onChange={this.handleTitleChange}
+          onChange={this.handleQuizTitleChange}
         />
         {sections.map((section, id) => {
           return (
@@ -231,19 +242,23 @@ class CompleteQuizMaker extends Component {
             />
           );
         })}
-        <AddSectionContainer>
-          <div style={{ cursor: 'pointer' }} onClick={this.handleAddNewSection}>
-            <AddSectionSpan>AÑADIR SECCIÓN</AddSectionSpan>
+        <CenteredContainer>
+          <AddSectionContainer onClick={this.handleAddNewSection}>
+            <AddSectionSpan>AÑADIR SECCIÓN </AddSectionSpan>
             <Icon
-              style={{ fontSize: '34px', color: 'white', cursor: 'pointer' }}
+              style={{
+                fontSize: '20px',
+                color: 'black',
+                marginLeft: '8px'
+              }}
               type='plus-circle'
             />
-          </div>
-        </AddSectionContainer>
+          </AddSectionContainer>
+        </CenteredContainer>
 
         <CreateQuizButtonContainer>
-          <CreateQuizButton type='button' onClick={this.handleCreateQuiz}>
-            Crear Encuesta
+          <CreateQuizButton onClick={this.handleCreateQuiz}>
+            TERMINAR ENCUESTA
           </CreateQuizButton>
         </CreateQuizButtonContainer>
       </div>

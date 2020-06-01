@@ -4,9 +4,9 @@ export const ContainerSectionHeader = styled.div`
   width: 1000px;
   padding: 32px;
   margin: 16px auto 32px;
-  background: #dbefe8;
+  background: white;
   border-radius: 10px;
-  border: 2px solid white;
+  border: 3px solid white;
 `;
 
 const textInputSyles = css`
@@ -19,6 +19,10 @@ const textInputSyles = css`
   color: black;
   background: none;
   outline: none;
+
+  &::placeholder {
+    color: black;
+  }
 `;
 
 export const TitleTextInput = styled.input`

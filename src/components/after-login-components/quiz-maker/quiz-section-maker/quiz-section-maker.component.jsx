@@ -15,9 +15,9 @@ const QuizSectionMaker = ({ section, sectionId, ...sectionHandlers }) => {
     const key = e.target.name;
     const { value } = e.target;
 
-    const { changeSectionField } = sectionHandlers;
+    const { changeSectionHeaderInput } = sectionHandlers;
 
-    changeSectionField(key, value, sectionId);
+    changeSectionHeaderInput(key, value, sectionId);
   };
 
   const handleOnChangeItem = e => {
@@ -49,26 +49,26 @@ const QuizSectionMaker = ({ section, sectionId, ...sectionHandlers }) => {
     changeSectionLikertScale(questionId, value, sectionId);
   };
 
-  const addQuestionAnswer = questionId => {
-    const { addSectionQuestionAnswer } = sectionHandlers;
+  const addQuestionOption = questionId => {
+    const { addSectionQuestionOption } = sectionHandlers;
 
-    addSectionQuestionAnswer(questionId, sectionId);
+    addSectionQuestionOption(questionId, sectionId);
   };
 
-  const deleteQuestionAnswer = (questionId, answerId) => {
-    const { deleteSectionQuestionAnswer } = sectionHandlers;
+  const deleteQuestionOption = (questionId, optionId) => {
+    const { deleteSectionQuestionOption } = sectionHandlers;
 
-    deleteSectionQuestionAnswer(questionId, answerId, sectionId);
+    deleteSectionQuestionOption(questionId, optionId, sectionId);
   };
 
-  const handleQuestionAnswerChange = e => {
+  const handleQuestionOptionChange = e => {
     const questionId = e.target.id;
-    const answerId = e.target.name;
-    const answerValue = e.target.value;
+    const optionId = e.target.name;
+    const optionValue = e.target.value;
 
-    const { changeQuestionAnswerValue } = sectionHandlers;
+    const { changeQuestionOptionValue } = sectionHandlers;
 
-    changeQuestionAnswerValue(questionId, answerId, answerValue, sectionId);
+    changeQuestionOptionValue(questionId, optionId, optionValue, sectionId);
   };
 
   const { sectionTitle, sectionDescription, items } = section;
@@ -116,33 +116,33 @@ const QuizSectionMaker = ({ section, sectionId, ...sectionHandlers }) => {
             changeQuestionType: changeQuestionType
           };
 
+          // Particular Props for the specified questionType
+          let particularProps = {};
+
           if (questionType === 'likert') {
-            const { topScale, leftText, rightText } = item;
+            particularProps.changeTopScale = changeLikertTopScale;
+            particularProps.topScale = item.topScale;
+            particularProps.leftText = item.leftText;
+            particularProps.rightText = item.rightText;
+          } else if (
+            questionType === 'multiple' ||
+            questionType === 'checkboxgrid'
+          ) {
+            particularProps.options = item.options;
 
-            const likertProps = {
-              changeTopScale: changeLikertTopScale,
-              topScale,
-              leftText,
-              rightText
-            };
+            if (questionType === 'checkboxgrid') {
+              particularProps.leftColumnText = item.leftColumnText;
+              particularProps.rightColumnText = item.rightColumnText;
+            }
 
-            return <QuizSectionQuestion {...questionProps} {...likertProps} />;
+            particularProps.handleOptionChange = handleQuestionOptionChange;
+            particularProps.handleAddOption = addQuestionOption;
+            particularProps.handleDeleteOption = deleteQuestionOption;
           }
 
-          if (questionType === 'multiple') {
-            const { answers } = item;
-
-            const multipleProps = {
-              handleAnswerChange: handleQuestionAnswerChange,
-              handleAddAnswer: addQuestionAnswer,
-              handleDeleteAnswer: deleteQuestionAnswer,
-              answers
-            };
-
-            return (
-              <QuizSectionQuestion {...questionProps} {...multipleProps} />
-            );
-          }
+          return (
+            <QuizSectionQuestion {...questionProps} {...particularProps} />
+          );
         }
       })}
 
