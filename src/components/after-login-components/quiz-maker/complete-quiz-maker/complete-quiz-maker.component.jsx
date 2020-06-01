@@ -20,6 +20,7 @@ import {
   LikertQuestion,
   MultipleQuestion,
   CheckboxGridQuestion,
+  OpenQuestion,
   Section
 } from './complete-quiz-maker.data';
 
@@ -140,6 +141,9 @@ class CompleteQuizMaker extends Component {
           // We neeed to make a deep copy because of our options array
           newQuestionType = JSON.parse(JSON.stringify(CheckboxGridQuestion));
           break;
+        case 'open':
+          newQuestionType = { ...OpenQuestion };
+          break;
       }
 
       sectionsShallowCopy[sectionId].items[questionId] = {
@@ -167,11 +171,21 @@ class CompleteQuizMaker extends Component {
   };
 
   // Handlers for the Multiple Questions and for Checkbox Grid Questions
-  addSectionQuestionOption = (questionId, sectionId) => {
+  addSectionQuestionOption = (questionId, sectionId, optionType) => {
     this.setState(prevState => {
       const sectionsShallowCopy = [...prevState.sections];
 
-      sectionsShallowCopy[sectionId].items[questionId].options.push('');
+      if (optionType === 'checkboxgrid') {
+        // Every new row inserted to the checkboxgrid needs to have its own selColumn value
+        sectionsShallowCopy[sectionId].items[questionId].options.push({
+          optionText: '',
+          selColumn: -1
+        });
+      } else {
+        // optionType === 'multiple'
+
+        sectionsShallowCopy[sectionId].items[questionId].options.push('');
+      }
 
       return {
         sections: sectionsShallowCopy
@@ -194,13 +208,26 @@ class CompleteQuizMaker extends Component {
     });
   };
 
-  changeQuestionOptionValue = (questionId, answerId, value, sectionId) => {
+  changeQuestionOptionValue = (
+    questionId,
+    answerId,
+    value,
+    sectionId,
+    optionType
+  ) => {
     this.setState(prevState => {
       const sectionsShallowCopy = [...prevState.sections];
 
-      sectionsShallowCopy[sectionId].items[questionId].options[
-        answerId
-      ] = value;
+      if (optionType === 'checkboxgrid') {
+        sectionsShallowCopy[sectionId].items[questionId].options[
+          answerId
+        ].optionText = value;
+      } else {
+        // optionType === 'multiple'
+        sectionsShallowCopy[sectionId].items[questionId].options[
+          answerId
+        ] = value;
+      }
 
       return {
         sections: sectionsShallowCopy

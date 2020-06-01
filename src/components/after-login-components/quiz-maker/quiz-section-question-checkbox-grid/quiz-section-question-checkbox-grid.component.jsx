@@ -19,7 +19,7 @@ const QuizSectionQuestionCheckboxGrid = ({
   rightColumnText,
   questionId,
   handleChange,
-  handleOptionChange,
+  handleGridOptionChange,
   handleAddOption,
   handleDeleteOption
 }) => {
@@ -28,7 +28,14 @@ const QuizSectionQuestionCheckboxGrid = ({
   };
 
   const addOption = () => {
-    handleAddOption(questionId);
+    handleAddOption(questionId, 'checkboxgrid');
+  };
+
+  const handleKeyDown = e => {
+    if (e.keyCode === 13) {
+      // Enter was pressed
+      addOption();
+    }
   };
 
   return (
@@ -55,13 +62,14 @@ const QuizSectionQuestionCheckboxGrid = ({
         </GridColumnsContainer>
       )}
 
-      {options.map((opt, optIdx) => (
+      {options.map(({ optionText }, optIdx) => (
         <OptionContainer>
           <OptionNumber>{optIdx + 1} - </OptionNumber>
           <OptionText
             id={questionId}
-            onChange={handleOptionChange}
-            value={opt}
+            onChange={handleGridOptionChange}
+            onKeyDown={handleKeyDown}
+            value={optionText}
             name={optIdx}
             placeholder='Texto del renglón'
           />

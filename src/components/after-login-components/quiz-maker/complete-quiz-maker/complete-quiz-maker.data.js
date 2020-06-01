@@ -37,8 +37,17 @@ export const CheckboxGridQuestion = {
   itemType: 'question',
   questionType: 'checkboxgrid',
   title: '',
-  // options array is an array of string containing the options of the checkbox grid
+  // options array is an array of objects
+  // [ { optionText: '', selColumn: -1 }, ...]
+  // selColumn: -1 , means that there's no column box selected (nor left or right)
   options: [],
   leftColumnText: 'Sí',
   rightColumnText: 'No'
+};
+
+export const OpenQuestion = {
+  itemType: 'question',
+  questionType: 'open',
+  title: '',
+  answer: ''
 };

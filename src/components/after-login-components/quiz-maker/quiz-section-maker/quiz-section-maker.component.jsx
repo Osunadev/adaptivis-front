@@ -49,10 +49,10 @@ const QuizSectionMaker = ({ section, sectionId, ...sectionHandlers }) => {
     changeSectionLikertScale(questionId, value, sectionId);
   };
 
-  const addQuestionOption = questionId => {
+  const addQuestionOption = (questionId, optionType) => {
     const { addSectionQuestionOption } = sectionHandlers;
 
-    addSectionQuestionOption(questionId, sectionId);
+    addSectionQuestionOption(questionId, sectionId, optionType);
   };
 
   const deleteQuestionOption = (questionId, optionId) => {
@@ -69,6 +69,21 @@ const QuizSectionMaker = ({ section, sectionId, ...sectionHandlers }) => {
     const { changeQuestionOptionValue } = sectionHandlers;
 
     changeQuestionOptionValue(questionId, optionId, optionValue, sectionId);
+  };
+
+  const handleGridOptionChange = e => {
+    const questionId = e.target.id;
+    const optionId = e.target.name;
+    const optionValue = e.target.value;
+
+    const { changeQuestionOptionValue } = sectionHandlers;
+    changeQuestionOptionValue(
+      questionId,
+      optionId,
+      optionValue,
+      sectionId,
+      'checkboxgrid'
+    );
   };
 
   const { sectionTitle, sectionDescription, items } = section;
@@ -117,7 +132,7 @@ const QuizSectionMaker = ({ section, sectionId, ...sectionHandlers }) => {
           };
 
           // Particular Props for the specified questionType
-          let particularProps = {};
+          const particularProps = {};
 
           if (questionType === 'likert') {
             particularProps.changeTopScale = changeLikertTopScale;
@@ -133,13 +148,14 @@ const QuizSectionMaker = ({ section, sectionId, ...sectionHandlers }) => {
             if (questionType === 'checkboxgrid') {
               particularProps.leftColumnText = item.leftColumnText;
               particularProps.rightColumnText = item.rightColumnText;
+              particularProps.handleGridOptionChange = handleGridOptionChange;
+            } else {
+              particularProps.handleOptionChange = handleQuestionOptionChange;
             }
 
-            particularProps.handleOptionChange = handleQuestionOptionChange;
             particularProps.handleAddOption = addQuestionOption;
             particularProps.handleDeleteOption = deleteQuestionOption;
           }
-
           return (
             <QuizSectionQuestion {...questionProps} {...particularProps} />
           );

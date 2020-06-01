@@ -4,7 +4,7 @@ import { Select } from 'antd';
 
 import QuizSectionQuestionMultiple from '../quiz-section-question-multiple/quiz-section-question-multiple.component';
 import QuizSectionQuestionLikert from '../quiz-section-question-likert/quiz-section-question-likert.component';
-import QuizSectionQuestionCheckboxGrid from '../quiz-section-question-checkbox-grid/quiz-section-question-section-checkbox-grid.component';
+import QuizSectionQuestionCheckboxGrid from '../quiz-section-question-checkbox-grid/quiz-section-question-checkbox-grid.component';
 
 import QuizDeleteItem from '../quiz-delete-item/quiz-delete-item.component';
 
@@ -98,11 +98,14 @@ const QuizSectionQuestion = ({
               leftColumnText={otherProps.leftColumnText}
               rightColumnText={otherProps.rightColumnText}
               questionId={questionId}
-              handleOptionChange={otherProps.handleOptionChange}
+              handleGridOptionChange={otherProps.handleGridOptionChange}
               handleAddOption={otherProps.handleAddOption}
               handleDeleteOption={otherProps.handleDeleteOption}
             />
           )
+          /* We don't check for an questionType === 'open' because that component only needs to
+              define the title, and that's already shown by the TitleTextInput, which is the title of 
+              the question, no matter what kind of question is */
         }[questionType]
       }
     </ContainerQuestion>
