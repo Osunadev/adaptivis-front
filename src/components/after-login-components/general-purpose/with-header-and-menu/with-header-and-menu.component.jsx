@@ -3,17 +3,27 @@ import React from 'react';
 import { Layout } from 'antd';
 import UserHeaderInfo from 'components/after-login-components/general-purpose/with-header-and-menu/user-header-info/user-header-info.component';
 
+import { logOutUser } from 'utils/tokens/jwt-utils';
+
 const { Header, Content, Sider } = Layout;
 
 const WithHeaderAndMenu = (MenuGroup, userType) => ({
   user,
+  setUser,
   history,
   children
 }) => {
   const handleClick = ({ key }) => {
-    const routeTo = `/${userType}/${key}`;
+    if (key === 'cerrar-sesion') {
+      logOutUser();
+      setUser(null);
+      history.push('/login');
+    } else {
+      // The rest of the menu options
+      const routeTo = `/${userType}/${key}`;
 
-    history.push(routeTo);
+      history.push(routeTo);
+    }
   };
 
   return (
@@ -28,7 +38,7 @@ const WithHeaderAndMenu = (MenuGroup, userType) => ({
           background: '#2D2D2D'
         }}
       >
-        <UserHeaderInfo userName={user.name} userId={user.id} imgSrc={''} />
+        <UserHeaderInfo userName={user.fullName} userId={user.id} />
       </Header>
       <Layout>
         <Sider

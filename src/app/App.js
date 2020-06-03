@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import { getCurrentUser } from 'utils/users/user-examples';
-
 import AuthenticatedApp from './AuthenticatedApp';
 import UnauthenticatedApp from './UnauthenticatedApp';
+
+import { getUserFromStorage } from '../utils/tokens/jwt-utils';
 
 class App extends Component {
   constructor() {
@@ -14,10 +14,10 @@ class App extends Component {
     };
   }
 
-  componentDidMount() {
-    const user = getCurrentUser();
+  async componentDidMount() {
+    const currentUser = await getUserFromStorage();
 
-    this.setState({ currentUser: user });
+    this.setState({ currentUser });
   }
 
   setUser = user => {
@@ -28,7 +28,7 @@ class App extends Component {
     const { currentUser } = this.state;
 
     return currentUser ? (
-      <AuthenticatedApp user={currentUser} />
+      <AuthenticatedApp user={currentUser} setUser={this.setUser} />
     ) : (
       <UnauthenticatedApp setUser={this.setUser} />
     );

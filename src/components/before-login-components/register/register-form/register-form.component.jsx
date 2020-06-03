@@ -60,29 +60,39 @@ class NormalRegisterForm extends Component {
 
         this.setState({ isLoading: true });
 
-        const response = await fetch(urlEndpoint, {
-          method: 'post',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...generalValues, ...userSpecificValues })
-        });
+        try {
+          const response = await fetch(urlEndpoint, {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...generalValues, ...userSpecificValues })
+          });
 
-        const json = await response.json();
+          const json = await response.json();
 
-        this.setState({ isLoading: false }, () => {
-          if (response.status >= 200 && response.status < 300) {
-            Modal.success({
-              title: 'Usuario creado exitosamente',
-              content: json.message
-            });
-          } else if (response.status >= 400 && response.status < 500) {
+          this.setState({ isLoading: false }, () => {
+            if (response.status >= 200 && response.status < 300) {
+              Modal.success({
+                title: 'Usuario creado exitosamente',
+                content: json.message
+              });
+            } else if (response.status >= 400 && response.status < 500) {
+              Modal.error({
+                title: 'Error al registrar usuario',
+                content: json.message
+              });
+            }
+
+            resetFields();
+          });
+        } catch (error) {
+          this.setState({ isLoading: false }, () => {
             Modal.error({
-              title: 'Error al registrar usuario',
-              content: json.message
+              title: '¡Error de conexión!',
+              content:
+                'No pudimos contectarnos con el servidor, por favor revisa tu conexión a internet.'
             });
-          }
-
-          resetFields();
-        });
+          });
+        }
       }
     });
   };

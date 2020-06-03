@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Alert } from 'antd';
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
 import ForgotPassModal from 'components/before-login-components/login/forgot-pass-modal/forgot-pass-modal.component';
 
-import { getUserFromToken } from 'utils/tokens/jwt-utils';
+import { getUserFromToken, saveTokenInStorage } from 'utils/tokens/jwt-utils';
 
 class NormalLoginForm extends Component {
   static propTypes = {
@@ -18,7 +18,10 @@ class NormalLoginForm extends Component {
 
     this.state = {
       isModalVisible: false,
-      isFetching: false
+      isFetching: false,
+      errorTitle: undefined,
+      errorMsg: undefined,
+      hasError: false
     };
   }
 
@@ -26,7 +29,7 @@ class NormalLoginForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    const { validateFields, resetFields } = this.props.form;
+    const { validateFields } = this.props.form;
 
     // The 'values' object contains all the values of the validated fields in our form
     validateFields(async (err, values) => {
@@ -36,29 +39,56 @@ class NormalLoginForm extends Component {
 
         this.setState({ isFetching: true });
 
-        const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_ENDPOINT}/login`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_BACKEND_ENDPOINT}/login`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, password })
+            }
+          );
+
+          const json = await response.json();
+
+          if (response.status >= 200 && response.status < 300) {
+            const {
+              access_token: { access_token },
+              refresh_token: { refresh_token }
+            } = json;
+
+            saveTokenInStorage(access_token, 'local', 'accessToken');
+            saveTokenInStorage(refresh_token, 'local', 'refreshToken');
+
+            const user = getUserFromToken(access_token);
+            setUser(user);
+          } else if (response.status >= 400 && response.status < 500) {
+            const { message } = json;
+
+            this.setState({
+              isFetching: false,
+              errorTitle: 'Fallo de inicio de sesión',
+              errorMsg: message,
+              hasError: true
+            });
           }
-        );
-
-        const json = await response.json();
-
-        if (response.status >= 200 && response.status < 300) {
-          const {
-            access_token: { access_token },
-            refresh_token: { refresh_token }
-          } = json;
-
-          const user = getUserFromToken(access_token);
-          setUser(user);
-        } else if (response.status >= 400 && response.status < 500) {
-          console.log(json);
+        } catch (error) {
+          this.setState({
+            isFetching: false,
+            errorTitle: 'Lo sentimos, fallo de inicio de sesión',
+            errorMsg: 'Por favor revisa tu conexión a Internet.',
+            hasError: true
+          });
         }
       }
+    });
+  };
+
+  closeErrorAlert = e => {
+    this.setState({
+      hasError: false,
+      errorTitle: undefined,
+      errorMsg: undefined
     });
   };
 
@@ -72,12 +102,31 @@ class NormalLoginForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { isFetching, isModalVisible } = this.state;
+    const {
+      isFetching,
+      isModalVisible,
+      errorTitle,
+      errorMsg,
+      hasError
+    } = this.state;
     return (
       <>
         {isModalVisible && <ForgotPassModal hideModal={this.hideModal} />}
 
         <GeneralContainer title='Inicia Sesión' width='500px'>
+          {hasError && (
+            <Alert
+              message={errorTitle}
+              description={errorMsg}
+              type='error'
+              closable
+              showIcon
+              banner
+              style={{ marginTop: '32px' }}
+              afterClose={this.closeErrorAlert}
+            />
+          )}
+
           <Form onSubmit={this.handleSubmit} style={{ paddingTop: '2rem' }}>
             <Form.Item>
               {getFieldDecorator('email', {
@@ -102,7 +151,7 @@ class NormalLoginForm extends Component {
                 />
               )}
             </Form.Item>
-            <Form.Item>
+            <Form.Item style={{ margin: '0px' }}>
               {getFieldDecorator('password', {
                 rules: [
                   {
@@ -126,12 +175,13 @@ class NormalLoginForm extends Component {
               )}
             </Form.Item>
             <Form.Item>
-              {getFieldDecorator('rememberEmail', {
-                valuePropName: 'checked',
-                initialValue: true
-              })(<Checkbox>Recordarme</Checkbox>)}
               <span
-                style={{ float: 'right', cursor: 'pointer', color: '#2A289A' }}
+                style={{
+                  float: 'right',
+                  cursor: 'pointer',
+                  color: '#2A289A',
+                  marginBottom: '16px'
+                }}
                 onClick={this.handleForgotPass}
               >
                 ¿Ha olvidado su contraseña?
@@ -139,6 +189,7 @@ class NormalLoginForm extends Component {
               <Button
                 type='primary'
                 htmlType='submit'
+                size='large'
                 loading={isFetching}
                 style={{ width: '100%', height: '34px' }}
               >

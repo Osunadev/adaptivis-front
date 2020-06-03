@@ -10,10 +10,10 @@ import CompleteQuizMaker from 'components/after-login-components/quiz-maker/comp
 import TeacherRequestsDataFetched from 'components/after-login-components/teacher-requests/teacher-requests-data-fetched.component';
 import SubjectsLandingPage from 'pages/after-login-pages/create-subjects/create-subjects.page';
 
-const AdminLanding = ({ user, history }) => {
+const AdminLanding = ({ user, history, setUser }) => {
   return (
     <div>
-      <AdminWithHeaderAndMenu user={user} history={history}>
+      <AdminWithHeaderAndMenu user={user} setUser={setUser} history={history}>
         <GlobalStyle bgColor='white' />
         <Switch>
           <Route

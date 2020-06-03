@@ -19,17 +19,26 @@ class ConfirmEmail extends Component {
 
   async componentDidMount() {
     const { confirmId } = this.state;
-    const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_ENDPOINT}/email/${confirmId}`,
-      { method: 'POST' }
-    );
 
-    const { message } = await response.json();
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_ENDPOINT}/email/${confirmId}`,
+        { method: 'POST' }
+      );
 
-    if (response.status >= 200 && response.status < 300) {
-      this.setState({ hasServerResponded: true, status: 'success', message });
-    } else if (response.status >= 400 && response.status < 500) {
-      this.setState({ hasServerResponded: true, status: 'error', message });
+      const { message } = await response.json();
+
+      if (response.status >= 200 && response.status < 300) {
+        this.setState({ hasServerResponded: true, status: 'success', message });
+      } else if (response.status >= 400 && response.status < 500) {
+        this.setState({ hasServerResponded: true, status: 'error', message });
+      }
+    } catch (error) {
+      this.setState({
+        hasServerResponded: true,
+        status: 'error',
+        message: 'Revisa tu conexión a internet.'
+      });
     }
   }
 

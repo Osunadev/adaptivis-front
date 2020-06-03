@@ -5,14 +5,14 @@ import TeacherLanding from 'pages/after-login-pages/teacher-landing/teacher-land
 import AdminLanding from 'pages/after-login-pages/admin-landing/admin-landing.page';
 import GlobalStyle from 'components/general-use-components/global-style/global-style.component';
 
-const AuthenticatedApp = ({ user }) => (
+const AuthenticatedApp = ({ user, setUser }) => (
   <div>
     <GlobalStyle bgColor='white' />
     {
       {
-        student: <StudentLanding user={user} />,
-        teacher: <TeacherLanding user={user} />,
-        admin: <AdminLanding user={user} />
+        student: <StudentLanding user={user} setUser={setUser} />,
+        teacher: <TeacherLanding user={user} setUser={setUser} />,
+        admin: <AdminLanding user={user} setUser={setUser} />
       }[user.role]
     }
   </div>
