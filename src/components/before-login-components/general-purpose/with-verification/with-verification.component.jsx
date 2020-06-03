@@ -4,7 +4,7 @@ import { Button } from 'antd';
 
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
 import { VERIFICATION_ENDPOINTS } from './with-verification.data';
-import LoadingWrapper from '../../../general-use-components/loading-wrapper/loading-wrapper';
+import LoadingWrapper from '../../../general-use-components/loading-wrapper/loading-wrapper.component';
 
 const withVerification = (FormComponent, verificationType) => {
   return class FormComponentwithVerification extends Component {

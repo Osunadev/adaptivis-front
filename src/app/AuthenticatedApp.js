@@ -13,7 +13,7 @@ const AuthenticatedApp = ({ user }) => (
         student: <StudentLanding user={user} />,
         teacher: <TeacherLanding user={user} />,
         admin: <AdminLanding user={user} />
-      }[user.type]
+      }[user.role]
     }
   </div>
 );

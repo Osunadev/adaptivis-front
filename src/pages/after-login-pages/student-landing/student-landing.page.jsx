@@ -11,13 +11,9 @@ import MyResultsPage from 'pages/after-login-pages/my-results/my-results.page';
 import UploadResultsPage from 'pages/after-login-pages/upload-results/upload-results.page';
 import StudentQuizVisualizer from 'components/after-login-components/student-quiz-visualizer/complete-quiz-visualizer/student-quiz-visualizer.component';
 
-import DemographicPreLandingPage from 'pages/after-login-pages/demographic-pre-landing/demographic-pre-landing.page';
-
 const StudentLanding = ({ user, history }) => {
   // If it's whether or not his/her first time accessing
-  return user.isFirstTimeAccess ? (
-    <DemographicPreLandingPage />
-  ) : (
+  return (
     <div>
       <StudentWithHeaderAndMenu user={user} history={history}>
         <Switch>

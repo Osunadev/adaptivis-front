@@ -8,7 +8,7 @@ import {
   forgotPassMsgs
 } from 'components/before-login-components/login/login-form/log-in.utils';
 
-import { emailRegEx } from 'utils/account-regex';
+import { emailRegEx } from 'utils/users/account-regex';
 
 class ForgotPassModal extends Component {
   constructor() {

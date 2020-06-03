@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
-import { Form, Icon, Input, Button, Radio, DatePicker } from 'antd';
+import LoadingWrapper from 'components/general-use-components/loading-wrapper/loading-wrapper.component';
+import { Form, Icon, Input, Button, Radio, DatePicker, Modal } from 'antd';
 
 const basicRules = requiredMsg => [
   {
@@ -40,80 +41,48 @@ class NormalRegisterForm extends Component {
     const { isTeacher } = this.state;
 
     // The 'values' object contains all the values of the validated fields in our form
-    validateFields((err, values) => {
+    validateFields(async (err, values) => {
+      // If every field passes the validations
       if (!err) {
-        // If every field passes the validations
-        const {
-          firstName,
-          secondName,
-          middleName,
-          lastName,
-          gender,
-          email,
-          password
-        } = values;
+        const { birthDay, studentId, professorId, ...generalValues } = values;
+        const urlEndpoint = `${process.env.REACT_APP_BACKEND_ENDPOINT}/${
+          isTeacher ? 'teacher' : 'student'
+        }`;
+
+        const userSpecificValues = {};
 
         if (isTeacher) {
-          const urlTeacherEndpoint =
-            'http://ec2-18-234-39-40.compute-1.amazonaws.com/api/v1/register/professor';
-          const { professorId } = values;
-
-          this.setState({ isLoading: false });
-
-          fetch(urlTeacherEndpoint, {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              firstName,
-              secondName,
-              middleName,
-              lastName,
-              gender,
-              email,
-              password,
-              professorId
-            })
-          })
-            .then(response => response.json())
-            .then(registerMsg => {
-              console.log(registerMsg);
-              this.setState({ isLoading: false });
-              alert(registerMsg);
-              resetFields();
-            })
-            .catch(error => {
-              this.setState({ isLoading: false });
-              console.log(error);
-            });
+          userSpecificValues.professorId = professorId;
         } else {
-          const { studentId } = values;
-          const birthDay = values.birthDay.format('YYYY-MM-DD');
-
-          const urlStudentEndpoint =
-            'http://ec2-18-234-39-40.compute-1.amazonaws.com/api/v1/register/student';
-
-          fetch(urlStudentEndpoint, {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              firstName,
-              secondName,
-              middleName,
-              lastName,
-              birthDay,
-              gender,
-              email,
-              password,
-              studentId
-            })
-          })
-            .then(response => response.json())
-            .then(registerMsg => {
-              console.log(registerMsg);
-              resetFields();
-            })
-            .catch(error => console.log(error));
+          userSpecificValues.studentId = studentId;
+          userSpecificValues.birthDay = birthDay.format('YYYY-MM-DD');
         }
+
+        this.setState({ isLoading: true });
+
+        const response = await fetch(urlEndpoint, {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...generalValues, ...userSpecificValues })
+        });
+
+        const json = await response.json();
+
+        this.setState({ isLoading: false }, () => {
+          if (response.status >= 200 && response.status < 300) {
+            Modal.success({
+              title: 'Usuario creado exitosamente',
+              content: json.message
+            });
+          } else if (response.status >= 400 && response.status < 500) {
+            Modal.error({
+              title: 'Error al registrar usuario',
+              content: json.message
+            });
+          }
+
+          resetFields();
+        });
       }
     });
   };
@@ -135,224 +104,225 @@ class NormalRegisterForm extends Component {
     const { isLoading, isTeacher } = this.state;
 
     return (
-      <GeneralContainer title='Registro de cuenta'>
-        <Form
-          onSubmit={this.handleSubmit}
-          hideRequiredMark
-          style={{ paddingTop: '2rem' }}
-          layout='horizontal'
-        >
-          <Form.Item>
-            {getFieldDecorator('firstName', {
-              rules: basicRules('nombre')
-            })(
-              <Input
-                prefix={
-                  <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                placeholder='Primer Nombre'
-                size='large'
-              />
-            )}
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator('secondName', {
-              rules: [
-                {
-                  whitespace: true,
-                  message: 'Campo vacío, no introduzca espacios en blanco.'
-                }
-              ]
-            })(
-              <Input
-                prefix={
-                  <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                placeholder='Segundo Nombre'
-                size='large'
-              />
-            )}
-          </Form.Item>
-
-          <Form.Item>
-            {getFieldDecorator('middleName', {
-              rules: basicRules('apellido paterno')
-            })(
-              <Input
-                prefix={
-                  <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                placeholder='Apellido Paterno'
-                size='large'
-              />
-            )}
-          </Form.Item>
-
-          <Form.Item>
-            {getFieldDecorator('lastName', {
-              rules: basicRules('apellido materno')
-            })(
-              <Input
-                prefix={
-                  <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                placeholder='Apellido Materno'
-                size='large'
-              />
-            )}
-          </Form.Item>
-
-          <Form.Item>
-            {getFieldDecorator('gender', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Por favor seleccione alguna opción'
-                }
-              ]
-            })(
-              <Radio.Group size='large'>
-                <Radio value='M'>Mujer</Radio>
-                <Radio value='F'>Hombre</Radio>
-                <Radio value='null'>Prefiero no responder</Radio>
-              </Radio.Group>
-            )}
-          </Form.Item>
-
-          {// it only renders if it's we're in the student register form
-          !isTeacher && (
+      <LoadingWrapper isLoading={isLoading} title='Registrando usuario' large>
+        <GeneralContainer title='Registro de cuenta'>
+          <Form
+            onSubmit={this.handleSubmit}
+            hideRequiredMark
+            style={{ paddingTop: '2rem' }}
+            layout='horizontal'
+          >
             <Form.Item>
-              {getFieldDecorator('birthDay', {
-                rules: [
-                  {
-                    type: 'object',
-                    required: true,
-                    message: 'Por favor introduce tu fecha de nacimiento'
-                  }
-                ]
+              {getFieldDecorator('firstName', {
+                rules: basicRules('nombre')
               })(
-                <DatePicker
-                  format='YYYY-MM-DD'
+                <Input
+                  prefix={
+                    <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder='Primer Nombre'
                   size='large'
-                  placeholder='Fecha de nacimiento'
-                  style={{ width: '100%' }}
                 />
               )}
             </Form.Item>
-          )}
+            <Form.Item>
+              {getFieldDecorator('secondName', {
+                rules: [
+                  {
+                    whitespace: true,
+                    message: 'Campo vacío, no introduzca espacios en blanco.'
+                  }
+                ]
+              })(
+                <Input
+                  prefix={
+                    <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder='Segundo Nombre'
+                  size='large'
+                />
+              )}
+            </Form.Item>
 
-          <Form.Item>
-            {getFieldDecorator(isTeacher ? 'professorId' : 'studentId', {
-              rules: [
-                ...basicRules(
-                  `${
-                    isTeacher ? 'número de empleado' : 'matrícula estudiantil'
-                  }`
-                ),
-                {
-                  pattern: /\d/,
-                  message: 'No introduzca texto, introduzca números'
-                }
-              ]
-            })(
-              <Input
-                prefix={
-                  <Icon type='number' style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                placeholder={
-                  isTeacher ? 'Número de empleado' : 'Matrícula de estudiante'
-                }
-                allowClear
-                size='large'
-              />
+            <Form.Item>
+              {getFieldDecorator('middleName', {
+                rules: basicRules('apellido paterno')
+              })(
+                <Input
+                  prefix={
+                    <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder='Apellido Paterno'
+                  size='large'
+                />
+              )}
+            </Form.Item>
+
+            <Form.Item>
+              {getFieldDecorator('lastName', {
+                rules: basicRules('apellido materno')
+              })(
+                <Input
+                  prefix={
+                    <Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder='Apellido Materno'
+                  size='large'
+                />
+              )}
+            </Form.Item>
+
+            <Form.Item>
+              {getFieldDecorator('gender', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Por favor seleccione alguna opción'
+                  }
+                ]
+              })(
+                <Radio.Group size='large'>
+                  <Radio value='M'>Mujer</Radio>
+                  <Radio value='F'>Hombre</Radio>
+                  <Radio value='null'>Prefiero no responder</Radio>
+                </Radio.Group>
+              )}
+            </Form.Item>
+
+            {// it only renders if it's we're in the student register form
+            !isTeacher && (
+              <Form.Item>
+                {getFieldDecorator('birthDay', {
+                  rules: [
+                    {
+                      type: 'object',
+                      required: true,
+                      message: 'Por favor introduce tu fecha de nacimiento'
+                    }
+                  ]
+                })(
+                  <DatePicker
+                    format='YYYY-MM-DD'
+                    size='large'
+                    placeholder='Fecha de nacimiento'
+                    style={{ width: '100%' }}
+                  />
+                )}
+              </Form.Item>
             )}
-          </Form.Item>
 
-          <Form.Item hasFeedback>
-            {getFieldDecorator('email', {
-              rules: [
-                {
-                  pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@uabc.edu.mx$/,
-                  message: '¡Correo uabc inválido!'
-                },
-                {
-                  required: true,
-                  message: 'Por favor introduzca un correo uabc válido'
-                }
-              ]
-            })(
-              <Input
-                prefix={
-                  <Icon type='mail' style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                placeholder='Correo institucional uabc'
-                size='large'
-              />
-            )}
-          </Form.Item>
+            <Form.Item>
+              {getFieldDecorator(isTeacher ? 'professorId' : 'studentId', {
+                rules: [
+                  ...basicRules(
+                    `${
+                      isTeacher ? 'número de empleado' : 'matrícula estudiantil'
+                    }`
+                  ),
+                  {
+                    pattern: /\d/,
+                    message: 'No introduzca texto, introduzca números'
+                  }
+                ]
+              })(
+                <Input
+                  prefix={
+                    <Icon type='number' style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder={
+                    isTeacher ? 'Número de empleado' : 'Matrícula de estudiante'
+                  }
+                  allowClear
+                  size='large'
+                />
+              )}
+            </Form.Item>
 
-          <Form.Item hasFeedback>
-            {getFieldDecorator('password', {
-              rules: [
-                {
-                  pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,50}$/,
-                  message:
-                    'Clave de 8 caracteres de mínimo, 1 número, 1 letra mayúscula y una minúscula'
-                },
-                {
-                  required: true,
-                  message: 'Por favor introduzca su contraseña'
-                }
-              ]
-            })(
-              <Input.Password
-                prefix={
-                  <Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                placeholder='Contraseña'
-                size='large'
-              />
-            )}
-          </Form.Item>
+            <Form.Item hasFeedback>
+              {getFieldDecorator('email', {
+                rules: [
+                  {
+                    pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@uabc.edu.mx$/,
+                    message: '¡Correo uabc inválido!'
+                  },
+                  {
+                    required: true,
+                    message: 'Por favor introduzca un correo uabc válido'
+                  }
+                ]
+              })(
+                <Input
+                  prefix={
+                    <Icon type='mail' style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder='Correo institucional uabc'
+                  size='large'
+                />
+              )}
+            </Form.Item>
 
-          <Form.Item hasFeedback>
-            {getFieldDecorator('confirmPassword', {
-              rules: [
-                {
-                  pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,50}$/,
-                  message:
-                    'Clave de 8 caracteres de mínimo, 1 número, 1 letra mayúscula y una minúscula'
-                },
-                {
-                  required: true,
-                  message: 'Por favor introduzca su contraseña'
-                },
-                {
-                  validator: this.compareToFirstPassword
-                }
-              ]
-            })(
-              <Input.Password
-                prefix={
-                  <Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                placeholder='Confirmar contraseña'
-                size='large'
-              />
-            )}
-          </Form.Item>
+            <Form.Item hasFeedback>
+              {getFieldDecorator('password', {
+                rules: [
+                  {
+                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,50}$/,
+                    message:
+                      'Clave de 8 caracteres de mínimo, 1 número, 1 letra mayúscula y una minúscula'
+                  },
+                  {
+                    required: true,
+                    message: 'Por favor introduzca su contraseña'
+                  }
+                ]
+              })(
+                <Input.Password
+                  prefix={
+                    <Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder='Contraseña'
+                  size='large'
+                />
+              )}
+            </Form.Item>
 
-          <Button
-            type='primary'
-            htmlType='submit'
-            loading={isLoading}
-            style={{ width: '100%', marginBottom: '2rem' }}
-            size='large'
-          >
-            {`Crear cuenta de ${isTeacher ? 'profesor' : 'estudiante'}`}
-          </Button>
-        </Form>
-      </GeneralContainer>
+            <Form.Item hasFeedback>
+              {getFieldDecorator('confirmPassword', {
+                rules: [
+                  {
+                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,50}$/,
+                    message:
+                      'Clave de 8 caracteres de mínimo, 1 número, 1 letra mayúscula y una minúscula'
+                  },
+                  {
+                    required: true,
+                    message: 'Por favor introduzca su contraseña'
+                  },
+                  {
+                    validator: this.compareToFirstPassword
+                  }
+                ]
+              })(
+                <Input.Password
+                  prefix={
+                    <Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder='Confirmar contraseña'
+                  size='large'
+                />
+              )}
+            </Form.Item>
+
+            <Button
+              type='primary'
+              htmlType='submit'
+              style={{ width: '100%', marginBottom: '2rem' }}
+              size='large'
+            >
+              {`Crear cuenta de ${isTeacher ? 'profesor' : 'estudiante'}`}
+            </Button>
+          </Form>
+        </GeneralContainer>
+      </LoadingWrapper>
     );
   }
 }

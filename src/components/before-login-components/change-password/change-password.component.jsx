@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { emailRegEx, passwordRegEx } from 'utils/account-regex';
+import { emailRegEx, passwordRegEx } from 'utils/users/account-regex';
 import { VERIFICATION_TYPES } from 'components/before-login-components/general-purpose/with-verification/with-verification.data';
 
 import { Button, Input, Tooltip, Icon } from 'antd';

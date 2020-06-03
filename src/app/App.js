@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { getCurrentUser } from 'utils/user-examples';
+import { getCurrentUser } from 'utils/users/user-examples';
 
 import AuthenticatedApp from './AuthenticatedApp';
 import UnauthenticatedApp from './UnauthenticatedApp';

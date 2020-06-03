@@ -4,7 +4,7 @@ import { Menu, Icon } from 'antd';
 
 import WithHeaderAndMenu from 'components/after-login-components/general-purpose/with-header-and-menu/with-header-and-menu.component';
 
-import { USER_TYPES } from 'utils/user-types';
+import { USER_TYPES } from 'utils/users/user-types';
 
 const AdminMenuGroup = ({ onMenuItemClick }) => {
   return (

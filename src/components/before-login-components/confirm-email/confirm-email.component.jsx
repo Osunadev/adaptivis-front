@@ -1,80 +1,73 @@
 import React, { Component } from 'react';
 
-import { emailRegEx } from 'utils/account-regex';
-import { VERIFICATION_TYPES } from 'components/before-login-components/general-purpose/with-verification/with-verification.data';
-
-import { Button, Input, Tooltip, Icon } from 'antd';
+import { Button, Spin, Icon } from 'antd';
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
-import withVerification from 'components/before-login-components/general-purpose/with-verification/with-verification.component';
+
+const antIcon = <Icon type='loading' style={{ fontSize: '42px' }} spin />;
 
 class ConfirmEmail extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: '',
-      isValidEmail: false,
-      formTitle: 'Confirmación de Cuenta',
-      btnTitle: 'Enviar'
+      confirmId: props.match.params.id,
+      status: undefined,
+      message: undefined,
+      hasServerResponded: false
     };
   }
 
-  handleEmailInput = e => {
-    const emailInput = e.target.value;
-    const validEmail = emailRegEx.test(emailInput);
+  async componentDidMount() {
+    const { confirmId } = this.state;
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_ENDPOINT}/email/${confirmId}`,
+      { method: 'POST' }
+    );
 
-    this.setState({
-      isValidEmail: validEmail,
-      email: emailInput
-    });
-  };
+    const { message } = await response.json();
+
+    if (response.status >= 200 && response.status < 300) {
+      this.setState({ hasServerResponded: true, status: 'success', message });
+    } else if (response.status >= 400 && response.status < 500) {
+      this.setState({ hasServerResponded: true, status: 'error', message });
+    }
+  }
 
   render() {
-    const { email, isValidEmail, formTitle, btnTitle } = this.state;
-    const { handleFormSend } = this.props;
+    const { hasServerResponded, status, message } = this.state;
 
     return (
-      <GeneralContainer width='700px' height='220px' title={formTitle} rounded>
-        <Input
-          placeholder='Introduce de nuevo tu correo institucional uabc'
-          prefix={<Icon type='mail' style={{ color: 'rgba(0,0,0,.25)' }} />}
-          suffix={
-            <Tooltip title='Se te solicita nuevamente tu correo por medidas de seguridad.'>
-              <Icon type='info-circle' style={{ color: 'rgba(0,0,0,.45)' }} />
-            </Tooltip>
-          }
-          addonBefore={
-            <Tooltip
-              placement='rightTop'
-              title='Introduzca un correo uabc válido'
+      <GeneralContainer
+        width='700px'
+        height='220px'
+        title='Confirmación de Cuenta'
+        rounded
+      >
+        {hasServerResponded ? (
+          <>
+            <p>{message}</p>
+            <Button
+              type='primary'
+              style={{
+                width: '30%',
+                textAlign: 'center',
+                marginTop: '16px'
+              }}
+              onClick={() => {
+                this.props.history.push(status ? '/' : '/login');
+              }}
             >
-              <Icon
-                type='check-circle'
-                theme='twoTone'
-                twoToneColor={`${isValidEmail ? '#52c41a' : 'red'}`}
-              />
-            </Tooltip>
-          }
-          size='large'
-          onChange={this.handleEmailInput}
-          value={email}
-          style={{ margin: '8px' }}
-        />
-        <Button
-          type='primary'
-          disabled={!isValidEmail}
-          style={{
-            width: '30%',
-            textAlign: 'center',
-            marginTop: '16px'
-          }}
-          onClick={() => handleFormSend({ email })}
-        >
-          {btnTitle}
-        </Button>
+              {status === 'success'
+                ? 'Regresar al Inicio de Sesión'
+                : 'Regresar al Inicio'}
+            </Button>
+          </>
+        ) : (
+          <Spin tip='Cargando resultados' indicator={antIcon} />
+        )}
       </GeneralContainer>
     );
   }
 }
 
-export default withVerification(ConfirmEmail, VERIFICATION_TYPES.CONFIRM_EMAIL);
+export default ConfirmEmail;

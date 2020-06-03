@@ -6,7 +6,7 @@ import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
 import ForgotPassModal from 'components/before-login-components/login/forgot-pass-modal/forgot-pass-modal.component';
 
-import { admin, teacher, student } from 'utils/user-examples';
+import { getUserFromToken } from 'utils/tokens/jwt-utils';
 
 class NormalLoginForm extends Component {
   static propTypes = {
@@ -29,37 +29,35 @@ class NormalLoginForm extends Component {
     const { validateFields, resetFields } = this.props.form;
 
     // The 'values' object contains all the values of the validated fields in our form
-    validateFields((err, values) => {
+    validateFields(async (err, values) => {
       if (!err) {
         const { email, password } = values;
         const { setUser } = this.props;
 
-        let user = null;
-
-        switch (email) {
-          case 'admin@uabc.edu.mx':
-            user = admin;
-            break;
-          case 'student@uabc.edu.mx':
-            user = student;
-            break;
-          case 'teacher@uabc.edu.mx':
-            user = teacher;
-            break;
-          case 'studentfirsttime@uabc.edu.mx':
-            user = { ...student, isFirstTimeAccess: true };
-            break;
-          default:
-            user = 'null';
-        }
-
         this.setState({ isFetching: true });
 
-        setTimeout(() => {
-          setUser(user);
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_ENDPOINT}/login`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          }
+        );
 
-          this.setState({ isFetching: false });
-        }, 1000);
+        const json = await response.json();
+
+        if (response.status >= 200 && response.status < 300) {
+          const {
+            access_token: { access_token },
+            refresh_token: { refresh_token }
+          } = json;
+
+          const user = getUserFromToken(access_token);
+          setUser(user);
+        } else if (response.status >= 400 && response.status < 500) {
+          console.log(json);
+        }
       }
     });
   };

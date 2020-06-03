@@ -28,11 +28,7 @@ const WithHeaderAndMenu = (MenuGroup, userType) => ({
           background: '#2D2D2D'
         }}
       >
-        <UserHeaderInfo
-          userName={user.name}
-          userId={user.id}
-          imgSrc={user.imgUrl}
-        />
+        <UserHeaderInfo userName={user.name} userId={user.id} imgSrc={''} />
       </Header>
       <Layout>
         <Sider
