@@ -44,15 +44,15 @@ class NormalRegisterForm extends Component {
     validateFields(async (err, values) => {
       // If every field passes the validations
       if (!err) {
-        const { birthDay, studentId, professorId, ...generalValues } = values;
+        const { birthDay, studentId, employeeId, ...generalValues } = values;
         const urlEndpoint = `${process.env.REACT_APP_BACKEND_ENDPOINT}/${
-          isTeacher ? 'teacher' : 'student'
+          isTeacher ? 'professor' : 'student'
         }`;
 
         const userSpecificValues = {};
 
         if (isTeacher) {
-          userSpecificValues.professorId = professorId;
+          userSpecificValues.employeeId = employeeId;
         } else {
           userSpecificValues.studentId = studentId;
           userSpecificValues.birthDay = birthDay.format('YYYY-MM-DD');
@@ -222,7 +222,7 @@ class NormalRegisterForm extends Component {
             )}
 
             <Form.Item>
-              {getFieldDecorator(isTeacher ? 'professorId' : 'studentId', {
+              {getFieldDecorator(isTeacher ? 'employeeId' : 'studentId', {
                 rules: [
                   ...basicRules(
                     `${
