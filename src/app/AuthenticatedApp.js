@@ -11,7 +11,7 @@ const AuthenticatedApp = ({ user, setUser }) => (
     {
       {
         student: <StudentLanding user={user} setUser={setUser} />,
-        teacher: <TeacherLanding user={user} setUser={setUser} />,
+        professor: <TeacherLanding user={user} setUser={setUser} />,
         admin: <AdminLanding user={user} setUser={setUser} />
       }[user.role]
     }

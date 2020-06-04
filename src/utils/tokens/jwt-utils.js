@@ -128,7 +128,7 @@ export const logOutUser = async () => {
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${refresh_token}`,
+          Authorization: `Bearer ${access_token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ access_token, refresh_token })
