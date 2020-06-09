@@ -123,17 +123,14 @@ export const logOutUser = async () => {
 
   if (!isTokenExpired(refresh_token)) {
     // If the refresh_token hasn't expired
-    const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_ENDPOINT}/logout`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ access_token, refresh_token })
-      }
-    );
+    await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/logout`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ access_token, refresh_token })
+    });
   }
 
   // If refresh_token has expired, we shouldn't bother for sending it to the backend

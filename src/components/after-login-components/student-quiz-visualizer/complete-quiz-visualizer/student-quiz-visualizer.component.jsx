@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 import StudentQuizVisualizerHeader from '../quiz-visualizer-header/student-quiz-visualizer-header.component';
 
@@ -9,10 +9,10 @@ const StudentQuizVisualizer = () => {
   // JSX
   return (
     <div>
-      <StudentQuizVisualizerHeader/>
-      <StudentQuizVisualizerSection/>
-      <StudentQuizVisualizerSection/>
-      <StudentQuizVisualizerSection/>
+      <StudentQuizVisualizerHeader />
+      <StudentQuizVisualizerSection />
+      <StudentQuizVisualizerSection />
+      <StudentQuizVisualizerSection />
     </div>
   );
 };

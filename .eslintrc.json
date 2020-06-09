@@ -26,6 +26,8 @@
     "import/no-unresolved": "warn",
     "no-plusplus": "off",
     "default-case": "off",
-    "prefer-template": "off"
+    "prefer-template": "off",
+    "no-await-in-loop": "off",
+    "no-restricted-syntax": "off"
   }
 }

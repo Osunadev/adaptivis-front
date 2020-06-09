@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
 import TitledWrapper from 'components/after-login-components/general-purpose/titled-wrapper/titled-wrapper.component';
+import { getTokenFromStorage } from 'utils/tokens/jwt-utils';
 
-import { Table, Button } from 'antd';
+import { Table, Button, message } from 'antd';
 
 const columns = [
   {
@@ -15,7 +16,9 @@ const columns = [
   },
   {
     title: 'Fecha de solicitud',
-    dataIndex: 'date'
+    dataIndex: 'date',
+    sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    sortDirections: ['descend', 'ascend']
   }
 ];
 
@@ -32,46 +35,55 @@ class TeacherRequests extends Component {
     };
   }
 
-  updateTeacherRequests = status => {
-    this.setState({ isUpdatingRequests: true });
+  updateTeacherRequests = async status => {
+    this.setState({
+      isUpdatingRequests: true
+    });
 
+    // These selectedRowKeys are the requests_ids
     const { teacherRequests, selectedRowKeys } = this.state;
 
-    const selectedEmailRequests = selectedRowKeys.map(
-      rowId => teacherRequests[rowId].email
-    );
+    const accessToken = getTokenFromStorage('accessToken', 'local');
 
-    console.log(selectedEmailRequests);
+    try {
+      const reqPromises = selectedRowKeys.map(reqKey =>
+        fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/professor/requests`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            request_id: String(reqKey),
+            set_status: status // APPROVED o DENIED
+          })
+        })
+      );
 
-    const nonSelectedRequests = teacherRequests.filter(
-      (request, id) => !selectedRowKeys.includes(id)
-    );
+      for await (const res of reqPromises) {
+        const data = await res.json();
 
-    const updateRequestsEndpoint =
-      'http://ec2-18-234-39-40.compute-1.amazonaws.com/api/v1/update/request';
+        if (res.status === 200) {
+          message.info(data.message);
+        }
+      }
 
-    // fetch(updateRequestsEndpoint, {
-    //   method: 'post',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: `Bearer ${getJwt()}`
-    //   },
-    //   body: JSON.stringify({ emails: selectedEmailRequests, status })
-    // })
-    //   .then(res => res.json())
-    //   .then(msg => {
-    //     console.log(msg);
+      // Removing the settled requests by filtering
+      const nonSelectedRequests = teacherRequests.filter(
+        ({ key }) => !selectedRowKeys.includes(key)
+      );
 
-    //     this.setState({
-    //       isUpdatingRequests: false,
-    //       selectedRowKeys: [],
-    //       teacherRequests: nonSelectedRequests
-    //     });
-    //   })
-    //   .catch(error => {
-    //     console.log(error.message);
-    //     this.setState({ isUpdatingRequests: false });
-    //   });
+      this.setState({
+        isUpdatingRequests: false,
+        selectedRowKeys: [],
+        teacherRequests: nonSelectedRequests
+      });
+    } catch (error) {
+      console.log(error);
+      this.setState({
+        isUpdatingRequests: false
+      });
+    }
   };
 
   onSelectChange = selectedRowKeys => {
@@ -110,7 +122,7 @@ class TeacherRequests extends Component {
             type='secondary'
             size='large'
             style={{ margin: '0 8px' }}
-            onClick={() => this.updateTeacherRequests('DENEGADO')}
+            onClick={() => this.updateTeacherRequests('DENIED')}
             disabled={!hasSelected}
             loading={isUpdatingRequests}
           >
@@ -120,7 +132,7 @@ class TeacherRequests extends Component {
             type='primary'
             size='large'
             style={{ margin: '0 8px' }}
-            onClick={() => this.updateTeacherRequests('APROBADO')}
+            onClick={() => this.updateTeacherRequests('APPROVED')}
             disabled={!hasSelected}
             loading={isUpdatingRequests}
           >
