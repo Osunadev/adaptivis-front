@@ -1,3 +1,4 @@
+// This is an example of the motivation questionnaire structure
 const motivationQuestionnaire = {
   quizTitle: 'Motivation Questionnaire',
   sections: [

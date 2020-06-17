@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
+import { setCurrentUser } from 'redux/user-auth/user-auth.actions';
+import { selectCurrentUser } from 'redux/user-auth/user-auth.selectors';
 
 import AuthenticatedApp from './AuthenticatedApp';
 import UnauthenticatedApp from './UnauthenticatedApp';
@@ -6,33 +11,26 @@ import UnauthenticatedApp from './UnauthenticatedApp';
 import { getUserFromStorage } from '../utils/tokens/jwt-utils';
 
 class App extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      currentUser: null
-    };
-  }
-
   async componentDidMount() {
+    const { setUser } = this.props;
     const currentUser = await getUserFromStorage();
 
-    this.setState({ currentUser });
+    setUser(currentUser);
   }
 
-  setUser = user => {
-    this.setState({ currentUser: user });
-  };
-
   render() {
-    const { currentUser } = this.state;
+    const { currentUser } = this.props;
 
-    return currentUser ? (
-      <AuthenticatedApp user={currentUser} setUser={this.setUser} />
-    ) : (
-      <UnauthenticatedApp setUser={this.setUser} />
-    );
+    return currentUser ? <AuthenticatedApp /> : <UnauthenticatedApp />;
   }
 }
 
-export default App;
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
+});
+
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setCurrentUser(user))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

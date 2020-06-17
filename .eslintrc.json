@@ -28,6 +28,8 @@
     "default-case": "off",
     "prefer-template": "off",
     "no-await-in-loop": "off",
-    "no-restricted-syntax": "off"
+    "no-restricted-syntax": "off",
+    "dot-notation": "warn",
+    "no-lonely-if": "off"
   }
 }

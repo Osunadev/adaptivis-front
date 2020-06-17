@@ -8,7 +8,7 @@ import { logOutUser } from 'utils/tokens/jwt-utils';
 const { Header, Content, Sider } = Layout;
 
 const WithHeaderAndMenu = (MenuGroup, userType) => ({
-  user,
+  currentUser,
   setUser,
   history,
   children
@@ -38,7 +38,10 @@ const WithHeaderAndMenu = (MenuGroup, userType) => ({
           background: '#2D2D2D'
         }}
       >
-        <UserHeaderInfo userName={user.fullName} userId={user.id} />
+        <UserHeaderInfo
+          userName={currentUser.fullName}
+          userId={currentUser.id}
+        />
       </Header>
       <Layout>
         <Sider

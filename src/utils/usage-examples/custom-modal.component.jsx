@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Modal } from 'antd';
 
-class CustomModal extends React.Component {
+class CustomModal extends Component {
   constructor() {
     super();
 

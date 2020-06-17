@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import QuizSectionHeader from 'components/after-login-components/quiz-maker/quiz-section-header/quiz-section-header.component';
 import QuizSectionDescription from 'components/after-login-components/quiz-maker/quiz-section-description/quiz-section-description.component';
@@ -116,50 +116,46 @@ const QuizSectionMaker = ({ section, sectionId, ...sectionHandlers }) => {
             />
           );
         }
+        /* if (itemType === 'question') */
+        const { questionType } = item;
 
-        if (itemType === 'question') {
-          const { questionType } = item;
+        // General props for our question component
+        const questionProps = {
+          key: itemIdx,
+          title: title,
+          questionId: itemIdx,
+          questionType: questionType,
+          handleChange: handleOnChangeItem,
+          handleDelete: handleOnDeleteItem,
+          changeQuestionType: changeQuestionType
+        };
 
-          // General props for our question component
-          const questionProps = {
-            key: itemIdx,
-            title: title,
-            questionId: itemIdx,
-            questionType: questionType,
-            handleChange: handleOnChangeItem,
-            handleDelete: handleOnDeleteItem,
-            changeQuestionType: changeQuestionType
-          };
+        // Particular Props for the specified questionType
+        const particularProps = {};
 
-          // Particular Props for the specified questionType
-          const particularProps = {};
+        if (questionType === 'likert') {
+          particularProps.changeTopScale = changeLikertTopScale;
+          particularProps.topScale = item.topScale;
+          particularProps.leftText = item.leftText;
+          particularProps.rightText = item.rightText;
+        } else if (
+          questionType === 'multiple' ||
+          questionType === 'checkboxgrid'
+        ) {
+          particularProps.options = item.options;
 
-          if (questionType === 'likert') {
-            particularProps.changeTopScale = changeLikertTopScale;
-            particularProps.topScale = item.topScale;
-            particularProps.leftText = item.leftText;
-            particularProps.rightText = item.rightText;
-          } else if (
-            questionType === 'multiple' ||
-            questionType === 'checkboxgrid'
-          ) {
-            particularProps.options = item.options;
-
-            if (questionType === 'checkboxgrid') {
-              particularProps.leftColumnText = item.leftColumnText;
-              particularProps.rightColumnText = item.rightColumnText;
-              particularProps.handleGridOptionChange = handleGridOptionChange;
-            } else {
-              particularProps.handleOptionChange = handleQuestionOptionChange;
-            }
-
-            particularProps.handleAddOption = addQuestionOption;
-            particularProps.handleDeleteOption = deleteQuestionOption;
+          if (questionType === 'checkboxgrid') {
+            particularProps.leftColumnText = item.leftColumnText;
+            particularProps.rightColumnText = item.rightColumnText;
+            particularProps.handleGridOptionChange = handleGridOptionChange;
+          } else {
+            particularProps.handleOptionChange = handleQuestionOptionChange;
           }
-          return (
-            <QuizSectionQuestion {...questionProps} {...particularProps} />
-          );
+
+          particularProps.handleAddOption = addQuestionOption;
+          particularProps.handleDeleteOption = deleteQuestionOption;
         }
+        return <QuizSectionQuestion {...questionProps} {...particularProps} />;
       })}
 
       <AddButtonsContainer>

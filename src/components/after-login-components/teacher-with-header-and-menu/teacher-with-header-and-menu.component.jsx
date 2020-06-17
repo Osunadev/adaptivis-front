@@ -1,10 +1,15 @@
 import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { withRouter } from 'react-router-dom';
 
 import { Menu, Icon } from 'antd';
+import withHeaderAndMenu from 'components/after-login-components/general-purpose/with-header-and-menu/with-header-and-menu.component';
 
-import WithHeaderAndMenu from 'components/after-login-components/general-purpose/with-header-and-menu/with-header-and-menu.component';
-
-import { USER_TYPES } from 'utils/users/user-types';
+import { USER_TYPES } from 'data/users/user-types';
+import { setCurrentUser } from 'redux/user-auth/user-auth.actions';
+import { selectCurrentUser } from 'redux/user-auth/user-auth.selectors';
 
 const TeacherMenuGroup = ({ onMenuItemClick }) => {
   return (
@@ -46,4 +51,15 @@ const TeacherMenuGroup = ({ onMenuItemClick }) => {
   );
 };
 
-export default WithHeaderAndMenu(TeacherMenuGroup, USER_TYPES.TEACHER);
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
+});
+
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setCurrentUser(user))
+});
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter
+)(withHeaderAndMenu(TeacherMenuGroup, USER_TYPES.TEACHER));

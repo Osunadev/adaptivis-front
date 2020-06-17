@@ -1,10 +1,15 @@
 import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { withRouter } from 'react-router-dom';
 
 import { Menu, Icon } from 'antd';
+import withHeaderAndMenu from 'components/after-login-components/general-purpose/with-header-and-menu/with-header-and-menu.component';
 
-import WithHeaderAndMenu from 'components/after-login-components/general-purpose/with-header-and-menu/with-header-and-menu.component';
-
-import { USER_TYPES } from 'utils/users/user-types';
+import { USER_TYPES } from 'data/users/user-types';
+import { setCurrentUser } from 'redux/user-auth/user-auth.actions';
+import { selectCurrentUser } from 'redux/user-auth/user-auth.selectors';
 
 const StudentMenuGroup = ({ onMenuItemClick }) => {
   return (
@@ -50,4 +55,18 @@ const StudentMenuGroup = ({ onMenuItemClick }) => {
   );
 };
 
-export default WithHeaderAndMenu(StudentMenuGroup, USER_TYPES.STUDENT);
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
+});
+
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setCurrentUser(user))
+});
+
+// We are basically calling first a HOC withHeaderAndMenu to create a
+// studentWithHeaderAndMenu component and then we provide with the routerProps
+// and with the currentUser object and setUser dispatch method
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter
+)(withHeaderAndMenu(StudentMenuGroup, USER_TYPES.STUDENT));

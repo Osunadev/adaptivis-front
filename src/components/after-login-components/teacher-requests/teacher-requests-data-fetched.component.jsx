@@ -1,38 +1,35 @@
 import React, { Component } from 'react';
 import { Alert } from 'antd';
 
+import { easyFetch } from 'utils/requests/requests-utils';
+
 import withSpinner from 'components/general-use-components/with-spinner/with-spinner.component';
-import { getTokenFromStorage } from 'utils/tokens/jwt-utils';
 import TeacherRequests from './teacher-requests.component';
 
 const TeacherRequestsWithSpinner = withSpinner(TeacherRequests);
 
 async function getTeacherRequests() {
-  // Mocking the actual data
-  const accessToken = getTokenFromStorage('accessToken', 'local');
-
   const teachersReqArray = [];
   let teacherRequest;
   let pageIdx = 1;
 
+  // Creating a custom fetch function
+  const customFetch = easyFetch('get', true);
+
   do {
-    const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_ENDPOINT}/professor/requests?type=PENDING&per_page=10&page=${pageIdx}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        }
-      }
+    const { body, status, error } = await customFetch(
+      'professor/requests',
+      `type=PENDING&per_page=10&page=${pageIdx}`
     );
 
-    if (response.status !== 200) throw new Error();
+    if (status !== 200) throw new Error();
 
-    teacherRequest = await response.json();
+    teacherRequest = body;
 
     if (teacherRequest.resultSize > 0) {
       const formattedResults = teacherRequest.results.map(
         ({ email, employeeId, requestDate, request_id, ...namesObj }) => {
+          // Every teacher request item has a fullName, date and email property
           return {
             fullName: Object.values(namesObj).join(' '),
             date: requestDate,

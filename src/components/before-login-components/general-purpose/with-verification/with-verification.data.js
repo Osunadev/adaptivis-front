@@ -1,6 +1,6 @@
-export const VERIFICATION_ENDPOINTS = {
-  CONFIRM_EMAIL: 'http://localhost:5000/api/confirm-email',
-  CHANGE_PASSWORD: 'http://localhost:5000/api/change-password'
+export const ENDPOINT_PORTIONS = {
+  CONFIRM_EMAIL: 'confirm-email',
+  CHANGE_PASSWORD: 'change-password'
 };
 
 export const VERIFICATION_TYPES = {

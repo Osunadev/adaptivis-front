@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { Form, Icon, Input, Button, Checkbox, Alert } from 'antd';
+import { Form, Icon, Input, Button, Alert } from 'antd';
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
 import ForgotPassModal from 'components/before-login-components/login/forgot-pass-modal/forgot-pass-modal.component';
 
+import { easyFetch } from 'utils/requests/requests-utils';
 import { getUserFromToken, saveTokenInStorage } from 'utils/tokens/jwt-utils';
+import { emailRegEx } from 'data/users/account-regex';
+import { setCurrentUser } from 'redux/user-auth/user-auth.actions';
 
 class NormalLoginForm extends Component {
   static propTypes = {
@@ -39,31 +44,23 @@ class NormalLoginForm extends Component {
 
         this.setState({ isFetching: true });
 
-        try {
-          const response = await fetch(
-            `${process.env.REACT_APP_BACKEND_ENDPOINT}/login`,
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email, password })
-            }
-          );
+        const customFetch = easyFetch('post', false);
+        const responseObj = await customFetch('login', { email, password });
 
-          const json = await response.json();
-
-          if (response.status >= 200 && response.status < 300) {
+        if (!responseObj.error) {
+          if (responseObj.status >= 200 && responseObj.status < 300) {
             const {
               access_token: { access_token },
               refresh_token: { refresh_token }
-            } = json;
+            } = responseObj.body;
 
             saveTokenInStorage(access_token, 'local', 'accessToken');
             saveTokenInStorage(refresh_token, 'local', 'refreshToken');
 
             const user = getUserFromToken(access_token);
             setUser(user);
-          } else if (response.status >= 400 && response.status < 500) {
-            const { message } = json;
+          } else if (responseObj.status >= 400 && responseObj.status < 500) {
+            const { message } = responseObj.body;
 
             this.setState({
               isFetching: false,
@@ -72,7 +69,7 @@ class NormalLoginForm extends Component {
               hasError: true
             });
           }
-        } catch (error) {
+        } else {
           this.setState({
             isFetching: false,
             errorTitle: 'Lo sentimos, fallo de inicio de sesión',
@@ -132,7 +129,7 @@ class NormalLoginForm extends Component {
               {getFieldDecorator('email', {
                 rules: [
                   {
-                    pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@uabc.edu.mx$/,
+                    pattern: emailRegEx,
                     message: '¡Correo uabc inválido!'
                   },
                   {
@@ -204,4 +201,12 @@ class NormalLoginForm extends Component {
   }
 }
 
-export default Form.create({ name: 'normal_login' })(NormalLoginForm);
+const EnhancedLoginForm = Form.create({ name: 'normal_login' })(
+  NormalLoginForm
+);
+
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setCurrentUser(user))
+});
+
+export default connect(null, mapDispatchToProps)(EnhancedLoginForm);

@@ -8,31 +8,28 @@ import AdminWithHeaderAndMenu from 'components/after-login-components/admin-with
 
 import CompleteQuizMaker from 'components/after-login-components/quiz-maker/complete-quiz-maker/complete-quiz-maker.component';
 import TeacherRequestsDataFetched from 'components/after-login-components/teacher-requests/teacher-requests-data-fetched.component';
-import SubjectsLandingPage from 'pages/after-login-pages/create-subjects/create-subjects.page';
+import CreateSubjectsPage from 'pages/after-login-pages/create-subjects/create-subjects.page';
 
-const AdminLanding = ({ user, history, setUser }) => {
+const AdminLanding = () => {
   return (
     <div>
-      <AdminWithHeaderAndMenu user={user} setUser={setUser} history={history}>
+      <AdminWithHeaderAndMenu>
         <GlobalStyle bgColor='white' />
         <Switch>
           <Route
             exact
             path='/'
-            render={() => <Redirect to='/admin/grupos' />}
+            render={() => <Redirect to='/admin/materias' />}
           />
+
           {/* If we come from login */}
           <Route
             exact
             path='/login'
-            render={() => <Redirect to='/admin/grupos' />}
+            render={() => <Redirect to='/admin/materias' />}
           />
           <Route path='/admin/perfil' component={() => <p>Admin Perfil</p>} />
-          <Route path='/admin/grupos' component={() => <p>Admin Grupos</p>} />
-          <Route
-            path='/admin/crear-grupo'
-            component={() => <p>Crear Grupo</p>}
-          />
+          <Route path='/admin/materias' component={CreateSubjectsPage} />
           <Route
             exact
             path='/admin/solicitud-profesor'
@@ -53,11 +50,10 @@ const AdminLanding = ({ user, history, setUser }) => {
             path='/admin/crear-encuesta'
             component={CompleteQuizMaker}
           />
-          <Route path='/admin/materias' component={SubjectsLandingPage} />
           <Route
             path='*'
             render={() => (
-              <PathNotFound btnTitle='Regresar a mis grupos' btnRoute='/' />
+              <PathNotFound btnTitle='Regresar a mis materias' btnRoute='/' />
             )}
           />
         </Switch>

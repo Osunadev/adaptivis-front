@@ -17,7 +17,3 @@ export const student = {
   name: 'Omar Alonso Osuna Angulo',
   id: 1246437
 };
-
-export const getCurrentUser = () => {
-  return null;
-};

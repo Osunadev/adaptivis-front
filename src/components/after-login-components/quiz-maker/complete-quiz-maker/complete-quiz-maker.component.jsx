@@ -133,16 +133,17 @@ class CompleteQuizMaker extends Component {
         case 'likert':
           newQuestionType = { ...LikertQuestion };
           break;
-        case 'multiple':
-          // We neeed to make a deep copy because of our options array
-          newQuestionType = JSON.parse(JSON.stringify(MultipleQuestion));
-          break;
         case 'checkboxgrid':
           // We neeed to make a deep copy because of our options array
           newQuestionType = JSON.parse(JSON.stringify(CheckboxGridQuestion));
           break;
         case 'open':
           newQuestionType = { ...OpenQuestion };
+          break;
+        case 'multiple':
+        default:
+          // We neeed to make a deep copy because of our options array
+          newQuestionType = JSON.parse(JSON.stringify(MultipleQuestion));
           break;
       }
 

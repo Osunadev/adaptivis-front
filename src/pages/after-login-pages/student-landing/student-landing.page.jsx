@@ -11,11 +11,10 @@ import MyResultsPage from 'pages/after-login-pages/my-results/my-results.page';
 import UploadResultsPage from 'pages/after-login-pages/upload-results/upload-results.page';
 import StudentQuizVisualizer from 'components/after-login-components/student-quiz-visualizer/complete-quiz-visualizer/student-quiz-visualizer.component';
 
-const StudentLanding = ({ user, history, setUser }) => {
-  // If it's whether or not his/her first time accessing
+const StudentLanding = () => {
   return (
     <div>
-      <StudentWithHeaderAndMenu user={user} setUser={setUser} history={history}>
+      <StudentWithHeaderAndMenu>
         <Switch>
           <Route
             exact

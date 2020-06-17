@@ -7,10 +7,10 @@ import TeacherWithHeaderAndMenu from 'components/after-login-components/teacher-
 import CreateSubjectsForm from 'components/after-login-components/create-subjects/create-subject-form/create-subject-form.component';
 import CreateSubjectsTable from 'components/after-login-components/create-subjects/create-subjects-table/create-subjects-table-fetched.component';
 
-const TeacherLanding = ({ user, history, setUser }) => {
+const TeacherLanding = () => {
   return (
     <div>
-      <TeacherWithHeaderAndMenu user={user} history={history} setUser={setUser}>
+      <TeacherWithHeaderAndMenu>
         <Switch>
           <Route
             exact

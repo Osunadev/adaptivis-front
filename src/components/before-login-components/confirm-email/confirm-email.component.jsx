@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { easyFetch } from 'utils/requests/requests-utils';
+
 import { Button, Spin, Icon } from 'antd';
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
 
@@ -20,20 +22,25 @@ class ConfirmEmail extends Component {
   async componentDidMount() {
     const { confirmId } = this.state;
 
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_ENDPOINT}/email/${confirmId}`,
-        { method: 'POST' }
-      );
+    const customFetch = easyFetch('post', false);
+    const responseObj = await customFetch(`email/${confirmId}`);
 
-      const { message } = await response.json();
-
-      if (response.status >= 200 && response.status < 300) {
-        this.setState({ hasServerResponded: true, status: 'success', message });
-      } else if (response.status >= 400 && response.status < 500) {
-        this.setState({ hasServerResponded: true, status: 'error', message });
+    if (!responseObj.error) {
+      if (responseObj.status >= 200 && responseObj.status < 300) {
+        this.setState({
+          hasServerResponded: true,
+          status: 'success',
+          message: responseObj.message
+        });
+      } else {
+        // if (responseObj.status >= 400 && responseObj.status < 500)
+        this.setState({
+          hasServerResponded: true,
+          status: 'error',
+          message: responseObj.body.message
+        });
       }
-    } catch (error) {
+    } else {
       this.setState({
         hasServerResponded: true,
         status: 'error',

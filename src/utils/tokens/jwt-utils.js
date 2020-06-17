@@ -1,4 +1,5 @@
 import jwtDecode from 'jwt-decode';
+import { easyFetch } from 'utils/requests/requests-utils';
 
 export const getUserFromToken = accessToken => {
   try {
@@ -89,28 +90,21 @@ export const getUserFromStorage = async () => {
     return getUserFromToken(accessToken);
   }
 
+  // If we need to refresh our accessToken and our refreshToken hasn't expired
   if (!isRefreshTokenExpired) {
-    // If we need to refresh our accessToken and our refreshToken hasn't expired
-    try {
-      // If the accessToken has expired, we request for a new one
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_ENDPOINT}/refresh`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${refreshToken}`
-          }
-        }
-      );
+    //We need to request for a new one
+    const customFetch = easyFetch('post', true);
+    const responseObj = await customFetch('refresh');
 
-      const { access_token } = await response.json();
-      // Saving the new token in session storage;
-      saveTokenInStorage(access_token, 'local', 'accessToken');
-
-      return getUserFromToken(access_token);
-    } catch (error) {
+    // If we had an error, we return null, representing no user object
+    if (!responseObj.error) {
       return null;
     }
+
+    const { access_token } = responseObj.body;
+    // Saving the new token in session storage;
+    saveTokenInStorage(access_token, 'local', 'accessToken');
+    return getUserFromToken(access_token);
   }
 };
 
@@ -123,13 +117,10 @@ export const logOutUser = async () => {
 
   if (!isTokenExpired(refresh_token)) {
     // If the refresh_token hasn't expired
-    await fetch(`${process.env.REACT_APP_BACKEND_ENDPOINT}/logout`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ access_token, refresh_token })
+    const customFetch = easyFetch('post', true);
+    await customFetch('logout', {
+      access_token,
+      refresh_token
     });
   }
 

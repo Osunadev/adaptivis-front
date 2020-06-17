@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import { easyFetch } from 'utils/requests/requests-utils';
+import { emailRegEx, passwordRegEx } from 'data/users/account-regex';
+
 import PropTypes from 'prop-types';
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
 import LoadingWrapper from 'components/general-use-components/loading-wrapper/loading-wrapper.component';
@@ -45,12 +48,8 @@ class NormalRegisterForm extends Component {
       // If every field passes the validations
       if (!err) {
         const { birthDay, studentId, employeeId, ...generalValues } = values;
-        const urlEndpoint = `${process.env.REACT_APP_BACKEND_ENDPOINT}/${
-          isTeacher ? 'professor' : 'student'
-        }`;
 
         const userSpecificValues = {};
-
         if (isTeacher) {
           userSpecificValues.employeeId = employeeId;
         } else {
@@ -60,39 +59,35 @@ class NormalRegisterForm extends Component {
 
         this.setState({ isLoading: true });
 
-        try {
-          const response = await fetch(urlEndpoint, {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...generalValues, ...userSpecificValues })
-          });
+        const customFetch = easyFetch('post', false);
+        const responseObj = await customFetch(
+          isTeacher ? 'professor' : 'student',
+          { ...generalValues, ...userSpecificValues }
+        );
 
-          const json = await response.json();
-
-          this.setState({ isLoading: false }, () => {
-            if (response.status >= 200 && response.status < 300) {
+        this.setState({ isLoading: false }, () => {
+          if (!responseObj.error) {
+            if (responseObj.status >= 200 && responseObj.status < 300) {
               Modal.success({
                 title: 'Usuario creado exitosamente',
-                content: json.message
+                content: responseObj.body.message
               });
-            } else if (response.status >= 400 && response.status < 500) {
+            } else if (responseObj.status >= 400 && responseObj.status < 500) {
               Modal.error({
                 title: 'Error al registrar usuario',
-                content: json.message
+                content: responseObj.body.message
               });
             }
 
             resetFields();
-          });
-        } catch (error) {
-          this.setState({ isLoading: false }, () => {
+          } else {
             Modal.error({
               title: '¡Error de conexión!',
               content:
                 'No pudimos contectarnos con el servidor, por favor revisa tu conexión a internet.'
             });
-          });
-        }
+          }
+        });
       }
     });
   };
@@ -252,7 +247,7 @@ class NormalRegisterForm extends Component {
               {getFieldDecorator('email', {
                 rules: [
                   {
-                    pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@uabc.edu.mx$/,
+                    pattern: emailRegEx,
                     message: '¡Correo uabc inválido!'
                   },
                   {
@@ -275,7 +270,7 @@ class NormalRegisterForm extends Component {
               {getFieldDecorator('password', {
                 rules: [
                   {
-                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,50}$/,
+                    pattern: passwordRegEx,
                     message:
                       'Clave de 8 caracteres de mínimo, 1 número, 1 letra mayúscula y una minúscula'
                   },
@@ -299,7 +294,7 @@ class NormalRegisterForm extends Component {
               {getFieldDecorator('confirmPassword', {
                 rules: [
                   {
-                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,50}$/,
+                    pattern: passwordRegEx,
                     message:
                       'Clave de 8 caracteres de mínimo, 1 número, 1 letra mayúscula y una minúscula'
                   },

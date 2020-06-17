@@ -2,13 +2,7 @@ import React, { Component } from 'react';
 
 import { Modal, Button, Input, Icon, Tooltip } from 'antd';
 
-import {
-  teacherMsgs,
-  studentMsgs,
-  forgotPassMsgs
-} from 'components/before-login-components/login/login-form/log-in.utils';
-
-import { emailRegEx } from 'utils/users/account-regex';
+import { emailRegEx } from 'data/users/account-regex';
 
 class ForgotPassModal extends Component {
   constructor() {
@@ -42,8 +36,6 @@ class ForgotPassModal extends Component {
     // In this handler we'll be doing the fetch to de backend and waiting for the response
     setTimeout(() => {
       this.setState({ modalConfirmLoading: false, modalEmail: '' }, () => {
-        forgotPassMsgs.emailSent();
-
         const { hideModal } = this.props;
         hideModal();
       });

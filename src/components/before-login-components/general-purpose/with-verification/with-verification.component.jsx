@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
-import { Button } from 'antd';
+import { easyFetch } from 'utils/requests/requests-utils';
 
+import { Button } from 'antd';
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
-import { VERIFICATION_ENDPOINTS } from './with-verification.data';
 import LoadingWrapper from '../../../general-use-components/loading-wrapper/loading-wrapper.component';
+import { ENDPOINT_PORTIONS } from './with-verification.data';
 
 const withVerification = (FormComponent, verificationType) => {
   return class FormComponentwithVerification extends Component {
@@ -21,19 +22,13 @@ const withVerification = (FormComponent, verificationType) => {
     handleFormSend = async data => {
       this.setState({ isSendingInfo: true });
 
-      const fetchEndpoint = VERIFICATION_ENDPOINTS[verificationType];
+      const endpointPortion = ENDPOINT_PORTIONS[verificationType];
 
-      try {
-        const response = await fetch(fetchEndpoint, {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          }
-        });
+      const customFetch = easyFetch('post', false);
+      const responseObj = await customFetch(endpointPortion, data);
 
-        const { responseTitle, responseInfo } = await response.json();
+      if (!responseObj.error) {
+        const { responseTitle, responseInfo } = responseObj.body;
 
         this.setState({
           responseTitle,
@@ -41,8 +36,8 @@ const withVerification = (FormComponent, verificationType) => {
           hasServerResponded: true,
           isSendingInfo: false
         });
-      } catch (error) {
-        console.log(error);
+      } else {
+        console.log(responseObj.error);
       }
     };
 

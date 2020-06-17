@@ -29,7 +29,7 @@ export const MultipleQuestion = {
   questionType: 'multiple',
   title: '',
   // options array is an array of strings containing the multiple answer options
-  options: [],
+  options: [''],
   selOption: -1
 };
 
@@ -40,7 +40,7 @@ export const CheckboxGridQuestion = {
   // options array is an array of objects
   // [ { optionText: '', selColumn: -1 }, ...]
   // selColumn: -1 , means that there's no column box selected (nor left or right)
-  options: [],
+  options: [{ optionText: '', selColumn: -1 }],
   leftColumnText: 'Sí',
   rightColumnText: 'No'
 };
