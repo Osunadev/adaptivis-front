@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Modal, Button, Input, Icon, Tooltip } from 'antd';
 
-import { emailRegEx } from 'data/users/account-regex';
+import { emailRegEx } from 'data/users/account-regex.data';
 
 class ForgotPassModal extends Component {
   constructor() {

@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { Menu, Icon } from 'antd';
 import withHeaderAndMenu from 'components/after-login-components/general-purpose/with-header-and-menu/with-header-and-menu.component';
 
-import { USER_TYPES } from 'data/users/user-types';
+import { USER_TYPES } from 'data/users/user-types.data';
 import { setCurrentUser } from 'redux/user-auth/user-auth.actions';
 import { selectCurrentUser } from 'redux/user-auth/user-auth.selectors';
 

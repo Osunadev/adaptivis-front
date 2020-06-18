@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 
 import { easyFetch } from 'utils/requests/requests-utils';
-import { emailRegEx, passwordRegEx } from 'data/users/account-regex';
+import { passwordRegEx, schoolEmailRegEx } from 'data/users/account-regex.data';
 
 import PropTypes from 'prop-types';
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
 import LoadingWrapper from 'components/general-use-components/loading-wrapper/loading-wrapper.component';
-import { Form, Icon, Input, Button, Radio, DatePicker, Modal } from 'antd';
+import {
+  Form,
+  Icon,
+  Input,
+  Button,
+  Radio,
+  DatePicker,
+  Modal,
+  Cascader
+} from 'antd';
+import UNIVERSITIES from 'data/universities/universities.data';
 
 const basicRules = requiredMsg => [
   {
@@ -33,21 +43,59 @@ class NormalRegisterForm extends Component {
 
     this.state = {
       isLoading: false,
-      isTeacher: path === '/registro/profesor'
+      isTeacher: path === '/registro/profesor',
+      schoolDomain: undefined
     };
   }
+
+  checkResponseStatus = responseObj => {
+    const { resetFields } = this.props.form;
+
+    this.setState({ isLoading: false }, () => {
+      if (!responseObj.error) {
+        if (responseObj.status >= 200 && responseObj.status < 300) {
+          Modal.success({
+            title: 'Usuario creado exitosamente',
+            content: responseObj.body.message
+          });
+        } else if (responseObj.status >= 400 && responseObj.status < 500) {
+          Modal.error({
+            title: 'Error al registrar usuario',
+            content: responseObj.body.message
+          });
+        }
+
+        resetFields();
+      } else {
+        Modal.error({
+          title: '¡Error de conexión!',
+          content:
+            'No pudimos contectarnos con el servidor, por favor revisa tu conexión a internet.'
+        });
+      }
+    });
+  };
 
   handleSubmit = e => {
     e.preventDefault();
 
-    const { validateFields, resetFields } = this.props.form;
+    const { validateFields } = this.props.form;
     const { isTeacher } = this.state;
 
     // The 'values' object contains all the values of the validated fields in our form
     validateFields(async (err, values) => {
       // If every field passes the validations
       if (!err) {
-        const { birthDay, studentId, employeeId, ...generalValues } = values;
+        const {
+          birthDay,
+          studentId,
+          employeeId,
+          univCascader,
+          ...generalValues
+        } = values;
+
+        // We only care about the college code
+        const college = univCascader[1];
 
         const userSpecificValues = {};
         if (isTeacher) {
@@ -62,33 +110,21 @@ class NormalRegisterForm extends Component {
         const customFetch = easyFetch('post', false);
         const responseObj = await customFetch(
           isTeacher ? 'professor' : 'student',
-          { ...generalValues, ...userSpecificValues }
+          { ...generalValues, ...userSpecificValues, college }
         );
 
-        this.setState({ isLoading: false }, () => {
-          if (!responseObj.error) {
-            if (responseObj.status >= 200 && responseObj.status < 300) {
-              Modal.success({
-                title: 'Usuario creado exitosamente',
-                content: responseObj.body.message
-              });
-            } else if (responseObj.status >= 400 && responseObj.status < 500) {
-              Modal.error({
-                title: 'Error al registrar usuario',
-                content: responseObj.body.message
-              });
-            }
-
-            resetFields();
-          } else {
-            Modal.error({
-              title: '¡Error de conexión!',
-              content:
-                'No pudimos contectarnos con el servidor, por favor revisa tu conexión a internet.'
-            });
-          }
-        });
+        this.checkResponseStatus(responseObj);
       }
+    });
+  };
+
+  updateSchoolDomain = univCascader => {
+    const schoolDomain = univCascader[0];
+
+    this.setState({ schoolDomain }, () => {
+      const { setFieldsValue } = this.props.form;
+      // Clearing the email field
+      setFieldsValue({ email: '' });
     });
   };
 
@@ -106,7 +142,7 @@ class NormalRegisterForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { isLoading, isTeacher } = this.state;
+    const { isLoading, isTeacher, schoolDomain } = this.state;
 
     return (
       <LoadingWrapper isLoading={isLoading} title='Registrando usuario' large>
@@ -243,16 +279,35 @@ class NormalRegisterForm extends Component {
               )}
             </Form.Item>
 
+            <Form.Item>
+              {getFieldDecorator('univCascader', {
+                rules: [
+                  {
+                    required: true,
+                    message:
+                      'Seleccione su universidad para poder introducir su correo.'
+                  }
+                ]
+              })(
+                <Cascader
+                  placeholder='Seleccione la universidad a la que pertenece'
+                  options={UNIVERSITIES}
+                  size='large'
+                  onChange={this.updateSchoolDomain}
+                />
+              )}
+            </Form.Item>
+
             <Form.Item hasFeedback>
               {getFieldDecorator('email', {
                 rules: [
                   {
-                    pattern: emailRegEx,
-                    message: '¡Correo uabc inválido!'
+                    pattern: schoolEmailRegEx(schoolDomain),
+                    message: `Correo inválido, debe ser dominio ${schoolDomain}`
                   },
                   {
                     required: true,
-                    message: 'Por favor introduzca un correo uabc válido'
+                    message: 'Por favor introduzca un correo válido'
                   }
                 ]
               })(
@@ -260,8 +315,9 @@ class NormalRegisterForm extends Component {
                   prefix={
                     <Icon type='mail' style={{ color: 'rgba(0,0,0,.25)' }} />
                   }
-                  placeholder='Correo institucional uabc'
+                  placeholder='Correo institucional universitario'
                   size='large'
+                  disabled={!schoolDomain}
                 />
               )}
             </Form.Item>

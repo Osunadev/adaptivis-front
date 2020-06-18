@@ -10,7 +10,7 @@ import ForgotPassModal from 'components/before-login-components/login/forgot-pas
 
 import { easyFetch } from 'utils/requests/requests-utils';
 import { getUserFromToken, saveTokenInStorage } from 'utils/tokens/jwt-utils';
-import { emailRegEx } from 'data/users/account-regex';
+import { emailRegEx } from 'data/users/account-regex.data';
 import { setCurrentUser } from 'redux/user-auth/user-auth.actions';
 
 class NormalLoginForm extends Component {

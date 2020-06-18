@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom';
 
-import { Form, Input, Radio, Cascader, Select, Button } from 'antd';
+import { Form, Input, Cascader, Button } from 'antd';
 
 import TitledWrapper from 'components/after-login-components/general-purpose/titled-wrapper/titled-wrapper.component';
 
@@ -11,12 +11,12 @@ import {
   studies
 } from 'components/after-login-components/my-profile/edit-info-form/edit-info-form.data';
 
+import UNIVERSITIES from 'data/universities/universities.data';
+
 import {
   FormContainer,
   DisplayInOneRow
 } from 'components/after-login-components/my-profile/edit-info-form/edit-info-form.styles';
-
-const { Option } = Select;
 
 const formItemLayout = {
   labelCol: { span: 6 },

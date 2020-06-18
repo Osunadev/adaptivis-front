@@ -9,7 +9,7 @@ export const FormTitle = styled.h1`
 
 export const Container = styled.div`
   display: flex;
-  margin: 0 auto;
+  margin: 0 auto 32px auto;
   flex-direction: column;
   padding: 0 2rem;
   width: ${props => (props.width ? props.width : '550px')};
