@@ -2,7 +2,9 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
     body {
-        background: ${props => props.bgColor || 'white'}
+        background: ${props =>
+          // @ts-ignore
+          props.bgColor || 'white'}
     }
 `;
 

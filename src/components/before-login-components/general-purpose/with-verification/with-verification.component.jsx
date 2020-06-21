@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { easyFetch } from 'utils/requests/requests-utils';
+import { easyFetch } from 'utils/requests/requests.utils';
 
 import { Button } from 'antd';
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';

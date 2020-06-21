@@ -8,8 +8,9 @@ import { Form, Icon, Input, Button, Alert } from 'antd';
 import GeneralContainer from 'components/before-login-components/general-purpose/general-container/general-container.component';
 import ForgotPassModal from 'components/before-login-components/login/forgot-pass-modal/forgot-pass-modal.component';
 
-import { easyFetch } from 'utils/requests/requests-utils';
-import { getUserFromToken, saveTokenInStorage } from 'utils/tokens/jwt-utils';
+import { easyFetch } from 'utils/requests/requests.utils';
+import { getUserFromToken } from 'utils/tokens/jwt.utils';
+import { saveTokenInStorage } from 'utils/tokens/handle-jwt.utils';
 import { emailRegEx } from 'data/users/account-regex.data';
 import { setCurrentUser } from 'redux/user-auth/user-auth.actions';
 
@@ -18,8 +19,8 @@ class NormalLoginForm extends Component {
     form: PropTypes.object.isRequired
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       isModalVisible: false,
@@ -130,11 +131,11 @@ class NormalLoginForm extends Component {
                 rules: [
                   {
                     pattern: emailRegEx,
-                    message: '¡Correo uabc inválido!'
+                    message: '¡Correo inválido!'
                   },
                   {
                     required: true,
-                    message: 'Por favor introduzca un correo uabc válido'
+                    message: 'Por favor introduzca un correo válido'
                   }
                 ]
               })(
@@ -142,7 +143,7 @@ class NormalLoginForm extends Component {
                   prefix={
                     <Icon type='mail' style={{ color: 'rgba(0,0,0,.25)' }} />
                   }
-                  placeholder='Correo institucional uabc'
+                  placeholder='Correo institucional'
                   allowClear
                   size='large'
                 />

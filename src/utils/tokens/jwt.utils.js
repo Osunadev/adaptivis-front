@@ -1,7 +1,30 @@
 import jwtDecode from 'jwt-decode';
-import { easyFetch } from 'utils/requests/requests-utils';
+import { easyFetch } from 'utils/requests/requests.utils';
+import {
+  getTokenFromStorage,
+  removeTokenFromStorage,
+  saveTokenInStorage
+} from './handle-jwt.utils';
 
-export const getUserFromToken = accessToken => {
+/**
+ * A module to manage jwt's and their content.
+ * @module jwt-utils
+ */
+
+/**
+ * This is the current user that we extract from the payload of the jwt accessToken.
+ * @typedef {Object} CurrentUser
+ * @property {string} role - Could be 'student', 'teacher' or 'admin'
+ * @property {string} name - Name of the user
+ * @property {number} id - Id of the user
+ */
+
+/**
+ * Get user from token
+ * @param {string} accessToken - Jwt Access Token
+ * @returns {CurrentUser} - The user from the payload of the token
+ */
+const getUserFromToken = accessToken => {
   try {
     const { identity, user_claims } = jwtDecode(accessToken);
 
@@ -15,41 +38,24 @@ export const getUserFromToken = accessToken => {
   }
 };
 
-export const saveTokenInStorage = (token, storage, tokenName) => {
-  if (storage === 'session') {
-    sessionStorage.setItem(tokenName, JSON.stringify(token));
-  } else if (storage === 'local') {
-    localStorage.setItem(tokenName, JSON.stringify(token));
-  }
-};
-
-export const getTokenFromStorage = (tokenName, storage) => {
-  let token;
-
-  if (storage === 'session') {
-    token = JSON.parse(sessionStorage.getItem(tokenName));
-  } else if (storage === 'local') {
-    token = JSON.parse(localStorage.getItem(tokenName));
-  }
-
-  return token;
-};
-
-export const removeTokenFromStorage = (tokenName, storage) => {
-  if (storage === 'session') {
-    sessionStorage.removeItem(tokenName);
-  } else if (storage === 'local') {
-    localStorage.removeItem(tokenName);
-  }
-};
-
+/**
+ * Returns the expiration time of the jwt
+ * @param {Object} payload - The jwt payload object
+ * @param {number} payload.exp - The expiration time of the jwt in ms
+ * @returns {number} - Expiration time in ms
+ */
 const getPayloadExpirationDate = payload => {
   const expInMs = (payload && payload.exp && payload.exp * 1000) || null;
 
   return expInMs;
 };
 
-export const isTokenExpired = token => {
+/**
+ * Checks if the jwt has expired or not
+ * @param {string} token - Jwt token
+ * @returns {boolean} - Returns if the true token it's expired, otherwise false
+ */
+const isTokenExpired = token => {
   try {
     const payload = jwtDecode(token);
 
@@ -66,10 +72,15 @@ export const isTokenExpired = token => {
   }
 };
 
-// Function that look for an accessToken and refreshToken in session storage
-// and checks if they havent expired.
-// Could return: null or user obj
-export const getUserFromStorage = async () => {
+/**
+ * Looks for an accessToken and refreshToken in local storage, if both are found,
+ * checks their expiration date.
+ *
+ * If the refreshToken has expired, then it removes both tokens from storage, but,
+ * if not, tries to get a new accessToken if this has expired.
+ * @returns {Promise<null|Object>} - Would resolve 'null' or the CurrentUser object
+ */
+const getUserFromStorage = async () => {
   const accessToken = getTokenFromStorage('accessToken', 'local');
   const refreshToken = getTokenFromStorage('refreshToken', 'local');
 
@@ -92,7 +103,7 @@ export const getUserFromStorage = async () => {
 
   // If we need to refresh our accessToken and our refreshToken hasn't expired
   if (!isRefreshTokenExpired) {
-    //We need to request for a new one
+    // We need to request for a new one
     const customFetch = easyFetch('post', true);
     const responseObj = await customFetch('refresh');
 
@@ -108,7 +119,12 @@ export const getUserFromStorage = async () => {
   }
 };
 
-export const logOutUser = async () => {
+/**
+ * Logs the user out by making a fetch call to the backend and then
+ * removing both accessToken and refreshToken from localstorage
+ * @returns {Promise<void>}
+ */
+const logOutUser = async () => {
   const access_token = getTokenFromStorage('accessToken', 'local');
   const refresh_token = getTokenFromStorage('refreshToken', 'local');
 
@@ -128,3 +144,5 @@ export const logOutUser = async () => {
   removeTokenFromStorage('accessToken', 'local');
   removeTokenFromStorage('refreshToken', 'local');
 };
+
+export { getUserFromToken, isTokenExpired, getUserFromStorage, logOutUser };

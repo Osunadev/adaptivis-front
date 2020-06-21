@@ -7,6 +7,7 @@
   "extends": ["airbnb", "prettier"],
   "plugins": ["prettier", "react", "jsx-a11y"],
   "rules": {
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "prettier/prettier": "error",
     "react/jsx-filename-extension": "off",
     "react/jsx-curly-newline": "off",
@@ -30,6 +31,14 @@
     "no-await-in-loop": "off",
     "no-restricted-syntax": "off",
     "dot-notation": "warn",
-    "no-lonely-if": "off"
+    "no-lonely-if": "off",
+    "camelcase": "warn"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import TitledWrapper from 'components/after-login-components/general-purpose/titled-wrapper/titled-wrapper.component';
-import { easyFetch } from 'utils/requests/requests-utils';
+import { easyFetch } from 'utils/requests/requests.utils';
 
 import { Table, Button, message } from 'antd';
 

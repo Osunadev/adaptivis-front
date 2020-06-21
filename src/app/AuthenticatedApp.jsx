@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
@@ -7,23 +8,35 @@ import TeacherLanding from 'pages/after-login-pages/teacher-landing/teacher-land
 import AdminLanding from 'pages/after-login-pages/admin-landing/admin-landing.page';
 import GlobalStyle from 'components/general-use-components/global-style/global-style.component';
 
-import { selectCurrentUser } from 'redux/user-auth/user-auth.selectors';
+import { selectCurrentUserRole } from 'redux/user-auth/user-auth.selectors';
 
-const AuthenticatedApp = ({ currentUser: { role } }) => (
+/**
+ * Authenticated part of the app, rendering a different component based on the user role
+ * @param {Object} props - AuthenticatedApp props
+ * @param {string} props.userRole - The user role: 'student', 'admin', 'teacher'
+ */
+const AuthenticatedApp = ({ userRole }) => (
   <div>
-    <GlobalStyle bgColor='white' />
+    <GlobalStyle
+      // @ts-ignore
+      bgColor='white'
+    />
     {
       {
         student: <StudentLanding />,
         professor: <TeacherLanding />,
         admin: <AdminLanding />
-      }[role]
+      }[userRole]
     }
   </div>
 );
 
+AuthenticatedApp.propTypes = {
+  userRole: PropTypes.oneOf(['student', 'admin', 'teacher']).isRequired
+};
+
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  userRole: selectCurrentUserRole
 });
 
 export default connect(mapStateToProps)(AuthenticatedApp);

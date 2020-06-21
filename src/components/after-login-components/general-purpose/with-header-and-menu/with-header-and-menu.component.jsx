@@ -3,7 +3,7 @@ import React from 'react';
 import { Layout } from 'antd';
 import UserHeaderInfo from 'components/after-login-components/general-purpose/with-header-and-menu/user-header-info/user-header-info.component';
 
-import { logOutUser } from 'utils/tokens/jwt-utils';
+import { logOutUser } from 'utils/tokens/jwt.utils';
 
 const { Header, Content, Sider } = Layout;
 
@@ -62,7 +62,7 @@ const WithHeaderAndMenu = (MenuGroup, userType) => ({
             marginTop: 48
           }}
         >
-          <Content style={{ overflow: 'initial', padding: '32px 32px 0 32px' }}>
+          <Content style={{ padding: '32px 32px 0 32px', overflow: 'auto' }}>
             <div>{children}</div>
           </Content>
         </Layout>

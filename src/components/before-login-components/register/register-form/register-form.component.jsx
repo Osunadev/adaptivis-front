@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { easyFetch } from 'utils/requests/requests-utils';
+import { easyFetch } from 'utils/requests/requests.utils';
 import { passwordRegEx, schoolEmailRegEx } from 'data/users/account-regex.data';
 
 import PropTypes from 'prop-types';
@@ -285,7 +285,7 @@ class NormalRegisterForm extends Component {
                   {
                     required: true,
                     message:
-                      'Seleccione su universidad para poder introducir su correo.'
+                      'Seleccione su universidad para poder introducir su correo'
                   }
                 ]
               })(

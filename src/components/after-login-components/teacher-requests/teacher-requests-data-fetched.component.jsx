@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'antd';
 
-import { easyFetch } from 'utils/requests/requests-utils';
+import { easyFetch } from 'utils/requests/requests.utils';
 
 import withSpinner from 'components/general-use-components/with-spinner/with-spinner.component';
 import TeacherRequests from './teacher-requests.component';

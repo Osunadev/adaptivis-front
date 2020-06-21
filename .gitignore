@@ -2,6 +2,9 @@
 
 .vscode
 
+# Generated html docs from jsdoc
+/docs
+
 # dependencies
 /node_modules
 /.pnp

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-// All of pages we used before user logs in
+// All of the public pages availables, before login
 import RegisterPage from 'pages/before-login-pages/register/register.page';
 import LoginForm from 'components/before-login-components/login/login-form/login-form.component';
 import ConfirmEmailPage from 'pages/before-login-pages/confirm-email/confirm-email.page';
@@ -14,7 +14,10 @@ import GlobalStyle from 'components/general-use-components/global-style/global-s
 const UnauthenticatedApp = () => {
   return (
     <>
-      <GlobalStyle bgColor='linear-gradient(to right, #0083b0, #00b4db)' />
+      <GlobalStyle
+        // @ts-ignore
+        bgColor='linear-gradient(to right, #0083b0, #00b4db)'
+      />
       {/* We use a Route as / for LandingMenu because we want to selectively render our Menu depending on the route we're in */}
       <Route path='/' component={LandingMenu} />
       <Switch>

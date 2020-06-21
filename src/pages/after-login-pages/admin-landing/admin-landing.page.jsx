@@ -12,53 +12,51 @@ import CreateSubjectsPage from 'pages/after-login-pages/create-subjects/create-s
 
 const AdminLanding = () => {
   return (
-    <div>
-      <AdminWithHeaderAndMenu>
-        <GlobalStyle bgColor='white' />
-        <Switch>
-          <Route
-            exact
-            path='/'
-            render={() => <Redirect to='/admin/materias' />}
-          />
+    <AdminWithHeaderAndMenu>
+      <GlobalStyle bgColor='white' />
+      <Switch>
+        <Route
+          exact
+          path='/'
+          render={() => <Redirect to='/admin/materias' />}
+        />
 
-          {/* If we come from login */}
-          <Route
-            exact
-            path='/login'
-            render={() => <Redirect to='/admin/materias' />}
-          />
-          <Route path='/admin/perfil' component={() => <p>Admin Perfil</p>} />
-          <Route path='/admin/materias' component={CreateSubjectsPage} />
-          <Route
-            exact
-            path='/admin/solicitud-profesor'
-            component={TeacherRequestsDataFetched}
-          />
-          <Route
-            exact
-            path='/admin/consultar-resultados'
-            component={() => <p>Consultar Resultados</p>}
-          />
-          <Route
-            exact
-            path='/admin/encuestas-abiertas'
-            component={() => <p>Consultar Resultados</p>}
-          />
-          <Route
-            exact
-            path='/admin/crear-encuesta'
-            component={CompleteQuizMaker}
-          />
-          <Route
-            path='*'
-            render={() => (
-              <PathNotFound btnTitle='Regresar a mis materias' btnRoute='/' />
-            )}
-          />
-        </Switch>
-      </AdminWithHeaderAndMenu>
-    </div>
+        {/* If we come from login */}
+        <Route
+          exact
+          path='/login'
+          render={() => <Redirect to='/admin/materias' />}
+        />
+        <Route path='/admin/perfil' component={() => <p>Admin Perfil</p>} />
+        <Route path='/admin/materias' component={CreateSubjectsPage} />
+        <Route
+          exact
+          path='/admin/solicitud-profesor'
+          component={TeacherRequestsDataFetched}
+        />
+        <Route
+          exact
+          path='/admin/consultar-resultados'
+          component={() => <p>Consultar Resultados</p>}
+        />
+        <Route
+          exact
+          path='/admin/encuestas-abiertas'
+          component={() => <p>Consultar Resultados</p>}
+        />
+        <Route
+          exact
+          path='/admin/crear-encuesta'
+          component={CompleteQuizMaker}
+        />
+        <Route
+          path='*'
+          render={() => (
+            <PathNotFound btnTitle='Regresar a mis materias' btnRoute='/' />
+          )}
+        />
+      </Switch>
+    </AdminWithHeaderAndMenu>
   );
 };
 

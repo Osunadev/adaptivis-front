@@ -1,6 +1,7 @@
 import UserAuthActionTypes from './user-auth.types';
 
 const INITIAL_STATE = {
+  /** The CurrentUser object */
   currentUser: null
 };
 

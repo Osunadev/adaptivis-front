@@ -9,6 +9,7 @@ import { store } from 'redux/store';
 import './index.css';
 import App from 'app/App';
 
+/** Starting point of our application */
 ReactDOM.render(
   <Provider store={store}>
     <Router>
