@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 
 import withSpinner from 'components/general-use-components/with-spinner/with-spinner.component';
 
-import SubjectCodeBox from 'components/after-login-components/my-subjects/subject-code-box/subject-code-box.component';
-import SubjectsTable from 'components/after-login-components/my-subjects/subjects-table/subjects-table.component';
+import SubjectCodeBox from 'components/after-login-components/my-groups/group-code-box/group-code-box.component';
+import SubjectsTable from 'components/after-login-components/my-groups/groups-table/groups-table.component';
 
-import { SUBJECTS_DATA } from 'components/after-login-components/my-subjects/subjects-table/subjects-table.data';
-import { SubjectsContainer } from './my-subjects.styles';
+import { SUBJECTS_DATA } from 'components/after-login-components/my-groups/groups-table/groups-table.data';
+import { SubjectsContainer } from './my-groups.styles';
 
 const MySubjects = () => (
   <SubjectsContainer>

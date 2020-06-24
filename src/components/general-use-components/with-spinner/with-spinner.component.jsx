@@ -1,23 +1,9 @@
 import React from 'react';
 
-import { Spin, Icon } from 'antd';
-
-const antIcon = <Icon type='loading' style={{ fontSize: 64 }} spin />;
+import LoadingSpinner from '../loading-spinner/loading-spinner.component';
 
 const withSpinner = WrappedComponent => ({ isLoading, ...otherProps }) => {
-  return isLoading ? (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '70vh'
-      }}
-    >
-      <Spin indicator={antIcon} />
-    </div>
-  ) : (
-    <WrappedComponent {...otherProps} />
-  );
+  return isLoading ? <LoadingSpinner /> : <WrappedComponent {...otherProps} />;
 };
+
 export default withSpinner;

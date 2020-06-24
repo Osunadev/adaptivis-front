@@ -1,52 +1,11 @@
 import React, { Component } from 'react';
-import { Alert } from 'antd';
 
-import { easyFetch } from 'utils/requests/requests.utils';
+import { paginationFetch } from 'utils/requests/requests.utils';
 
-import withSpinner from 'components/general-use-components/with-spinner/with-spinner.component';
+import withHandleResponse from '../general-purpose/with-handle-response/with-handle-response.component';
 import TeacherRequests from './teacher-requests.component';
 
-const TeacherRequestsWithSpinner = withSpinner(TeacherRequests);
-
-async function getTeacherRequests() {
-  const teachersReqArray = [];
-  let teacherRequest;
-  let pageIdx = 1;
-
-  // Creating a custom fetch function
-  const customFetch = easyFetch('get', true);
-
-  do {
-    const { body, status, error } = await customFetch(
-      'professor/requests',
-      `type=PENDING&per_page=10&page=${pageIdx}`
-    );
-
-    if (status !== 200) throw new Error();
-
-    teacherRequest = body;
-
-    if (teacherRequest.resultSize > 0) {
-      const formattedResults = teacherRequest.results.map(
-        ({ email, employeeId, requestDate, request_id, ...namesObj }) => {
-          // Every teacher request item has a fullName, date and email property
-          return {
-            fullName: Object.values(namesObj).join(' '),
-            date: requestDate,
-            // The key will be used as a unique identifier
-            key: request_id,
-            email
-          };
-        }
-      );
-
-      teachersReqArray.push(...formattedResults);
-      pageIdx++;
-    }
-  } while (teacherRequest.next_page !== null);
-
-  return teachersReqArray;
-}
+const TeacherRequestswithHandleResponse = withHandleResponse(TeacherRequests);
 
 class CompleteTeacherRequests extends Component {
   constructor() {
@@ -55,34 +14,59 @@ class CompleteTeacherRequests extends Component {
     this.state = {
       isFetchingData: false,
       data: [],
-      hasError: false,
-      errorTitle: ''
+      hasError: false
     };
   }
 
   componentDidMount() {
     this.setState({ isFetchingData: true }, async () => {
       try {
-        const teacherRequestsData = await getTeacherRequests();
+        // This function will be applied to every element in the response array
+        const formattingFunction = resData => {
+          const {
+            email,
+            employeeId,
+            requestDate,
+            request_id,
+            ...namesObj
+          } = resData;
+
+          // Every teacher request item has a fullName, date and email property
+          return {
+            fullName: Object.values(namesObj).join(' '),
+            date: requestDate,
+            // The key will be used as a unique identifier
+            key: request_id,
+            email
+          };
+        };
+
+        const teacherRequestsData = await paginationFetch(
+          'professor/requests',
+          10,
+          { type: 'PENDING' },
+          formattingFunction
+        );
 
         this.setState({ isFetchingData: false, data: teacherRequestsData });
       } catch (error) {
         this.setState({
-          errorTitle:
-            'Lo sentimos, tenemos problemas con con el servidor, inténtelo otra vez.',
-          hasError: true
+          hasError: true,
+          isFetchingData: false
         });
       }
     });
   }
 
   render() {
-    const { isFetchingData, data, errorTitle, hasError } = this.state;
+    const { isFetchingData, data, hasError } = this.state;
 
-    return hasError ? (
-      <Alert message='Error' description={errorTitle} type='error' showIcon />
-    ) : (
-      <TeacherRequestsWithSpinner isLoading={isFetchingData} data={data} />
+    return (
+      <TeacherRequestswithHandleResponse
+        isLoading={isFetchingData}
+        hasServerError={hasError}
+        data={data}
+      />
     );
   }
 }

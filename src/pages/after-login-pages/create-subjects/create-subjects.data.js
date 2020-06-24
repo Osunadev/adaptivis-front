@@ -1,0 +1,5 @@
+export const SubjectsPanelData = {
+  SUBJECTS_TABLE: 'SUBJECTS_TABLE',
+  CREATE_SUBJECT: 'CREATE_SUBJECT',
+  EDIT_SUBJECT: 'EDIT_SUBJECT'
+};

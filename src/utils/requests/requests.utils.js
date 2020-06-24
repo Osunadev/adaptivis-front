@@ -18,13 +18,17 @@ import { getTokenFromStorage } from 'utils/tokens/handle-jwt.utils';
  * @param {string} method - The http method for the request: 'get' | 'post' | 'put' | 'patch' | 'delete'
  * @param {boolean} withAuthHeader - It is 'true' if we need to include the access token in the
  * Bearer Authorization header of the request, otherwise 'false'
+ * @param {string} typeHeaderToken - The type of header token to be sent on the Bearer Authorization header: 'access' | 'refresh'
  * @returns {function} - Returns a custom function, tailored to 'method' and 'withAuthHeader' parameters
  * @example
  * const customFetch = easyFetch('get', false);
  * const customObj = await customFetch('teachers', page_row=10)
  */
-const easyFetch = (method, withAuthHeader = false) => {
-  const accessToken = getTokenFromStorage('accessToken', 'local');
+const easyFetch = (
+  method,
+  withAuthHeader = false,
+  typeHeaderToken = 'access'
+) => {
   let customFunction;
 
   switch (method) {
@@ -51,7 +55,15 @@ const easyFetch = (method, withAuthHeader = false) => {
         };
 
         if (withAuthHeader) {
-          customHeaders.Authorization = `Bearer ${accessToken}`;
+          let token;
+
+          if (typeHeaderToken === 'access') {
+            token = getTokenFromStorage('accessToken', 'local');
+          } else if (typeHeaderToken === 'refresh') {
+            token = getTokenFromStorage('refreshToken', 'local');
+          }
+
+          customHeaders.Authorization = `Bearer ${token}`;
         }
 
         let body;
@@ -100,7 +112,15 @@ const easyFetch = (method, withAuthHeader = false) => {
         };
 
         if (withAuthHeader) {
-          customFetchObj.headers.Authorization = `Bearer ${accessToken}`;
+          let token;
+
+          if (typeHeaderToken === 'access') {
+            token = getTokenFromStorage('accessToken', 'local');
+          } else if (typeHeaderToken === 'refresh') {
+            token = getTokenFromStorage('refreshToken', 'local');
+          }
+
+          customFetchObj.headers.Authorization = `Bearer ${token}`;
         }
 
         if (payload) {
@@ -136,4 +156,64 @@ const easyFetch = (method, withAuthHeader = false) => {
   return customFunction;
 };
 
-export { easyFetch };
+/**
+ * paginationFetch returns an array of items after making one or several fetch requests
+ * to the endpointPath provided. It can be provided a queryParamsObj to specify query
+ * parameters and also, a formattingFunction to format every single item returned by
+ * the fetch response body.
+ * @param {string} endpointPath - The remaining endpoint path removing the base url
+ * @param {number} pageSize - It's the page size to be requested in every call, by default, 10.
+ * @param {Object} [queryParamsObj] - An object will the key-value pairs of the query parameters.
+ * @param {function} [formattingFunction] - A formatting function that's applied to every single element we get from the api.
+ */
+const paginationFetch = async (
+  endpointPath,
+  pageSize = 10,
+  queryParamsObj,
+  formattingFunction
+) => {
+  let queryString;
+
+  if (queryParamsObj) {
+    queryString = Object.keys(queryParamsObj).reduce(
+      (acc, objKey) => acc + `&${objKey}=${queryParamsObj[objKey]}`,
+      `per_page=${pageSize}`
+    );
+  } else {
+    queryString = `per_page=${pageSize}`;
+  }
+
+  const responseArr = [];
+  let responseBody;
+  let pageIdx = 1;
+
+  const customFetch = easyFetch('get', true);
+
+  do {
+    const { body, status, error } = await customFetch(
+      endpointPath,
+      queryString + `&page=${pageIdx}`
+    );
+
+    if (status !== 200) throw new Error();
+
+    responseBody = body;
+
+    if (responseBody.resultSize > 0) {
+      let finalResults;
+
+      if (formattingFunction) {
+        finalResults = responseBody.results.map(formattingFunction);
+      } else {
+        finalResults = responseBody.results;
+      }
+
+      responseArr.push(...finalResults);
+      pageIdx++;
+    }
+  } while (responseBody.next_page !== null);
+
+  return responseArr;
+};
+
+export { easyFetch, paginationFetch };

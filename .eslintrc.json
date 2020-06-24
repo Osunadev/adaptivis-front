@@ -33,12 +33,5 @@
     "dot-notation": "warn",
     "no-lonely-if": "off",
     "camelcase": "warn"
-  },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "moduleDirectory": ["node_modules", "src/"]
-      }
-    }
   }
 }

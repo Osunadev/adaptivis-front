@@ -1,7 +1,7 @@
 import UserAuthActionTypes from './user-auth.types';
 
 const INITIAL_STATE = {
-  /** The CurrentUser object */
+  /** The CurrentUser object, check jwt.utils.js for more info */
   currentUser: null
 };
 

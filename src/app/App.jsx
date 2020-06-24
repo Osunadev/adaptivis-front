@@ -20,13 +20,7 @@ class App extends Component {
     const { setUser } = this.props;
 
     /** Gets the user from the accessToken stored in local storage */
-    // const userFromStorage = await getUserFromStorage();
-
-    const userFromStorage = {
-      role: 'admin',
-      fullName: 'Placeholder',
-      id: '1342352'
-    };
+    const userFromStorage = await getUserFromStorage();
 
     setUser(userFromStorage);
   }

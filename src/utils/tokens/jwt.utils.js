@@ -103,12 +103,15 @@ const getUserFromStorage = async () => {
 
   // If we need to refresh our accessToken and our refreshToken hasn't expired
   if (!isRefreshTokenExpired) {
-    // We need to request for a new one
-    const customFetch = easyFetch('post', true);
-    const responseObj = await customFetch('refresh');
+    // We need to request for a new one, that's why we
+    // send the refresh token in the Authorization header
+    const customFetch = easyFetch('post', true, 'refresh');
+    const responseObj = await customFetch('refresh', {
+      access_token: accessToken
+    });
 
     // If we had an error, we return null, representing no user object
-    if (!responseObj.error) {
+    if (responseObj.error) {
       return null;
     }
 

@@ -22,11 +22,7 @@ const AdminMenuGroup = ({ onMenuItemClick }) => {
       <Menu.ItemGroup key='inicio' title='Inicio'>
         <Menu.Item key='materias'>
           <Icon type='team' />
-          <span className='nav-text'>Mis materias</span>
-        </Menu.Item>
-        <Menu.Item key='materias/crear'>
-          <Icon type='usergroup-add' />
-          <span className='nav-text'>Crear materia</span>
+          <span className='nav-text'>Listado de Materias</span>
         </Menu.Item>
         <Menu.Item key='perfil'>
           <Icon type='user' />

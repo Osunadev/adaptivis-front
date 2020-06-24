@@ -4,8 +4,6 @@ import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import PathNotFound from 'components/after-login-components/general-purpose/path-not-found/path-not-found.component';
 
 import TeacherWithHeaderAndMenu from 'components/after-login-components/teacher-with-header-and-menu/teacher-with-header-and-menu.component';
-import CreateSubjectsForm from 'components/after-login-components/create-subjects/create-subject-form/create-subject-form.component';
-import CreateSubjectsTable from 'components/after-login-components/create-subjects/create-subjects-table/create-subjects-table-fetched.component';
 
 const TeacherLanding = () => {
   return (
@@ -26,13 +24,10 @@ const TeacherLanding = () => {
             path='/teacher/perfil'
             component={() => <p>teacher Perfil</p>}
           />
-          <Route
-            path='/teacher/grupos'
-            component={() => <CreateSubjectsTable />}
-          />
+          <Route path='/teacher/grupos' component={() => <p>grupos</p>} />
           <Route
             path='/teacher/crear-grupo'
-            component={() => <CreateSubjectsForm />}
+            component={() => <p>Crar grupo</p>}
           />
           <Route
             exact
