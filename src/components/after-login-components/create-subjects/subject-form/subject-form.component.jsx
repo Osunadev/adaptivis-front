@@ -117,7 +117,7 @@ class CreateSubjectForm extends Component {
         <TitledWrapper
           title={`${isEditForm ? 'Editar' : 'Crear'} Materia`}
           big
-          backCallback={isEditForm ? setSubjectsTableView : undefined}
+          backCallback={setSubjectsTableView}
         >
           <Form
             style={{ marginTop: '32px' }}
